@@ -1,31 +1,88 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>SADRAZAM POWER</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>SYSTEM_CRITICAL_ERROR</title>
     <style>
-        body { background: #000; color: #fff; font-family: sans-serif; overflow-x: hidden; }
-        .neon-red { text-shadow: 0 0 15px #ff0000; color: #ff0000; font-weight: 900; }
-        .video-box { border: 1px solid #222; transition: 0.3s; position: relative; }
-        .video-box:hover { border-color: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.2); }
-        
-        /* Güncelleme Ekranı */
-        #loading {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98);
-            z-index: 9999; flex-direction: column; align-items: center; justify-content: center;
+        body { 
+            background: black; 
+            color: #ff0000; 
+            font-family: 'Courier New', monospace; 
+            overflow: hidden; 
+            margin: 0; 
+            cursor: crosshair;
         }
-        .spin { border: 4px solid #111; border-top: 4px solid #f00; border-radius: 50%; width: 50px; height: 50px; animation: s 1s linear infinite; }
-        @keyframes s { 100% { transform: rotate(360deg); } }
+        .error-msg { 
+            position: absolute; 
+            font-weight: bold; 
+            pointer-events: none; 
+            white-space: nowrap;
+            text-shadow: 0 0 8px #ff0000;
+            opacity: 0.9;
+        }
+        #warning {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            text-align: center;
+            border: 5px solid red;
+            padding: 50px;
+            background: rgba(0,0,0,0.9);
+            box-shadow: 0 0 50px red;
+        }
+        .glitch { animation: shake 0.1s infinite; }
+        @keyframes shake {
+            0% { transform: translate(2px, 2px); }
+            50% { transform: translate(-2px, -2px); }
+            100% { transform: translate(1px, -1px); }
+        }
     </style>
 </head>
-<body onclick="calistir()">
+<body onclick="launchChaos()">
 
-<audio id="anaMuzik" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
+<div id="warning">
+    <h1 class="glitch" style="font-size: 50px;">КРИТИЧЕСКИЙ СБОЙ</h1>
+    <p style="font-size: 20px;">СИСТЕМА ЗАРАЖЕНА ВИРУСОМ</p>
+    <p style="color: yellow; font-size: 15px;">[ EKRANA TIKLA VE İZLE ]</p>
+</div>
+
+<audio id="bgMusic" loop>
+    <source src="https://www.soundjay.com/communication/sounds/data-transfer-1.mp3" type="audio/mpeg">
 </audio>
 
-<nav class="fixed top-0 w-full h-16 bg-black/90 border-b border-red-900 flex items-center justify-between px-6 z-50 backdrop-blur">
-    <div class="flex items-center gap-4">
-        <button onclick="menuAc()" class="text-red-600 text-
+<script>
+    const phrases = [
+        "ОШИБКА 0x80070422", "ACCESS DENIED", "ВЗЛОМ СИСТЕМЫ", 
+        "DELETING ALL DATA...", "ПОТЕРЯ СОЕДИНЕНИЯ", "FATAL ERROR",
+        "СИСТЕМА ПЕРЕГРУЖЕНА", "ЦЕНТРАЛЬНЫЙ ПРОЦЕССОР ГОРЕЛ",
+        "VIRUS DETECTED", "НЕИЗВЕСТНАЯ ОШИБКА", "БАЗА ДАННЫХ УДАЛЕНА",
+        "ПОКА-ПОКА", "SYSTEM HALTED"
+    ];
+
+    let active = false;
+
+    function launchChaos() {
+        if(active) return;
+        active = true;
+
+        // Uyarıyı kaldır
+        document.getElementById('warning').style.display = 'none';
+        
+        // Müziği başlat
+        const audio = document.getElementById('bgMusic');
+        audio.play();
+
+        // Yazı yağmurunu başlat
+        setInterval(spawnText, 30);
+        
+        // Ekran titretme ve renk değiştirme
+        setInterval(() => {
+            document.body.style.backgroundColor = (Math.random() > 0.9) ? '#220000' : 'black';
+        }, 50);
+    }
+
+    function spawnText() {
+        const div = document.createElement('div');
+        div.className = 'error-msg';
