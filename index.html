@@ -1,312 +1,160 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Menu, Globe, Play, Lock, Star, Zap, Shield, X, Music2 } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="tr">
+<head>
 
-// --- Veri Setleri ---
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-const CATEGORIES = [
-  "Anasayfa", "Altyazısız", "Amatör", "A-Kategori", "Anne", "Asyalı", "Ayak", 
-  "B-Kategori", "B-Net", "C-Pie", "Czech", "D-Throat", "Diğer", "Doğal Formlu", 
-  "E-Kategori", "Esmer", "F-Hub", "Fışkırtma", "J-Style", "K-Bozma", "Klasik", 
-  "K-Göt", "K-Meme", "Konusuz", "Latina", "Lezbiyen", "Masaj", "M-L-F", "Okullu", 
-  "Parodi", "P-O-V", "Rus", "Sarışın", "T-Age", "T-Some", "T-Vesti", "Muhafazakar", 
-  "Uzun Metraj", "V-O-Y", "Yoga", "Z-Boy", "Z-Girl", "+18 Free", "Fetiş", "Genel", 
-  "Hard", "J-Pop", "Kısa", "Kuaför", "Liseli", "L-L-T", "Mobil", "Olgun", "Sekreter"
-];
+<title>SADRAZAM POWER</title>
 
-const LANGUAGES = [
-  { code: 'TR', name: 'Türkçe' },
-  { code: 'AR', name: 'Arapça' },
-  { code: 'EN', name: 'English' },
-  { code: 'FR', name: 'Français' },
-  { code: 'AZ', name: 'Azərbaycan' }
-];
+<script src="https://cdn.tailwindcss.com"></script>
 
-const MEMBERSHIPS = [
-  {
-    id: 'free',
-    title: 'ÜCRETSİZ',
-    icon: <Shield className="w-8 h-8 text-gray-400" />,
-    features: ['Temel Erişim 🎁', 'Reklamlı Deneyim 📺'],
-    price: '₺0',
-    color: 'border-gray-600',
-    btnColor: 'bg-gray-700 hover:bg-gray-600'
-  },
-  {
-    id: 'premium',
-    title: 'PREMIUM',
-    icon: <Star className="w-8 h-8 text-yellow-400" />,
-    features: ['Full HD Keyfi 💎', 'Reklam Yok 🚫', 'Özel İçerik 🔥'],
-    price: '₺199',
-    color: 'border-yellow-500',
-    btnColor: 'bg-yellow-500 hover:bg-yellow-400 text-black'
-  },
-  {
-    id: 'boost',
-    title: 'BOOST',
-    icon: <Zap className="w-8 h-8 text-red-500" />,
-    features: ['Işık Hızında Sunucu ⚡', 'Canlı Destek 👑', 'Sınırsız Arşiv 📂'],
-    price: '₺499',
-    color: 'border-red-500',
-    btnColor: 'bg-red-600 hover:bg-red-500 text-white'
-  }
-];
+<style>
 
-// --- Bileşenler ---
+body{
+background:#000;
+font-family:Arial;
+}
 
-const Navbar = ({ toggleMenu, lang, setLang }) => {
-  const [showLangMenu, setShowLangMenu] = useState(false);
+</style>
 
-  return (
-    <nav className="fixed top-0 left-0 w-full h-16 bg-black/90 backdrop-blur-md border-b border-red-900/30 z-50 flex items-center justify-between px-4 md:px-8">
-      {/* Sol: Logo & Hamburger */}
-      <div className="flex items-center gap-4">
-        <button onClick={toggleMenu} className="text-white hover:text-red-500 transition-colors">
-          <Menu size={28} />
-        </button>
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-red-600 to-purple-600 shadow-[0_0_15px_rgba(220,38,38,0.6)] flex items-center justify-center">
-            <Play size={16} fill="white" className="text-white" />
-          </div>
-          <span className="text-xl font-bold tracking-wider text-white">
-            NEON<span className="text-red-500">STREAM</span>
-          </span>
-        </div>
-      </div>
+</head>
 
-      {/* Sağ: Dil Seçimi */}
-      <div className="relative">
-        <button 
-          onClick={() => setShowLangMenu(!showLangMenu)}
-          className="flex items-center gap-2 text-gray-300 hover:text-white transition-colors"
-        >
-          <Globe size={20} />
-          <span className="hidden md:inline text-sm font-medium">{lang}</span>
-        </button>
+<body>
 
-        {showLangMenu && (
-          <div className="absolute right-0 top-12 w-40 bg-black border border-red-900/50 shadow-xl rounded-lg overflow-hidden z-50">
-            {LANGUAGES.map((l) => (
-              <button
-                key={l.code}
-                onClick={() => { setLang(l.name); setShowLangMenu(false); }}
-                className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-red-900/20 hover:text-red-400 transition-colors"
-              >
-                {l.name}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    </nav>
-  );
-};
+<audio autoplay loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
 
-const Sidebar = ({ isOpen, closeMenu }) => {
-  return (
-    <>
-      {/* Overlay */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 transition-opacity"
-          onClick={closeMenu}
-        />
-      )}
-      
-      {/* Menu Panel */}
-      <div className={fixed top-0 left-0 h-full w-64 bg-black border-r border-red-900/30 z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}}>
-        <div className="p-4 flex justify-between items-center border-b border-gray-800">
-          <h2 className="text-red-500 font-bold tracking-widest">KATEGORİLER</h2>
-          <button onClick={closeMenu} className="text-gray-400 hover:text-white"><X size={20} /></button>
-        </div>
-        
-        <div className="h-[calc(100vh-64px)] overflow-y-auto custom-scrollbar p-2">
-          <ul className="space-y-1">
-            {CATEGORIES.map((cat, idx) => (
-              <li key={idx}>
-                <button className="w-full text-left px-4 py-3 text-sm text-gray-400 hover:text-white hover:bg-red-900/10 hover:pl-6 transition-all duration-200 border-l-2 border-transparent hover:border-red-500">
-                  {cat}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </>
-  );
-};
+<!-- NAVBAR -->
 
-const VideoCard = ({ onClick, isInteracting, setIsInteracting }) => {
-  return (
-    <div 
-      className="relative group cursor-pointer overflow-hidden rounded-lg aspect-video bg-gray-900"
-      onClick={() => {
-        setIsInteracting(true);
-        onClick();
-      }}
-    >
-      {/* Kapak Görseli (Blur) */}
-      <div className="absolute inset-0 bg-gray-800">
-        <img 
-          src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1000&auto=format&fit=crop" 
-          alt="Cover" 
-          className="w-full h-full object-cover opacity-50 blur-sm group-hover:blur-md transition-all duration-500"
-        />
-      </div>
+<div class="fixed top-0 left-0 w-full h-16 bg-black border-b border-red-800 flex items-center justify-between px-5 z-50">
 
-      {/* Overlay & Text */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 backdrop-blur-[2px]">
-        <div className="bg-black/80 px-4 py-2 rounded border border-red-500/50 shadow-[0_0_10px_rgba(220,38,38,0.3)]">
-          <p className="text-red-500 font-mono text-sm tracking-widest animate-pulse">
-            SİSTEM GÜNCELLENİYOR...
-          </p>
-        </div>
-        <div className="mt-4 flex items-center gap-2 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <Play size={16} fill="currentColor" />
-          <span className="text-xs">İçerik İzleniyor</span>
-        </div>
-      </div>
-    </div>
-  );
-};
+<div class="flex items-center gap-3">
 
-const CountdownOverlay = ({ onComplete }) => {
-  const [count, setCount] = useState(10);
+<button onclick="toggleMenu()" class="text-white text-2xl">
+☰
+</button>
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCount((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          onComplete();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [onComplete]);
+<img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" width="32">
 
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-md">
-      <div className="text-center">
-        <div className="relative w-32 h-32 mx-auto mb-6">
-          <svg className="w-full h-full transform -rotate-90">
-            <circle cx="64" cy="64" r="60" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-gray-800" />
-            <circle 
-              cx="64" cy="64" r="60" 
-              stroke="currentColor" 
-              strokeWidth="4" 
-              fill="transparent" 
-              strokeDasharray={377} 
-              strokeDashoffset={377 - (377 * count) / 10} 
-              className="text-red-500 transition-all duration-1000 ease-linear"
-            />
-          </svg>
-          <span className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-white">
-            {count}
-          </span>
-        </div>
-        <h2 className="text-xl text-red-500 font-mono tracking-widest animate-pulse">
-          YÜKLENİYOR...
-        </h2>
-      </div>
-    </div>
-  );
-};
+<div class="text-white font-bold text-xl tracking-wider">
+SADRAZAM <span class="text-red-500">POWER</span>
+</div>
 
-const PaymentModal = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
+</div>
 
-  return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center px-4">
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose}></div>
-      <div className="relative bg-black border border-red-500/50 shadow-[0_0_30px_rgba(220,38,38,0.2)] rounded-xl p-8 max-w-md w-full text-center transform transition-all scale-100">
-        
-        {/* Neon Header */}
-        <div className="mb-6">
-          <div className="w-16 h-16 mx-auto bg-red-900/20 rounded-full flex items-center justify-center mb-4 border border-red-500/30">
-            <Lock className="text-red-500 w-8 h-8" />
-          </div>
-          <h3 className="text-2xl font-bold text-white mb-2">Ödeme Altyapımız Güncelleniyor</h3>
-          <div className="h-1 w-20 bg-red-500 mx-auto rounded-full"></div>
-        </div>
+<select onchange="changeLang(this.value)" class="bg-black text-white border border-gray-700 p-1">
 
-        {/* Content */}
-        <p className="text-gray-300 text-sm leading-relaxed mb-6">
-          Değerli kullanıcımız, sizlere daha güvenli ve hızlı bir işlem deneyimi sunabilmek adına ödeme sistemlerimizi global standartlara uygun şekilde yeniliyoruz. Çok yakında <span className="text-white font-semibold">Kredi Kartı</span>, <span className="text-white font-semibold">Kripto Ödeme</span> ve <span className="text-white font-semibold">Mobil Ödeme</span> seçenekleriyle hizmetinizde olacağız.
-        </p>
-        
-        <p className="text-xs text-gray-500 mb-8 italic">
-          "Yeniliklerden haberdar olmak için takipte kalın."
-        </p>
+<option value="tr">Türkçe</option>
+<option value="en">English</option>
+<option value="ar">Arapça</option>
+<option value="ku">Kürtçe</option>
 
-        {/* Button */}
-        <button 
-          onClick={onClose}
-          className="w-full py-3 bg-gradient-to-r from-red-900 to-black border border-red-600 text-white font-semibold rounded hover:shadow-[0_0_15px_rgba(220,38,38,0.4)] transition-all"
-        >
-          Anladım
-        </button>
-      </div>
-    </div>
-  );
-};
+</select>
 
-const MembershipSection = ({ onBuyClick }) => {
-  return (
-    <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-white mb-12 text-center">
-        Üyelik <span className="text-red-500">Paketleri</span>
-      </h2>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {MEMBERSHIPS.map((plan) => (
-          <div key={plan.id} className={relative bg-gray-900/50 border ${plan.color} rounded-2xl p-6 hover:bg-gray-800 transition-all duration-300 group}>
-            <div className="flex justify-between items-start mb-6">
-              <div className="p-3 bg-black rounded-lg border border-gray-700 group-hover:border-red-500/50 transition-colors">
-                {plan.icon}
-              </div>
-              <span className="text-2xl font-bold text-white">{plan.price}</span>
-            </div>
-            
-            <h3 className="text-xl font-bold text-white mb-4">{plan.title}</h3>
-            
-            <ul className="space-y-3 mb-8">
-              {plan.features.map((feat, i) => (
-                <li key={i} className="flex items-center gap-2 text-gray-400 text-sm">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
-                  {feat}
-                </li>
-              ))}
-            </ul>
-            
-            <button 
-              onClick={onBuyClick}
-              className={w-full py-3 rounded-lg font-bold text-sm tracking-wide transition-all ${plan.btnColor}}
-            >
-              SATIN AL / YÜKSELT
-            </button>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-};
+</div>
 
-// --- Ana Uygulama ---
+<!-- SIDEBAR -->
 
-export default function App() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [lang, setLang] = useState('Türkçe');
-  const [isCountdownOpen, setIsCountdownOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isInteracting, setIsInteracting] = useState(false);
+<div id="menu" class="fixed top-0 left-0 h-full w-64 bg-black border-r border-red-900 transform -translate-x-full transition duration-300 z-40">
 
-  // Audio Ref
-  const audioRef = useRef(null);
+<div class="p-4 text-red-500 font-bold text-lg">
+KATEGORİLER
+</div>
 
-  // Müzik Kontrolü
-  useEffect(() => {
-    // Lo-fi müzik placeholder (telifsiz bir örnek)
-    if (audioRef.current) {
-      audio
+<div class="px-4 py-2 text-gray-400 hover:text-white cursor-pointer">Anasayfa</div>
+<div class="px-4 py-2 text-gray-400 hover:text-white cursor-pointer">Amatör</div>
+<div class="px-4 py-2 text-gray-400 hover:text-white cursor-pointer">Asyalı</div>
+<div class="px-4 py-2 text-gray-400 hover:text-white cursor-pointer">Latina</div>
+<div class="px-4 py-2 text-gray-400 hover:text-white cursor-pointer">Lezbiyen</div>
+<div class="px-4 py-2 text-gray-400 hover:text-white cursor-pointer">Rus</div>
+<div class="px-4 py-2 text-gray-400 hover:text-white cursor-pointer">Olgun</div>
+
+</div>
+
+<!-- CONTENT -->
+
+<div class="pt-24 max-w-6xl mx-auto px-4">
+
+<h1 id="title" class="text-white text-3xl mb-10 text-center">
+Popüler Videolar
+</h1>
+
+<div class="grid md:grid-cols-3 gap-6">
+
+<script>
+
+for(let i=0;i<9;i++){
+
+document.write(`
+
+<div class="bg-gray-900 rounded-lg overflow-hidden hover:scale-105 transition">
+
+<img src="https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1000"
+class="w-full h-40 object-cover opacity-80">
+
+<div class="p-3 text-white text-sm">
+Video yükleniyor...
+</div>
+
+</div>
+
+`)
+
+}
+
+</script>
+
+</div>
+
+</div>
+
+<script>
+
+function toggleMenu(){
+
+let menu=document.getElementById("menu")
+
+if(menu.style.transform=="translateX(0px)"){
+
+menu.style.transform="translateX(-100%)"
+
+}else{
+
+menu.style.transform="translateX(0)"
+
+}
+
+}
+
+const languages={
+
+tr:{
+title:"Popüler Videolar"
+},
+
+en:{
+title:"Popular Videos"
+},
+
+ar:{
+title:"الفيديوهات الشائعة"
+},
+
+ku:{
+title:"Vîdyoyên Popular"
+}
+
+}
+
+function changeLang(lang){
+
+document.getElementById("title").innerText=languages[lang].title
+
+}
+
+</script>
+
+</body>
+</html>
