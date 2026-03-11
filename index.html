@@ -1,289 +1,358 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SADRAZAM POWER | Elite</title>
-    <style>
-        :root {
-            --neon-red: #ff003c;
-            --dark-bg: #0a0a0a;
-            --sidebar-bg: #050505;
-            --gold: #ffcc00;
-        }
 
-        body {
-            background-color: var(--dark-bg);
-            color: #e0e0e0;
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-        /* --- ÜST BAR VE LOGO --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 40px;
-            background: black;
-            border-bottom: 1px solid var(--neon-red);
-            box-shadow: 0 0 20px rgba(255, 0, 60, 0.3);
-        }
+<title>SADRAZAM POWER</title>
 
-        .logo {
-            font-size: 2.2rem;
-            font-weight: 900;
-            letter-spacing: 3px;
-            color: #fff;
-            text-shadow: 0 0 10px var(--neon-red);
-        }
+<style>
 
-        .nav-controls button {
-            background: transparent;
-            border: 1px solid var(--neon-red);
-            color: white;
-            padding: 8px 15px;
-            margin-left: 10px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+body{
+margin:0;
+font-family:Arial;
+background:#050505;
+color:white;
+}
 
-        .nav-controls button:hover { background: var(--neon-red); }
+/* LOGO */
 
-        /* --- ANA GÖVDE --- */
-        .wrapper { display: flex; flex: 1; }
+.logo{
+font-size:40px;
+font-weight:bold;
+text-align:center;
+padding:20px;
 
-        /* Sol Kategori Menüsü */
-        aside {
-            width: 260px;
-            background: var(--sidebar-bg);
-            padding: 20px;
-            border-right: 1px solid #1a1a1a;
-        }
+color:white;
 
-        aside h3 { color: var(--neon-red); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 20px; }
-        
-        aside ul { list-style: none; padding: 0; }
-        aside ul li {
-            padding: 12px 10px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            border-bottom: 1px solid #111;
-            transition: 0.3s;
-        }
-        aside ul li:hover { color: var(--neon-red); background: #111; }
+text-shadow:
+0 0 5px #fff,
+0 0 10px #ff0000,
+0 0 20px #ff0000,
+0 0 40px #ff0000;
 
-        /* Video Alanı */
-        main {
-            flex: 1;
-            padding: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-        }
+animation:flicker 1.5s infinite alternate;
+}
 
-        .video-box {
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #222;
-            transition: 0.4s;
-        }
+@keyframes flicker{
 
-        .video-box:hover { border-color: var(--neon-red); transform: translateY(-5px); }
+0%{opacity:1}
+50%{opacity:0.8}
+100%{opacity:1}
 
-        .video-box iframe { width: 100%; aspect-ratio: 16/9; border: none; }
-        .video-title { padding: 15px; font-weight: 600; font-size: 0.9rem; color: #fff; }
+}
 
-        /* --- ADMIN PANEL MODAL --- */
-        #adminModal {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: #111; padding: 30px; border: 2px solid var(--neon-red); z-index: 10001;
-            width: 350px; text-align: center;
-        }
+/* LAYOUT */
 
-        #adminModal input {
-            width: 90%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid #444; color: white;
-        }
+.container{
+display:flex;
+}
 
-        /* --- ÇEREZ VE UYARI EKRANLARI --- */
-        .overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 20000;
-        }
+.sidebar{
 
-        .premium-btn { color: var(--gold); border: 1px solid var(--gold) !important; text-shadow: 0 0 5px var(--gold); }
+width:250px;
+background:#0b0b0b;
+padding:20px;
+height:100vh;
+overflow:auto;
 
-        /* Mobil */
-        @media (max-width: 768px) {
-            .wrapper { flex-direction: column; }
-            aside { width: 100%; order: 2; }
-            main { order: 1; }
-        }
-    </style>
+}
+
+.sidebar button{
+
+display:block;
+width:100%;
+margin-bottom:8px;
+background:#111;
+color:#aaa;
+border:1px solid #222;
+padding:10px;
+cursor:pointer;
+
+}
+
+.sidebar button:hover{
+
+border:1px solid red;
+color:white;
+
+}
+
+/* VIDEOS */
+
+.content{
+
+flex:1;
+padding:30px;
+
+}
+
+.grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+
+gap:25px;
+
+}
+
+.card{
+
+background:#111;
+border-radius:10px;
+overflow:hidden;
+border:1px solid #222;
+
+}
+
+.card iframe{
+
+width:100%;
+height:200px;
+border:none;
+
+}
+
+.card h3{
+
+padding:10px;
+font-size:16px;
+
+}
+
+/* COOKIE */
+
+.cookie{
+
+position:fixed;
+bottom:0;
+width:100%;
+background:#111;
+padding:15px;
+text-align:center;
+display:none;
+
+}
+
+.cookie button{
+
+margin:5px;
+padding:10px 15px;
+border:none;
+cursor:pointer;
+
+}
+
+.accept{
+
+background:red;
+color:white;
+
+}
+
+.reject{
+
+background:#333;
+color:white;
+
+}
+
+/* OVERLAY */
+
+.overlay{
+
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+flex-direction:column;
+
+z-index:999;
+
+}
+
+.overlay button{
+
+padding:15px 30px;
+margin:10px;
+border:none;
+cursor:pointer;
+font-size:16px;
+
+}
+
+.enter{
+
+background:red;
+color:white;
+
+}
+
+.premium{
+
+background:gold;
+
+}
+
+@media(max-width:900px){
+
+.container{
+
+flex-direction:column;
+
+}
+
+.sidebar{
+
+width:100%;
+height:auto;
+
+}
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-<audio id="bgMusic" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3">
 </audio>
 
-<div id="gatekeeper" class="overlay">
-    <h1 style="color:var(--gold); margin-bottom: 30px;">💎 SADRAZAM POWER'A HOŞGELDİN 💎</h1>
-    <p>Devam etmek için bir seçim yap:</p>
-    <button class="nav-controls button premium-btn" onclick="premiumAlert()">⭐ PREMİUM GİRİŞ (ALTIN ÜYELİK) ⭐</button>
-    <button class="nav-controls button" onclick="initSite()">ÜCRETSİZ GİRİŞ</button>
-    <div style="margin-top: 50px; font-size: 0.8rem; color: #666;">
-        Bu site çerez kullanır. Kabul ediyorsan tıkla, etmiyorsan defol git.
-        <br><br>
-        <button onclick="rejectSite()" style="background:none; border:none; color:red; cursor:pointer;">[ Kabul Etmiyorum ]</button>
-    </div>
+<!-- GİRİŞ -->
+
+<div class="overlay" id="entry">
+
+<div class="logo">SADRAZAM POWER</div>
+
+<p>Devam etmek için giriş yap</p>
+
+<button class="enter" onclick="enterSite()">Ücretsiz Giriş</button>
+
+<button class="premium" onclick="premium()">👑 Premium</button>
+
 </div>
 
-<header>
-    <div class="logo">SADRAZAM POWER</div>
-    <div class="nav-controls">
-        <button onclick="openAdmin()">ADMİN</button>
-        <button id="langBtn" onclick="toggleLang()">ENG</button>
-    </div>
-</header>
+<!-- LOGO -->
 
-<div class="wrapper">
-    <aside>
-        <h3>Kategoriler</h3>
-        <ul id="catItems">
-            <li onclick="location.reload()">Ana Sayfa</li>
-            <li onclick="catError()">Türk Pornosu</li>
-            <li onclick="catError()">4K Full HD</li>
-            <li onclick="catError()">Amatör Çekim</li>
-            <li onclick="catError()">Olgun / MILF</li>
-            <li onclick="catError()">Üvey Anne</li>
-            <li onclick="catError()">Genç / 18+</li>
-        </ul>
-    </aside>
+<div class="logo">SADRAZAM POWER</div>
 
-    <main id="videoContainer">
-        </main>
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h3>Kategoriler</h3>
+
+<button onclick="coming()">Türk</button>
+<button onclick="coming()">HD</button>
+<button onclick="coming()">4K</button>
+<button onclick="coming()">Amatör</button>
+<button onclick="coming()">MILF</button>
+<button onclick="coming()">Anal</button>
+<button onclick="coming()">Grup</button>
+<button onclick="coming()">Lezbiyen</button>
+
 </div>
 
-<div id="adminModal">
-    <h3 style="color:var(--neon-red)">Panel Girişi</h3>
-    <input type="password" id="adminPass" placeholder="Şifreyi Gir">
-    <button class="nav-controls button" onclick="checkAdmin()">GİRİŞ</button>
-    <div id="addVideoArea" style="display:none; margin-top:20px;">
-        <input type="text" id="vTitle" placeholder="Video Başlığı">
-        <input type="text" id="vLink" placeholder="xHamster Video Linki">
-        <button class="nav-controls button" onclick="saveVideo()">VİDEOYU EKLE</button>
-    </div>
-    <br><br>
-    <button onclick="closeAdmin()" style="color:gray; background:none; border:none;">Kapat</button>
+<!-- CONTENT -->
+
+<div class="content">
+
+<div class="grid">
+
+<div class="card">
+
+<iframe src=""></iframe>
+
+<h3>Video 1</h3>
+
+</div>
+
+<div class="card">
+
+<iframe src=""></iframe>
+
+<h3>Video 2</h3>
+
+</div>
+
+<div class="card">
+
+<iframe src=""></iframe>
+
+<h3>Video 3</h3>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- COOKIE -->
+
+<div class="cookie" id="cookie">
+
+Bu site çerez kullanır.
+
+<button class="accept" onclick="acceptCookie()">Kabul Ediyorum</button>
+
+<button class="reject" onclick="rejectCookie()">Reddet</button>
+
 </div>
 
 <script>
-    const music = document.getElementById('bgMusic');
-    const videoContainer = document.getElementById('videoGrid');
 
-    // Başlangıç videoları
-    const defaultVideos = [
-        {title: "Üveyanne Konuşmalı Türk Porno Amatör", link: "https://xhamster167.click/embed/xheY5d2"},
-        {title: "Türbanlı Türk üvey anne ev yapımı seks", link: "https://xhamster167.click/embed/xhkhyDr"},
-        {title: "Ayten Abla 2021", link: "https://xhamster167.click/embed/xhDghGd"}
-    ];
+const music=document.getElementById("music")
 
-    function initSite() {
-        document.getElementById('gatekeeper').style.display = 'none';
-        music.volume = 0.3; // Hafif Jazz
-        music.play();
-        loadVideos();
-    }
+function enterSite(){
 
-    function loadVideos() {
-        const stored = JSON.parse(localStorage.getItem('myVideos')) || defaultVideos;
-        const container = document.getElementById('videoContainer');
-        container.innerHTML = '';
-        stored.forEach(v => {
-            container.innerHTML += `
-                <div class="video-box">
-                    <iframe src="${v.link}" allowfullscreen></iframe>
-                    <div class="video-title">${v.title}</div>
-                </div>
-            `;
-        });
-    }
+document.getElementById("entry").style.display="none"
 
-    function premiumAlert() {
-        alert("💎 Çok yakında aktif olacak! Altın üyelik avantajlarını kaçırma.");
-        catError(12);
-    }
+music.play()
 
-    function rejectSite() {
-        document.body.innerHTML = `<div style="height:100vh; background:white; color:black; display:flex; align-items:center; justify-content:center; text-align:center;">
-            <h1>🌞 İYİ GÜNLER BOL GÜNEŞLER! <br> Bu site sana göre değil, başka kapıya! 🚫</h1>
-        </div>`;
-    }
+document.getElementById("cookie").style.display="block"
 
-    function catError(time = 15) {
-        let count = time;
-        const err = document.createElement('div');
-        err.className = 'overlay';
-        err.innerHTML = `
-            <h1 style="color:white">🚀 YAKINDA GELECEK... 🚀</h1>
-            <p>Site yeni açıldı, hazırlıklar sürüyor 🛠️</p>
-            <h2 id="cd" style="font-size:4rem; color:var(--neon-red)">${count}</h2>
-        `;
-        document.body.appendChild(err);
-        const timer = setInterval(() => {
-            count--;
-            document.getElementById('cd').innerText = count;
-            if(count <= 0) location.reload();
-        }, 1000);
-    }
+}
 
-    // Admin İşlemleri
-    function openAdmin() { document.getElementById('adminModal').style.display = 'block'; }
-    function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+function premium(){
 
-    function checkAdmin() {
-        const pass = document.getElementById('adminPass').value;
-        if(pass === "adminaptal") {
-            document.getElementById('addVideoArea').style.display = 'block';
-            alert("Giriş Başarılı Sahip!");
-        } else {
-            alert("Yanlış şifre! Sen kimsin?");
-        }
-    }
+alert("👑 Premium üyelik yakında aktif olacak")
 
-    function saveVideo() {
-        const title = document.getElementById('vTitle').value;
-        let link = document.getElementById('vLink').value;
-        // xhamster linkini embed linkine çevirme basit mantığı
-        if(link.includes('videos/')) {
-            link = link.replace('videos/', 'embed/').split('?')[0];
-        }
-        
-        const stored = JSON.parse(localStorage.getItem('myVideos')) || defaultVideos;
-        stored.push({title, link});
-        localStorage.setItem('myVideos', JSON.stringify(stored));
-        alert("Video eklendi!");
-        location.reload();
-    }
+}
 
-    function toggleLang() {
-        const btn = document.getElementById('langBtn');
-        if(btn.innerText === "ENG") {
-            btn.innerText = "TR";
-            document.querySelector('aside h3').innerText = "CATEGORIES";
-        } else {
-            btn.innerText = "ENG";
-            document.querySelector('aside h3').innerText = "KATEGORİLER";
-        }
-    }
+function acceptCookie(){
+
+document.getElementById("cookie").style.display="none"
+
+}
+
+function rejectCookie(){
+
+document.body.innerHTML="<h1 style='text-align:center;margin-top:200px'>İyi günler ☀️<br>Bu siteyi kullanabilmek için çerezleri kabul etmeniz gerekir.</h1>"
+
+}
+
+function coming(){
+
+alert("🚧 Bu kategori yakında aktif olacak")
+
+}
+
 </script>
 
 </body>
