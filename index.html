@@ -1,10 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>SADRAZAM POWER</title>
 
 <style>
@@ -16,208 +15,141 @@ background:#050505;
 color:white;
 }
 
-/* LOGO */
-
 .logo{
+text-align:center;
 font-size:40px;
 font-weight:bold;
-text-align:center;
 padding:20px;
-
-color:white;
-
 text-shadow:
-0 0 5px #fff,
-0 0 10px #ff0000,
-0 0 20px #ff0000,
-0 0 40px #ff0000;
-
-animation:flicker 1.5s infinite alternate;
+0 0 5px white,
+0 0 10px red,
+0 0 20px red,
+0 0 40px red;
+animation:flicker 2s infinite;
 }
 
 @keyframes flicker{
-
 0%{opacity:1}
-50%{opacity:0.8}
+50%{opacity:.8}
 100%{opacity:1}
-
 }
-
-/* LAYOUT */
 
 .container{
 display:flex;
 }
 
 .sidebar{
-
-width:250px;
-background:#0b0b0b;
+width:230px;
+background:#0a0a0a;
 padding:20px;
-height:100vh;
-overflow:auto;
-
 }
 
 .sidebar button{
-
-display:block;
 width:100%;
+padding:10px;
 margin-bottom:8px;
 background:#111;
-color:#aaa;
 border:1px solid #222;
-padding:10px;
+color:#aaa;
 cursor:pointer;
-
 }
 
 .sidebar button:hover{
-
 border:1px solid red;
 color:white;
-
 }
 
-/* VIDEOS */
-
 .content{
-
 flex:1;
-padding:30px;
-
+padding:25px;
 }
 
 .grid{
-
 display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-
-gap:25px;
-
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
 }
 
 .card{
-
 background:#111;
+border:1px solid #222;
 border-radius:10px;
 overflow:hidden;
-border:1px solid #222;
-
 }
 
-.card iframe{
-
+.card video{
 width:100%;
-height:200px;
-border:none;
-
 }
 
 .card h3{
-
 padding:10px;
-font-size:16px;
-
+font-size:15px;
 }
 
-/* COOKIE */
+.adminBtn{
+position:fixed;
+top:10px;
+right:10px;
+background:red;
+border:none;
+color:white;
+padding:8px 12px;
+cursor:pointer;
+}
+
+/* cookie */
 
 .cookie{
-
 position:fixed;
 bottom:0;
 width:100%;
 background:#111;
-padding:15px;
+padding:20px;
 text-align:center;
-display:none;
+border-top:2px solid red;
+}
 
+.cookie small{
+display:block;
+margin-top:5px;
+color:#bbb;
 }
 
 .cookie button{
-
-margin:5px;
+margin:8px;
 padding:10px 15px;
 border:none;
 cursor:pointer;
-
 }
 
 .accept{
-
 background:red;
 color:white;
-
 }
 
 .reject{
-
 background:#333;
 color:white;
-
 }
 
-/* OVERLAY */
+/* premium */
 
-.overlay{
-
+.popup{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
 background:black;
-
-display:flex;
+display:none;
 justify-content:center;
 align-items:center;
-
 flex-direction:column;
-
-z-index:999;
-
+text-align:center;
 }
 
-.overlay button{
-
-padding:15px 30px;
-margin:10px;
-border:none;
-cursor:pointer;
-font-size:16px;
-
-}
-
-.enter{
-
-background:red;
-color:white;
-
-}
-
-.premium{
-
-background:gold;
-
-}
-
-@media(max-width:900px){
-
-.container{
-
-flex-direction:column;
-
-}
-
-.sidebar{
-
-width:100%;
-height:auto;
-
-}
-
+.popup h1{
+color:gold;
 }
 
 </style>
@@ -227,74 +159,34 @@ height:auto;
 <body>
 
 <audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3">
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3">
 </audio>
 
-<!-- GİRİŞ -->
-
-<div class="overlay" id="entry">
-
 <div class="logo">SADRAZAM POWER</div>
 
-<p>Devam etmek için giriş yap</p>
-
-<button class="enter" onclick="enterSite()">Ücretsiz Giriş</button>
-
-<button class="premium" onclick="premium()">👑 Premium</button>
-
-</div>
-
-<!-- LOGO -->
-
-<div class="logo">SADRAZAM POWER</div>
+<button class="adminBtn" onclick="adminLogin()">Admin</button>
 
 <div class="container">
-
-<!-- SIDEBAR -->
 
 <div class="sidebar">
 
 <h3>Kategoriler</h3>
 
-<button onclick="coming()">Türk</button>
-<button onclick="coming()">HD</button>
-<button onclick="coming()">4K</button>
-<button onclick="coming()">Amatör</button>
-<button onclick="coming()">MILF</button>
-<button onclick="coming()">Anal</button>
-<button onclick="coming()">Grup</button>
-<button onclick="coming()">Lezbiyen</button>
+<button onclick="coming()">Türk</button> <button onclick="coming()">HD</button> <button onclick="coming()">4K</button> <button onclick="coming()">Amatör</button> <button onclick="coming()">MILF</button>
+
+<button onclick="premium()">👑 Premium</button>
 
 </div>
-
-<!-- CONTENT -->
 
 <div class="content">
 
-<div class="grid">
+<div class="grid" id="videoGrid">
 
 <div class="card">
-
-<iframe src=""></iframe>
-
-<h3>Video 1</h3>
-
-</div>
-
-<div class="card">
-
-<iframe src=""></iframe>
-
-<h3>Video 2</h3>
-
-</div>
-
-<div class="card">
-
-<iframe src=""></iframe>
-
-<h3>Video 3</h3>
-
+<video controls>
+<source src="" type="video/mp4">
+</video>
+<h3>Demo Video</h3>
 </div>
 
 </div>
@@ -307,7 +199,15 @@ height:auto;
 
 <div class="cookie" id="cookie">
 
-Bu site çerez kullanır.
+<b>🍪 Çerez Kullanımı</b>
+
+<small>
+Bu site daha iyi video performansı ve kullanıcı deneyimi için çerezler kullanır.
+</small>
+
+<small>
+Devam ederek çerez kullanımını kabul etmiş olursunuz.
+</small>
 
 <button class="accept" onclick="acceptCookie()">Kabul Ediyorum</button>
 
@@ -315,45 +215,119 @@ Bu site çerez kullanır.
 
 </div>
 
+<!-- PREMIUM -->
+
+<div class="popup" id="premiumBox">
+
+<h1>👑 PREMIUM ÜYELİK</h1>
+
+<p>
+Ödeme yöntemleri hazırlanıyor.
+Premium üyelik aktif olduğunda:
+
+<br><br>
+HD içerikler<br>
+Reklamsız izleme<br>
+Özel videolar
+
+</p>
+
+<h2 id="count">15</h2>
+
+</div>
+
 <script>
 
+const grid=document.getElementById("videoGrid")
 const music=document.getElementById("music")
 
-function enterSite(){
+function loadVideos(){
 
-document.getElementById("entry").style.display="none"
+const videos=JSON.parse(localStorage.getItem("videos")||"[]")
 
-music.play()
+videos.forEach(v=>{
 
-document.getElementById("cookie").style.display="block"
+const card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+<video controls>
+<source src="${v.url}" type="video/mp4">
+</video>
+<h3>${v.title}</h3>
+`
+
+grid.appendChild(card)
+
+})
 
 }
 
-function premium(){
+loadVideos()
 
-alert("👑 Premium üyelik yakında aktif olacak")
+function adminLogin(){
+
+const pass=prompt("Admin şifre")
+
+if(pass==="1234"){
+
+const title=prompt("Video başlık")
+
+const url=prompt("Video mp4 link")
+
+const videos=JSON.parse(localStorage.getItem("videos")||"[]")
+
+videos.push({title,url})
+
+localStorage.setItem("videos",JSON.stringify(videos))
+
+location.reload()
+
+}
 
 }
 
 function acceptCookie(){
-
 document.getElementById("cookie").style.display="none"
-
+music.play()
 }
 
 function rejectCookie(){
+document.body.innerHTML="<h1 style='text-align:center;margin-top:200px'>İyi günler ☀️</h1>"
+}
 
-document.body.innerHTML="<h1 style='text-align:center;margin-top:200px'>İyi günler ☀️<br>Bu siteyi kullanabilmek için çerezleri kabul etmeniz gerekir.</h1>"
+function premium(){
+
+const box=document.getElementById("premiumBox")
+box.style.display="flex"
+
+let s=15
+
+const count=document.getElementById("count")
+
+const timer=setInterval(()=>{
+
+s--
+count.innerText=s
+
+if(s==0){
+
+clearInterval(timer)
+box.style.display="none"
+
+}
+
+},1000)
 
 }
 
 function coming(){
-
-alert("🚧 Bu kategori yakında aktif olacak")
-
+alert("🚧 Bu kategori yakında aktif olacak.")
 }
 
 </script>
 
 </body>
 </html>
+
