@@ -3,103 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SADRAZAM POWER | Premium Experience</title>
+    <title>SADRAZAM POWER | Premium</title>
     <style>
         :root {
-            --neon-gold: #ffcc00;
-            --neon-blue: #00d2ff;
-            --neon-pink: #ff00ff;
-            --dark-bg: #050505;
-            --card-bg: #121212;
+            --neon-red: #ff0000;
+            --dark-red: #330000;
+            --bg-black: #050505;
+            --card-gray: #111111;
         }
 
+        * { box-sizing: border-box; }
+
         body {
-            background-color: var(--dark-bg);
-            color: white;
-            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-black);
+            color: #fff;
+            font-family: 'Arial', sans-serif;
             margin: 0;
+            padding: 0;
             overflow-x: hidden;
         }
 
-        /* --- Giriş Ekranı (Overlay) --- */
-        #entry-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* --- LOGO ANİMASYONU --- */
+        .logo-container {
             text-align: center;
-        }
-
-        .entry-card {
-            background: #1a1a1a;
-            padding: 40px;
-            border-radius: 20px;
-            border: 2px solid var(--neon-gold);
-            box-shadow: 0 0 20px var(--neon-gold);
-        }
-
-        .btn-gold {
-            background: linear-gradient(45deg, #d4af37, #f9d71c);
-            border: none; padding: 15px 30px;
-            font-weight: bold; cursor: pointer; border-radius: 30px;
-            margin: 10px; color: black; font-size: 1.1rem;
-            box-shadow: 0 0 15px var(--neon-gold);
-        }
-
-        /* --- Header & Logo --- */
-        header {
             padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
-            background: rgba(0,0,0,0.8);
-            position: sticky; top: 0; z-index: 100;
         }
 
-        .logo {
-            font-size: 2rem;
+        .neon-logo {
+            font-size: clamp(2rem, 8vw, 4rem);
             font-weight: 900;
+            color: #fff;
             text-transform: uppercase;
-            background: linear-gradient(to right, #fff, var(--neon-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255,204,0,0.5);
+            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--neon-red), 0 0 40px var(--neon-red), 0 0 80px var(--neon-red);
+            animation: flicker 1.5s infinite alternate;
         }
 
-        /* --- Ana Yapı --- */
-        .wrapper { display: flex; }
+        @keyframes flicker {
+            0%, 18%, 22%, 25%, 53%, 57%, 100% {
+                text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px var(--neon-red), 0 0 80px var(--neon-red);
+            }
+            20%, 24%, 55% { text-shadow: none; }
+        }
 
-        /* Sol Sidebar (Kategoriler) */
-        nav.sidebar {
-            width: 250px;
-            height: calc(100vh - 80px);
+        /* --- MOBİL UYUMLU LAYOUT --- */
+        .main-wrapper {
+            display: flex;
+            flex-direction: column; /* Mobilde alt alta */
+        }
+
+        @media (min-width: 992px) {
+            .main-wrapper { flex-direction: row; }
+            .sidebar { width: 280px !important; }
+        }
+
+        /* KATEGORİLER (SİDEBAR) */
+        .sidebar {
+            width: 100%;
+            background: #0a0a0a;
+            border-right: 2px solid var(--dark-red);
+            padding: 15px;
+            max-height: 400px;
             overflow-y: auto;
-            background: #0d0d0d;
-            padding: 20px;
-            border-right: 1px solid #222;
         }
 
-        nav.sidebar h3 { color: var(--neon-blue); font-size: 1rem; margin-bottom: 15px; }
+        @media (min-width: 992px) {
+            .sidebar { height: 100vh; position: sticky; top: 0; max-height: none; }
+        }
 
-        .cat-item {
-            padding: 10px;
-            color: #ccc;
+        .cat-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 5px;
+            background: transparent;
+            border: 1px solid #222;
+            color: #aaa;
+            text-align: left;
             cursor: pointer;
-            border-bottom: 1px solid #1a1a1a;
             transition: 0.3s;
         }
 
-        .cat-item:hover { color: var(--neon-pink); padding-left: 20px; }
+        .cat-btn:hover {
+            border-color: var(--neon-red);
+            color: #fff;
+            box-shadow: inset 0 0 10px var(--dark-red);
+        }
 
-        /* Sağ İçerik */
-        main.content {
+        /* VİDEO ALANI */
+        .content-area {
             flex: 1;
-            padding: 30px;
+            padding: 20px;
         }
 
         .video-grid {
@@ -108,155 +101,163 @@
             gap: 25px;
         }
 
-        .video-card {
-            background: var(--card-bg);
+        .video-item {
+            background: var(--card-gray);
+            border: 1px solid #222;
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid #333;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: 0.3s;
         }
 
-        .video-card:hover {
-            border-color: var(--neon-blue);
-            box-shadow: 0 0 15px var(--neon-blue);
+        .video-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-red);
+            box-shadow: 0 0 20px var(--dark-red);
         }
 
-        .video-card iframe, .video-card video { width: 100%; height: 200px; border: none; }
-        .video-info { padding: 15px; }
+        .video-frame {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Oranı */
+            height: 0;
+            background: #000;
+        }
 
-        /* --- Uyarı Mesajları --- */
-        #alert-box {
+        .video-frame iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: none;
+        }
+
+        /* UYARI EKRANI */
+        #alert-screen {
             display: none;
             position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: #222;
-            padding: 30px;
-            border: 2px solid red;
-            border-radius: 15px;
+            top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.95);
             z-index: 10000;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            flex-direction: column;
         }
 
-        .timer-sec { font-size: 2rem; color: var(--neon-gold); font-weight: bold; }
+        /* GİRİŞ EKRANI */
+        #overlay {
+            position: fixed;
+            top:0; left:0; width:100%; height:100%;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .entry-box {
+            padding: 40px;
+            border: 2px solid var(--neon-red);
+            text-align: center;
+            background: #0a0a0a;
+            box-shadow: 0 0 30px var(--dark-red);
+        }
     </style>
 </head>
 <body>
 
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+<audio id="jazzMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+</audio>
 
-    <div id="entry-overlay">
-        <div class="entry-card">
-            <h1 class="logo">SADRAZAM POWER</h1>
-            <p>Hoş geldiniz, devam etmek için plan seçin:</p>
-            <button class="btn-gold" onclick="startSite('free')">Ücretsiz Giriş 🔓</button>
-            <button class="btn-gold" onclick="showAlert('premium')">👑 PREMIUM ÜYELİK ✨</button>
-        </div>
+<div id="overlay">
+    <div class="entry-box">
+        <h1 class="neon-logo" style="font-size: 2rem;">SADRAZAM POWER</h1>
+        <p>İçeriği görmek için onaylayın (+18)</p>
+        <button onclick="enterSite()" style="background:var(--neon-red); color:white; border:none; padding:15px 30px; cursor:pointer; font-weight:bold;">GİRİŞ YAP 🔓</button>
+        <button onclick="showPremium()" style="background:gold; color:black; border:none; padding:15px 30px; cursor:pointer; font-weight:bold; margin-top:10px; display:block; width:100%;">👑 PREMIUM ÜYE OL ✨</button>
     </div>
+</div>
 
-    <header>
-        <div class="logo">SADRAZAM POWER</div>
-        <div class="lang-switch">
-            <select onchange="changeLang(this.value)" style="background:#222; color:#fff; padding:5px; border-radius:5px;">
-                <option value="tr">Türkçe (TR)</option>
-                <option value="en">English (EN)</option>
-            </select>
-        </div>
-    </header>
+<div id="alert-screen">
+    <h1 style="color:var(--neon-red)">DİKKAT!</h1>
+    <p id="alert-msg">Site yeni açıldı, içerikler yükleniyor...</p>
+    <div id="timer" style="font-size: 3rem; color:white;">15</div>
+</div>
 
-    <div class="wrapper">
-        <nav class="sidebar">
-            <h3 id="cat-title">Kategoriler</h3>
-            <div id="cat-list">
-                </div>
-        </nav>
+<header class="logo-container">
+    <div class="neon-logo">SADRAZAM POWER</div>
+</header>
 
-        <main class="content">
-            <h2 id="section-title" style="color:var(--neon-blue)">Ana Sayfa - En Yeni Videolar</h2>
-            <div class="video-grid" id="video-grid">
-                <div class="video-card">
-                    <iframe src="https://xhamster167.click/embed/xheY5d2" allowfullscreen onplay="stopMusic()"></iframe>
-                    <div class="video-info">
-                        <h4>Üveyanne Konuşmalı Türk Porno Amatör</h4>
-                    </div>
+<div class="main-wrapper">
+    <aside class="sidebar" id="sidebar">
+        <h3 style="color:var(--neon-red); border-bottom:1px solid #333; padding-bottom:10px;">KATEGORİLER</h3>
+        </aside>
+
+    <main class="content-area">
+        <div class="video-grid">
+            <div class="video-item">
+                <div class="video-frame">
+                    <iframe src="https://xhamster167.click/embed/xheY5d2"></iframe>
                 </div>
-                <div class="video-card">
-                    <iframe src="https://xhamster167.click/embed/xhkhyDr" allowfullscreen onplay="stopMusic()"></iframe>
-                    <div class="video-info">
-                        <h4>Türbanlı Türk üvey anne ev yapımı seks</h4>
-                    </div>
-                </div>
-                <div class="video-card">
-                    <iframe src="https://xhamster167.click/embed/xhDghGd" allowfullscreen onplay="stopMusic()"></iframe>
-                    <div class="video-info">
-                        <h4>Ayten Abla 2021</h4>
-                    </div>
-                </div>
+                <div style="padding:15px;"><h4>Üveyanne Konuşmalı Türk Porno</h4></div>
             </div>
-        </main>
-    </div>
+            <div class="video-item">
+                <div class="video-frame">
+                    <iframe src="https://xhamster167.click/embed/xhkhyDr"></iframe>
+                </div>
+                <div style="padding:15px;"><h4>Türbanlı Türk Üvey Anne</h4></div>
+            </div>
+            <div class="video-item">
+                <div class="video-frame">
+                    <iframe src="https://xhamster167.click/embed/xhDghGd"></iframe>
+                </div>
+                <div style="padding:15px;"><h4>Ayten Abla 2021</h4></div>
+            </div>
+        </div>
+    </main>
+</div>
 
-    <div id="alert-box">
-        <h2 id="alert-text">Çok Yakında Aktif Olacak!</h2>
-        <p id="alert-sub">Yönlendiriliyorsunuz...</p>
-        <div class="timer-sec" id="countdown">15</div>
-    </div>
+<script>
+    const categories = ["Türk", "4K Porno", "HD Videolar", "VR Pornosu", "Amatör", "18 Yaşında", "Anal", "Olgun", "Anne", "MILF", "Lezbiyen", "BDSM", "Sakso", "Grup Seks", "Masaj", "Eş Paylaşma", "Gavat"];
+    const music = document.getElementById('jazzMusic');
 
-    <script>
-        const categories = ["Türk", "4K Porno", "HD Videolar", "VR Pornosu", "Amatör", "18 Yaşında", "Anal", "Olgun", "Anne", "MILF", "Lezbiyen", "BDSM", "Sakso", "Grup Seks", "Masaj"];
-        const music = document.getElementById('bgMusic');
+    // Kategorileri Doldur
+    const sidebar = document.getElementById('sidebar');
+    categories.forEach(c => {
+        let btn = document.createElement('button');
+        btn.className = 'cat-btn';
+        btn.innerText = c;
+        btn.onclick = () => runAlert("SİTE YENİ AÇILDI! Yakında tüm içerikler eklenecektir.", 15);
+        sidebar.appendChild(btn);
+    });
 
-        // Kategorileri Listele
-        const catList = document.getElementById('cat-list');
-        categories.forEach(cat => {
-            let div = document.createElement('div');
-            div.className = 'cat-item';
-            div.innerText = cat;
-            div.onclick = () => showAlert('category');
-            catList.appendChild(div);
-        });
+    function enterSite() {
+        document.getElementById('overlay').style.display = 'none';
+        music.play();
+    }
 
-        function startSite(type) {
-            document.getElementById('entry-overlay').style.display = 'none';
-            music.play();
-        }
+    function showPremium() {
+        runAlert("👑 PREMIUM ÜYELİK ÇOK YAKINDA AKTİF OLACAK!", 12);
+    }
 
-        function stopMusic() {
-            music.pause();
-        }
+    function runAlert(msg, sec) {
+        const screen = document.getElementById('alert-screen');
+        const timerDiv = document.getElementById('timer');
+        document.getElementById('alert-msg').innerText = msg;
+        
+        screen.style.display = 'flex';
+        let count = sec;
+        timerDiv.innerText = count;
 
-        function showAlert(type) {
-            const box = document.getElementById('alert-box');
-            const counter = document.getElementById('countdown');
-            let timeLeft = type === 'premium' ? 12 : 15;
-            
-            box.style.display = 'block';
-            document.getElementById('alert-text').innerText = type === 'premium' ? "👑 PREMIUM ÇOK YAKINDA!" : "SİTE YENİ AÇILDI!";
-            document.getElementById('alert-sub').innerText = "Yakında yüklenecek, ana sayfaya dönülüyor...";
-
-            const interval = setInterval(() => {
-                timeLeft--;
-                counter.innerText = timeLeft;
-                if(timeLeft <= 0) {
-                    clearInterval(interval);
-                    box.style.display = 'none';
-                    location.reload(); // Sayfayı sıfırla/ana sayfaya at
-                }
-            }, 1000);
-        }
-
-        function changeLang(lang) {
-            if(lang === 'en') {
-                document.getElementById('cat-title').innerText = "Categories";
-                document.getElementById('section-title').innerText = "Home - Latest Videos";
-                // Diğer tüm metinleri buraya ekleyebilirsin
-                alert("Site language changed to English!");
-            } else {
-                location.reload();
+        const interval = setInterval(() => {
+            count--;
+            timerDiv.innerText = count;
+            if(count <= 0) {
+                clearInterval(interval);
+                screen.style.display = 'none';
             }
-        }
-    </script>
+        }, 1000);
+    }
+</script>
+
 </body>
 </html>
