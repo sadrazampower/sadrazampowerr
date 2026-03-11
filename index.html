@@ -1,333 +1,134 @@
 <!DOCTYPE html>
-
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>SADRAZAM POWER</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SADRAZAM POWER | Video Sitesi</title>
 <style>
-
-body{
-margin:0;
-font-family:Arial;
-background:#050505;
-color:white;
+:root {
+    --neon-red: #ff0000;
+    --dark-bg: #050505;
+    --card-bg: #111111;
+    --text-white: #fff;
 }
-
-.logo{
-text-align:center;
-font-size:40px;
-font-weight:bold;
-padding:20px;
-text-shadow:
-0 0 5px white,
-0 0 10px red,
-0 0 20px red,
-0 0 40px red;
-animation:flicker 2s infinite;
+body {
+    margin:0; padding:0;
+    background-color: var(--dark-bg);
+    color: var(--text-white);
+    font-family: Arial, sans-serif;
 }
-
-@keyframes flicker{
-0%{opacity:1}
-50%{opacity:.8}
-100%{opacity:1}
+header {
+    text-align:center;
+    padding:20px;
+    font-size:2rem;
+    font-weight:bold;
+    color: var(--neon-red);
+    text-shadow: 0 0 5px #fff,0 0 10px var(--neon-red);
 }
-
-.container{
-display:flex;
+.wrapper {
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    padding:20px;
 }
-
-.sidebar{
-width:230px;
-background:#0a0a0a;
-padding:20px;
+.video-card {
+    background: var(--card-bg);
+    margin:15px;
+    border-radius:10px;
+    overflow:hidden;
+    width:300px;
+    box-shadow: 0 0 15px var(--neon-red);
+    transition: 0.3s;
 }
-
-.sidebar button{
-width:100%;
-padding:10px;
-margin-bottom:8px;
-background:#111;
-border:1px solid #222;
-color:#aaa;
-cursor:pointer;
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px var(--neon-red);
 }
-
-.sidebar button:hover{
-border:1px solid red;
-color:white;
+.video-frame {
+    position:relative;
+    padding-bottom:56.25%;
+    height:0;
 }
-
-.content{
-flex:1;
-padding:25px;
+.video-frame iframe {
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    border:none;
 }
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:20px;
+.video-title {
+    padding:10px;
+    font-size:0.9rem;
+    text-align:center;
 }
-
-.card{
-background:#111;
-border:1px solid #222;
-border-radius:10px;
-overflow:hidden;
+.category-badge {
+    display:inline-block;
+    margin:5px;
+    padding:3px 8px;
+    background:#222;
+    border-radius:5px;
+    font-size:0.7rem;
+    color:#ccc;
 }
-
-.card video{
-width:100%;
-}
-
-.card h3{
-padding:10px;
-font-size:15px;
-}
-
-.adminBtn{
-position:fixed;
-top:10px;
-right:10px;
-background:red;
-border:none;
-color:white;
-padding:8px 12px;
-cursor:pointer;
-}
-
-/* cookie */
-
-.cookie{
-position:fixed;
-bottom:0;
-width:100%;
-background:#111;
-padding:20px;
-text-align:center;
-border-top:2px solid red;
-}
-
-.cookie small{
-display:block;
-margin-top:5px;
-color:#bbb;
-}
-
-.cookie button{
-margin:8px;
-padding:10px 15px;
-border:none;
-cursor:pointer;
-}
-
-.accept{
-background:red;
-color:white;
-}
-
-.reject{
-background:#333;
-color:white;
-}
-
-/* premium */
-
-.popup{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:black;
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-text-align:center;
-}
-
-.popup h1{
-color:gold;
-}
-
 </style>
-
 </head>
-
 <body>
 
-<audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3">
-</audio>
+<header>SADRAZAM POWER</header>
 
-<div class="logo">SADRAZAM POWER</div>
-
-<button class="adminBtn" onclick="adminLogin()">Admin</button>
-
-<div class="container">
-
-<div class="sidebar">
-
-<h3>Kategoriler</h3>
-
-<button onclick="coming()">Türk</button> <button onclick="coming()">HD</button> <button onclick="coming()">4K</button> <button onclick="coming()">Amatör</button> <button onclick="coming()">MILF</button>
-
-<button onclick="premium()">👑 Premium</button>
-
-</div>
-
-<div class="content">
-
-<div class="grid" id="videoGrid">
-
-<div class="card">
-<video controls>
-<source src="" type="video/mp4">
-</video>
-<h3>Demo Video</h3>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- COOKIE -->
-
-<div class="cookie" id="cookie">
-
-<b>🍪 Çerez Kullanımı</b>
-
-<small>
-Bu site daha iyi video performansı ve kullanıcı deneyimi için çerezler kullanır.
-</small>
-
-<small>
-Devam ederek çerez kullanımını kabul etmiş olursunuz.
-</small>
-
-<button class="accept" onclick="acceptCookie()">Kabul Ediyorum</button>
-
-<button class="reject" onclick="rejectCookie()">Reddet</button>
-
-</div>
-
-<!-- PREMIUM -->
-
-<div class="popup" id="premiumBox">
-
-<h1>👑 PREMIUM ÜYELİK</h1>
-
-<p>
-Ödeme yöntemleri hazırlanıyor.
-Premium üyelik aktif olduğunda:
-
-<br><br>
-HD içerikler<br>
-Reklamsız izleme<br>
-Özel videolar
-
-</p>
-
-<h2 id="count">15</h2>
-
+<div class="wrapper" id="video-grid">
+    <!-- Videolar buraya JS ile eklenecek -->
 </div>
 
 <script>
+// Videolar ve başlıklar
+const videos = [
+  {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/c2f636f067f89cc14862" allowfullscreen></iframe>', title: 'Jav porno: Üvey anneye dayama pornosu Türkçe altyazılı'},
+  {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2" allowfullscreen></iframe>', title: 'Sarışın teyzemin pembe amcığı bana çok iyi geldi! Teyze Pornosu'},
+  {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1" allowfullscreen></iframe>', title: 'Tamirci çırağı kadının götü görünce kuduruyor - Türk porno izle'},
+  {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/a8ce66358eb576b8912c" allowfullscreen></iframe>', title: 'Yengemle delirmeceler - Yengesini siken sapık türk sikiş'},
+  {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/929b125f8597834fa83a" allowfullscreen></iframe>', title: 'İlk Seks Deneyimi! Üvey annem bana sikişmeyi öğretiyor'},
+  {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec" allowfullscreen></iframe>', title: 'Türk köylü kızı porno filmi - Annem tanıştırdı'},
+  {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/7f89ddbebc2ac9128303" allowfullscreen></iframe>', title: 'Üvey kardeş sürtüşme porno filmi'},
+  {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/20d2abefe558796b9958" allowfullscreen></iframe>', title: 'Üvey ablasına bakarak 31 çekerken yakalanıyor - Balık etli kız pornosu'}
+];
 
-const grid=document.getElementById("videoGrid")
-const music=document.getElementById("music")
+// Kategoriler (rastgele atanacak)
+const categories = ["Türk", "4K Porno", "HD Videolar", "Amatör", "Anne", "MILF", "Lezbiyen", "BDSM", "Grup Seks"];
 
-function loadVideos(){
+// Video gridini oluştur
+const grid = document.getElementById('video-grid');
 
-const videos=JSON.parse(localStorage.getItem("videos")||"[]")
-
-videos.forEach(v=>{
-
-const card=document.createElement("div")
-
-card.className="card"
-
-card.innerHTML=`
-<video controls>
-<source src="${v.url}" type="video/mp4">
-</video>
-<h3>${v.title}</h3>
-`
-
-grid.appendChild(card)
-
-})
-
-}
-
-loadVideos()
-
-function adminLogin(){
-
-const pass=prompt("Admin şifre")
-
-if(pass==="1234"){
-
-const title=prompt("Video başlık")
-
-const url=prompt("Video mp4 link")
-
-const videos=JSON.parse(localStorage.getItem("videos")||"[]")
-
-videos.push({title,url})
-
-localStorage.setItem("videos",JSON.stringify(videos))
-
-location.reload()
-
-}
-
-}
-
-function acceptCookie(){
-document.getElementById("cookie").style.display="none"
-music.play()
-}
-
-function rejectCookie(){
-document.body.innerHTML="<h1 style='text-align:center;margin-top:200px'>İyi günler ☀️</h1>"
-}
-
-function premium(){
-
-const box=document.getElementById("premiumBox")
-box.style.display="flex"
-
-let s=15
-
-const count=document.getElementById("count")
-
-const timer=setInterval(()=>{
-
-s--
-count.innerText=s
-
-if(s==0){
-
-clearInterval(timer)
-box.style.display="none"
-
-}
-
-},1000)
-
-}
-
-function coming(){
-alert("🚧 Bu kategori yakında aktif olacak.")
-}
-
+videos.forEach(video => {
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    
+    const frame = document.createElement('div');
+    frame.className = 'video-frame';
+    frame.innerHTML = video.embed;
+    
+    const title = document.createElement('div');
+    title.className = 'video-title';
+    title.innerText = video.title;
+    
+    // Rastgele 1-2 kategori ekle
+    let randomCats = [];
+    const count = Math.floor(Math.random()*2)+1;
+    for(let i=0;i<count;i++){
+        const cat = categories[Math.floor(Math.random()*categories.length)];
+        if(!randomCats.includes(cat)) randomCats.push(cat);
+    }
+    randomCats.forEach(c=>{
+        const badge = document.createElement('span');
+        badge.className = 'category-badge';
+        badge.innerText = c;
+        title.appendChild(badge);
+    });
+    
+    card.appendChild(frame);
+    card.appendChild(title);
+    grid.appendChild(card);
+});
 </script>
 
 </body>
 </html>
-
