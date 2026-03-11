@@ -3,259 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SADRAZAM POWER | Premium</title>
+    <title>SADRAZAM POWER | Elite</title>
     <style>
         :root {
-            --neon-red: #ff0000;
-            --dark-red: #330000;
-            --bg-black: #050505;
-            --card-gray: #111111;
+            --neon-red: #ff003c;
+            --dark-bg: #0a0a0a;
+            --sidebar-bg: #050505;
+            --gold: #ffcc00;
         }
-
-        * { box-sizing: border-box; }
 
         body {
-            background-color: var(--bg-black);
-            color: #fff;
-            font-family: 'Arial', sans-serif;
+            background-color: var(--dark-bg);
+            color: #e0e0e0;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
-            padding: 0;
-            overflow-x: hidden;
-        }
-
-        /* --- LOGO ANİMASYONU --- */
-        .logo-container {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .neon-logo {
-            font-size: clamp(2rem, 8vw, 4rem);
-            font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px var(--neon-red), 0 0 40px var(--neon-red), 0 0 80px var(--neon-red);
-            animation: flicker 1.5s infinite alternate;
-        }
-
-        @keyframes flicker {
-            0%, 18%, 22%, 25%, 53%, 57%, 100% {
-                text-shadow: 0 0 4px #fff, 0 0 11px #fff, 0 0 19px #fff, 0 0 40px var(--neon-red), 0 0 80px var(--neon-red);
-            }
-            20%, 24%, 55% { text-shadow: none; }
-        }
-
-        /* --- MOBİL UYUMLU LAYOUT --- */
-        .main-wrapper {
             display: flex;
-            flex-direction: column; /* Mobilde alt alta */
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        @media (min-width: 992px) {
-            .main-wrapper { flex-direction: row; }
-            .sidebar { width: 280px !important; }
+        /* --- ÜST BAR VE LOGO --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            background: black;
+            border-bottom: 1px solid var(--neon-red);
+            box-shadow: 0 0 20px rgba(255, 0, 60, 0.3);
         }
 
-        /* KATEGORİLER (SİDEBAR) */
-        .sidebar {
-            width: 100%;
-            background: #0a0a0a;
-            border-right: 2px solid var(--dark-red);
-            padding: 15px;
-            max-height: 400px;
-            overflow-y: auto;
+        .logo {
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-red);
         }
 
-        @media (min-width: 992px) {
-            .sidebar { height: 100vh; position: sticky; top: 0; max-height: none; }
-        }
-
-        .cat-btn {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 5px;
+        .nav-controls button {
             background: transparent;
-            border: 1px solid #222;
-            color: #aaa;
-            text-align: left;
+            border: 1px solid var(--neon-red);
+            color: white;
+            padding: 8px 15px;
+            margin-left: 10px;
             cursor: pointer;
             transition: 0.3s;
         }
 
-        .cat-btn:hover {
-            border-color: var(--neon-red);
-            color: #fff;
-            box-shadow: inset 0 0 10px var(--dark-red);
-        }
+        .nav-controls button:hover { background: var(--neon-red); }
 
-        /* VİDEO ALANI */
-        .content-area {
-            flex: 1;
+        /* --- ANA GÖVDE --- */
+        .wrapper { display: flex; flex: 1; }
+
+        /* Sol Kategori Menüsü */
+        aside {
+            width: 260px;
+            background: var(--sidebar-bg);
             padding: 20px;
+            border-right: 1px solid #1a1a1a;
         }
 
-        .video-grid {
+        aside h3 { color: var(--neon-red); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 20px; }
+        
+        aside ul { list-style: none; padding: 0; }
+        aside ul li {
+            padding: 12px 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-bottom: 1px solid #111;
+            transition: 0.3s;
+        }
+        aside ul li:hover { color: var(--neon-red); background: #111; }
+
+        /* Video Alanı */
+        main {
+            flex: 1;
+            padding: 30px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 25px;
         }
 
-        .video-item {
-            background: var(--card-gray);
-            border: 1px solid #222;
+        .video-box {
+            background: #000;
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: 0.3s;
+            border: 1px solid #222;
+            transition: 0.4s;
         }
 
-        .video-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--neon-red);
-            box-shadow: 0 0 20px var(--dark-red);
-        }
+        .video-box:hover { border-color: var(--neon-red); transform: translateY(-5px); }
 
-        .video-frame {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 Oranı */
-            height: 0;
-            background: #000;
-        }
+        .video-box iframe { width: 100%; aspect-ratio: 16/9; border: none; }
+        .video-title { padding: 15px; font-weight: 600; font-size: 0.9rem; color: #fff; }
 
-        .video-frame iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border: none;
-        }
-
-        /* UYARI EKRANI */
-        #alert-screen {
+        /* --- ADMIN PANEL MODAL --- */
+        #adminModal {
             display: none;
             position: fixed;
-            top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            flex-direction: column;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: #111; padding: 30px; border: 2px solid var(--neon-red); z-index: 10001;
+            width: 350px; text-align: center;
         }
 
-        /* GİRİŞ EKRANI */
-        #overlay {
-            position: fixed;
-            top:0; left:0; width:100%; height:100%;
-            background: #000;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        #adminModal input {
+            width: 90%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid #444; color: white;
         }
 
-        .entry-box {
-            padding: 40px;
-            border: 2px solid var(--neon-red);
-            text-align: center;
-            background: #0a0a0a;
-            box-shadow: 0 0 30px var(--dark-red);
+        /* --- ÇEREZ VE UYARI EKRANLARI --- */
+        .overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 20000;
+        }
+
+        .premium-btn { color: var(--gold); border: 1px solid var(--gold) !important; text-shadow: 0 0 5px var(--gold); }
+
+        /* Mobil */
+        @media (max-width: 768px) {
+            .wrapper { flex-direction: column; }
+            aside { width: 100%; order: 2; }
+            main { order: 1; }
         }
     </style>
 </head>
 <body>
 
-<audio id="jazzMusic" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+<audio id="bgMusic" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
 </audio>
 
-<div id="overlay">
-    <div class="entry-box">
-        <h1 class="neon-logo" style="font-size: 2rem;">SADRAZAM POWER</h1>
-        <p>İçeriği görmek için onaylayın (+18)</p>
-        <button onclick="enterSite()" style="background:var(--neon-red); color:white; border:none; padding:15px 30px; cursor:pointer; font-weight:bold;">GİRİŞ YAP 🔓</button>
-        <button onclick="showPremium()" style="background:gold; color:black; border:none; padding:15px 30px; cursor:pointer; font-weight:bold; margin-top:10px; display:block; width:100%;">👑 PREMIUM ÜYE OL ✨</button>
+<div id="gatekeeper" class="overlay">
+    <h1 style="color:var(--gold); margin-bottom: 30px;">💎 SADRAZAM POWER'A HOŞGELDİN 💎</h1>
+    <p>Devam etmek için bir seçim yap:</p>
+    <button class="nav-controls button premium-btn" onclick="premiumAlert()">⭐ PREMİUM GİRİŞ (ALTIN ÜYELİK) ⭐</button>
+    <button class="nav-controls button" onclick="initSite()">ÜCRETSİZ GİRİŞ</button>
+    <div style="margin-top: 50px; font-size: 0.8rem; color: #666;">
+        Bu site çerez kullanır. Kabul ediyorsan tıkla, etmiyorsan defol git.
+        <br><br>
+        <button onclick="rejectSite()" style="background:none; border:none; color:red; cursor:pointer;">[ Kabul Etmiyorum ]</button>
     </div>
 </div>
 
-<div id="alert-screen">
-    <h1 style="color:var(--neon-red)">DİKKAT!</h1>
-    <p id="alert-msg">Site yeni açıldı, içerikler yükleniyor...</p>
-    <div id="timer" style="font-size: 3rem; color:white;">15</div>
-</div>
-
-<header class="logo-container">
-    <div class="neon-logo">SADRAZAM POWER</div>
+<header>
+    <div class="logo">SADRAZAM POWER</div>
+    <div class="nav-controls">
+        <button onclick="openAdmin()">ADMİN</button>
+        <button id="langBtn" onclick="toggleLang()">ENG</button>
+    </div>
 </header>
 
-<div class="main-wrapper">
-    <aside class="sidebar" id="sidebar">
-        <h3 style="color:var(--neon-red); border-bottom:1px solid #333; padding-bottom:10px;">KATEGORİLER</h3>
-        </aside>
+<div class="wrapper">
+    <aside>
+        <h3>Kategoriler</h3>
+        <ul id="catItems">
+            <li onclick="location.reload()">Ana Sayfa</li>
+            <li onclick="catError()">Türk Pornosu</li>
+            <li onclick="catError()">4K Full HD</li>
+            <li onclick="catError()">Amatör Çekim</li>
+            <li onclick="catError()">Olgun / MILF</li>
+            <li onclick="catError()">Üvey Anne</li>
+            <li onclick="catError()">Genç / 18+</li>
+        </ul>
+    </aside>
 
-    <main class="content-area">
-        <div class="video-grid">
-            <div class="video-item">
-                <div class="video-frame">
-                    <iframe src="https://xhamster167.click/embed/xheY5d2"></iframe>
-                </div>
-                <div style="padding:15px;"><h4>Üveyanne Konuşmalı Türk Porno</h4></div>
-            </div>
-            <div class="video-item">
-                <div class="video-frame">
-                    <iframe src="https://xhamster167.click/embed/xhkhyDr"></iframe>
-                </div>
-                <div style="padding:15px;"><h4>Türbanlı Türk Üvey Anne</h4></div>
-            </div>
-            <div class="video-item">
-                <div class="video-frame">
-                    <iframe src="https://xhamster167.click/embed/xhDghGd"></iframe>
-                </div>
-                <div style="padding:15px;"><h4>Ayten Abla 2021</h4></div>
-            </div>
-        </div>
-    </main>
+    <main id="videoContainer">
+        </main>
+</div>
+
+<div id="adminModal">
+    <h3 style="color:var(--neon-red)">Panel Girişi</h3>
+    <input type="password" id="adminPass" placeholder="Şifreyi Gir">
+    <button class="nav-controls button" onclick="checkAdmin()">GİRİŞ</button>
+    <div id="addVideoArea" style="display:none; margin-top:20px;">
+        <input type="text" id="vTitle" placeholder="Video Başlığı">
+        <input type="text" id="vLink" placeholder="xHamster Video Linki">
+        <button class="nav-controls button" onclick="saveVideo()">VİDEOYU EKLE</button>
+    </div>
+    <br><br>
+    <button onclick="closeAdmin()" style="color:gray; background:none; border:none;">Kapat</button>
 </div>
 
 <script>
-    const categories = ["Türk", "4K Porno", "HD Videolar", "VR Pornosu", "Amatör", "18 Yaşında", "Anal", "Olgun", "Anne", "MILF", "Lezbiyen", "BDSM", "Sakso", "Grup Seks", "Masaj", "Eş Paylaşma", "Gavat"];
-    const music = document.getElementById('jazzMusic');
+    const music = document.getElementById('bgMusic');
+    const videoContainer = document.getElementById('videoGrid');
 
-    // Kategorileri Doldur
-    const sidebar = document.getElementById('sidebar');
-    categories.forEach(c => {
-        let btn = document.createElement('button');
-        btn.className = 'cat-btn';
-        btn.innerText = c;
-        btn.onclick = () => runAlert("SİTE YENİ AÇILDI! Yakında tüm içerikler eklenecektir.", 15);
-        sidebar.appendChild(btn);
-    });
+    // Başlangıç videoları
+    const defaultVideos = [
+        {title: "Üveyanne Konuşmalı Türk Porno Amatör", link: "https://xhamster167.click/embed/xheY5d2"},
+        {title: "Türbanlı Türk üvey anne ev yapımı seks", link: "https://xhamster167.click/embed/xhkhyDr"},
+        {title: "Ayten Abla 2021", link: "https://xhamster167.click/embed/xhDghGd"}
+    ];
 
-    function enterSite() {
-        document.getElementById('overlay').style.display = 'none';
+    function initSite() {
+        document.getElementById('gatekeeper').style.display = 'none';
+        music.volume = 0.3; // Hafif Jazz
         music.play();
+        loadVideos();
     }
 
-    function showPremium() {
-        runAlert("👑 PREMIUM ÜYELİK ÇOK YAKINDA AKTİF OLACAK!", 12);
+    function loadVideos() {
+        const stored = JSON.parse(localStorage.getItem('myVideos')) || defaultVideos;
+        const container = document.getElementById('videoContainer');
+        container.innerHTML = '';
+        stored.forEach(v => {
+            container.innerHTML += `
+                <div class="video-box">
+                    <iframe src="${v.link}" allowfullscreen></iframe>
+                    <div class="video-title">${v.title}</div>
+                </div>
+            `;
+        });
     }
 
-    function runAlert(msg, sec) {
-        const screen = document.getElementById('alert-screen');
-        const timerDiv = document.getElementById('timer');
-        document.getElementById('alert-msg').innerText = msg;
-        
-        screen.style.display = 'flex';
-        let count = sec;
-        timerDiv.innerText = count;
+    function premiumAlert() {
+        alert("💎 Çok yakında aktif olacak! Altın üyelik avantajlarını kaçırma.");
+        catError(12);
+    }
 
-        const interval = setInterval(() => {
+    function rejectSite() {
+        document.body.innerHTML = `<div style="height:100vh; background:white; color:black; display:flex; align-items:center; justify-content:center; text-align:center;">
+            <h1>🌞 İYİ GÜNLER BOL GÜNEŞLER! <br> Bu site sana göre değil, başka kapıya! 🚫</h1>
+        </div>`;
+    }
+
+    function catError(time = 15) {
+        let count = time;
+        const err = document.createElement('div');
+        err.className = 'overlay';
+        err.innerHTML = `
+            <h1 style="color:white">🚀 YAKINDA GELECEK... 🚀</h1>
+            <p>Site yeni açıldı, hazırlıklar sürüyor 🛠️</p>
+            <h2 id="cd" style="font-size:4rem; color:var(--neon-red)">${count}</h2>
+        `;
+        document.body.appendChild(err);
+        const timer = setInterval(() => {
             count--;
-            timerDiv.innerText = count;
-            if(count <= 0) {
-                clearInterval(interval);
-                screen.style.display = 'none';
-            }
+            document.getElementById('cd').innerText = count;
+            if(count <= 0) location.reload();
         }, 1000);
+    }
+
+    // Admin İşlemleri
+    function openAdmin() { document.getElementById('adminModal').style.display = 'block'; }
+    function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+
+    function checkAdmin() {
+        const pass = document.getElementById('adminPass').value;
+        if(pass === "adminaptal") {
+            document.getElementById('addVideoArea').style.display = 'block';
+            alert("Giriş Başarılı Sahip!");
+        } else {
+            alert("Yanlış şifre! Sen kimsin?");
+        }
+    }
+
+    function saveVideo() {
+        const title = document.getElementById('vTitle').value;
+        let link = document.getElementById('vLink').value;
+        // xhamster linkini embed linkine çevirme basit mantığı
+        if(link.includes('videos/')) {
+            link = link.replace('videos/', 'embed/').split('?')[0];
+        }
+        
+        const stored = JSON.parse(localStorage.getItem('myVideos')) || defaultVideos;
+        stored.push({title, link});
+        localStorage.setItem('myVideos', JSON.stringify(stored));
+        alert("Video eklendi!");
+        location.reload();
+    }
+
+    function toggleLang() {
+        const btn = document.getElementById('langBtn');
+        if(btn.innerText === "ENG") {
+            btn.innerText = "TR";
+            document.querySelector('aside h3').innerText = "CATEGORIES";
+        } else {
+            btn.innerText = "ENG";
+            document.querySelector('aside h3').innerText = "KATEGORİLER";
+        }
     }
 </script>
 
