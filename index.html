@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -11,7 +12,6 @@
 
 :root{
 --primary:#ff00ff;
---dark:#050505;
 }
 
 body{
@@ -130,15 +130,20 @@ line-height:1.6;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <canvas id="matrix"></canvas>
 
-<div id="player"></div>
+<!-- MÜZİK -->
 
-<!-- Giriş -->
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- GİRİŞ -->
 
 <div id="entry">
 
@@ -148,18 +153,17 @@ line-height:1.6;
 SADRAZAM <span>POWER</span>
 </div>
 
-<button class="free" onclick="start()">ÜCRETSİZ ERİŞİM</button>
-<button class="premium" onclick="start()">PREMIUM GİRİŞ</button>
+<button class="free" onclick="start()">ÜCRETSİZ ERİŞİM</button> <button class="premium" onclick="start()">PREMIUM GİRİŞ</button>
 
 </div>
 
 </div>
 
-<!-- Maintenance -->
+<!-- MAINTENANCE -->
 
 <div id="maintenance">
 
-<div class="neon">LVBEL C5</div>
+<div class="neon">SADRAZAM</div>
 
 <div class="text">
 
@@ -167,9 +171,7 @@ SADRAZAM <span>POWER</span>
 
 Sadrazam Network şu anda güncelleniyor.
 
-Sunucu altyapısı güçlendiriliyor, güvenlik sistemi yenileniyor ve performans artırılıyor.
-
-Sistem çok yakında tekrar aktif olacak.
+Sunucu sistemi güçlendiriliyor ve performans artırılıyor.
 
 <br><br>
 
@@ -185,36 +187,7 @@ Sistem çok yakında tekrar aktif olacak.
 
 <script>
 
-/* YOUTUBE */
-
-var tag=document.createElement('script');
-tag.src="https://www.youtube.com/iframe_api";
-document.body.appendChild(tag);
-
-var player;
-
-function onYouTubeIframeAPIReady(){
-
-player=new YT.Player('player',{
-height:'0',
-width:'0',
-
-videoId:'7Oqz2pQ9F0A',
-
-playerVars:{
-autoplay:1,
-controls:0
-},
-
-events:{
-onReady:function(e){
-e.target.setVolume(100);
-}
-}
-
-});
-
-}
+/* START */
 
 function start(){
 
@@ -222,7 +195,11 @@ document.getElementById("entry").style.display="none";
 document.getElementById("maintenance").style.display="flex";
 document.getElementById("matrix").style.display="block";
 
-player.playVideo();
+/* müzik başlat */
+
+var music=document.getElementById("music");
+music.volume=1;
+music.play();
 
 matrix();
 
@@ -238,7 +215,7 @@ const ctx=canvas.getContext("2d");
 canvas.width=window.innerWidth;
 canvas.height=window.innerHeight;
 
-const letters="LVBELC5BABA10NUMARA";
+const letters="SADRAZAMNETWORK";
 const font=16;
 const columns=canvas.width/font;
 
