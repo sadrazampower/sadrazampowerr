@@ -116,12 +116,12 @@ margin-bottom:20px;
 }
 
 .text{
-max-width:700px;
+max-width:600px;
 background:rgba(255,0,255,0.1);
 padding:25px;
 border-radius:15px;
 border:1px solid var(--primary);
-line-height:1.7;
+line-height:1.6;
 }
 
 @keyframes pulse{
@@ -163,29 +163,13 @@ SADRAZAM <span>POWER</span>
 
 <div class="text">
 
-<h2 style="color:#ff00ff">SİSTEM GEÇİCİ OLARAK ÇEVRİMDIŞI</h2>
+<h2 style="color:#ff00ff">SİSTEM BAKIMDA</h2>
 
-Sadrazam Network şu anda büyük bir güncelleme sürecinden geçiyor.
+Sadrazam Network şu anda güncelleniyor.
 
-Sunucu altyapısı tamamen yenileniyor, güvenlik sistemleri güçlendiriliyor ve performans en üst seviyeye çıkarılıyor.
+Sunucu altyapısı güçlendiriliyor, güvenlik sistemi yenileniyor ve performans artırılıyor.
 
-Ekibimiz arka planda gece gündüz çalışıyor. Amaçımız size daha hızlı, daha stabil ve daha elit bir deneyim sunmak.
-
-Yeni sistem açıldığında Sadrazam Network eskisinden çok daha güçlü olacak.
-
-Bu süreçte:
-
-• Sunucu sistemi yükseltiliyor  
-• Yeni premium özellikler ekleniyor  
-• Güvenlik katmanları güçlendiriliyor  
-• Bağlantı hızı artırılıyor  
-• Arayüz tamamen yenileniyor  
-
-Bu sadece bir bakım değil…
-
-Bu bir **seviye atlama.**
-
-Kapılar tekrar açıldığında sistem eskisinden çok daha güçlü olacak.
+Sistem çok yakında tekrar aktif olacak.
 
 <br><br>
 
@@ -193,7 +177,7 @@ Kapılar tekrar açıldığında sistem eskisinden çok daha güçlü olacak.
 
 <br><br>
 
-⏳ Lütfen biraz bekleyin…
+⏳ Lütfen biraz bekleyin...
 
 </div>
 
@@ -218,13 +202,13 @@ width:'0',
 videoId:'7Oqz2pQ9F0A',
 
 playerVars:{
-autoplay:0,
+autoplay:1,
 controls:0
 },
 
 events:{
 onReady:function(e){
-e.target.setVolume(0);
+e.target.setVolume(100);
 }
 }
 
@@ -239,18 +223,6 @@ document.getElementById("maintenance").style.display="flex";
 document.getElementById("matrix").style.display="block";
 
 player.playVideo();
-
-let v=0;
-
-let interval=setInterval(function(){
-
-v+=2;
-
-player.setVolume(v);
-
-if(v>=100)clearInterval(interval);
-
-},100);
 
 matrix();
 
