@@ -3,225 +3,257 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SADRAZAM POWER | CORPORATE ELITE</title>
+    <title>SADRAZAM POWER | MATRIX ELITE</title>
     <style>
         :root {
-            --gold: #ffbd39;
-            --deep-red: #8b0000;
-            --dark-glass: rgba(10, 10, 10, 0.9);
-            --neon-blue: #00d2ff;
+            --neon-green: #00ff41;
+            --neon-red: #ff0000;
+            --gold: #ffcc00;
+            --bg: #000000;
         }
 
-        body {
-            margin: 0; padding: 0;
-            background: #000;
-            color: #fff;
-            font-family: 'Inter', sans-serif;
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            background: var(--bg); color: #fff;
+            font-family: 'Courier New', Courier, monospace;
             overflow-x: hidden;
-            user-select: none;
         }
 
-        /* Arka Plan Hareketli Yazı Efekti (Watermark) */
-        .bg-text-wrapper {
+        /* Matrix Canvas Arka Plan */
+        #matrix-canvas {
+            position: fixed; top: 0; left: 0; z-index: -1;
+            opacity: 0.15;
+        }
+
+        /* Giriş ve Kayıt Paneli (Neon) */
+        #auth-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none; opacity: 0.05;
-            display: flex; flex-wrap: wrap; justify-content: space-around;
+            background: rgba(0,0,0,0.9); z-index: 10000;
+            display: flex; align-items: center; justify-content: center;
         }
 
-        .bg-text {
-            font-size: 5rem; font-weight: 900; 
-            animation: colorShift 10s infinite alternate;
-            padding: 50px;
+        .neon-box {
+            background: #050505;
+            padding: 40px; border-radius: 2px;
+            border: 2px solid var(--neon-green);
+            box-shadow: 0 0 20px var(--neon-green), inset 0 0 10px var(--neon-green);
+            width: 90%; max-width: 400px; text-align: center;
         }
 
-        @keyframes colorShift {
-            0% { color: var(--gold); transform: scale(1); }
-            50% { color: var(--neon-blue); transform: scale(1.1) rotate(5deg); }
-            100% { color: var(--deep-red); transform: scale(1); }
-        }
-
-        /* Auth Panel */
-        #auth-gate {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center;
-        }
-
-        .premium-card {
-            background: var(--dark-glass); border: 2px solid var(--gold);
-            padding: 40px; border-radius: 20px; width: 85%; max-width: 450px;
-            text-align: center; box-shadow: 0 0 50px rgba(255, 189, 57, 0.1);
+        .neon-box h1 {
+            color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green);
+            letter-spacing: 5px; margin-bottom: 30px;
         }
 
         input, select {
             width: 100%; padding: 15px; margin: 10px 0;
-            background: #1a1a1a; border: 1px solid #333; color: #fff;
-            border-radius: 8px; font-weight: bold;
+            background: #000; border: 1px solid var(--neon-green);
+            color: var(--neon-green); border-radius: 0; box-sizing: border-box;
+            outline: none;
         }
 
-        .main-btn {
-            width: 100%; padding: 15px; border: none; border-radius: 8px;
-            font-weight: 900; cursor: pointer; text-transform: uppercase;
-            letter-spacing: 2px; transition: 0.4s; margin-top: 15px;
+        .btn {
+            width: 100%; padding: 15px; margin-top: 15px;
+            background: transparent; color: var(--neon-green);
+            border: 2px solid var(--neon-green); font-weight: bold;
+            cursor: pointer; transition: 0.3s; text-transform: uppercase;
         }
 
-        .btn-gold { background: var(--gold); color: #000; }
-        .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 189, 57, 0.4); }
-
-        /* Video Feed */
-        #main-site { display: none; }
-        .nav-bar {
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
-            padding: 15px; sticky: top; top: 0; z-index: 100;
-            border-bottom: 1px solid #222; text-align: center;
+        .btn:hover {
+            background: var(--neon-green); color: #000;
+            box-shadow: 0 0 30px var(--neon-green);
         }
 
-        .video-grid { padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        /* Ana İçerik */
+        #main-site { display: none; padding-bottom: 50px; }
         
-        .video-item {
-            background: #0d0d0d; border-radius: 15px; overflow: hidden;
-            border: 1px solid #1a1a1a; transition: 0.3s;
+        header {
+            padding: 40px; text-align: center;
+            border-bottom: 1px solid var(--neon-green);
+            background: rgba(0,0,0,0.8);
         }
 
-        .video-item:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .video-card {
+            max-width: 700px; margin: 30px auto;
+            background: #050505; border: 1px solid #222;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            border-radius: 8px; overflow: hidden;
+        }
 
-        /* Thumbnail Yapısı */
+        .video-card:hover { border-color: var(--neon-green); }
+
         .thumb-wrap {
             position: relative; width: 100%; padding-bottom: 56.25%;
-            background-color: #111; cursor: pointer;
+            cursor: pointer; background: #111;
         }
 
-        .thumb-img {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-        }
+        .thumb-img { position: absolute; width: 100%; height: 100%; object-fit: cover; }
 
-        .play-icon {
+        .play-btn {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 80px; height: 80px; background: rgba(255, 189, 57, 0.9);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 30px; color: #000;
+            width: 80px; height: 80px; background: rgba(0, 255, 65, 0.2);
+            border: 2px solid var(--neon-green); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 30px;
         }
 
-        /* Yorumlar */
-        .comment-box { padding: 20px; border-top: 1px solid #1a1a1a; }
-        .comment-display { max-height: 150px; overflow-y: auto; margin-bottom: 15px; }
-        .c-item { background: #151515; padding: 10px; border-radius: 5px; margin-bottom: 5px; font-size: 0.85rem; border-left: 3px solid var(--gold); }
+        /* Yorum Alanı */
+        .comments { padding: 20px; background: #080808; border-top: 1px solid #111; }
+        .comment-item { border-left: 2px solid var(--neon-green); padding: 5px 10px; margin-bottom: 10px; font-size: 0.8rem; }
 
-        /* Admin Dashboard */
+        /* Admin Paneli */
         #admin-panel {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #050505; z-index: 10000; padding: 30px;
+            background: #000; z-index: 20000; padding: 20px; color: var(--neon-green);
+            font-family: monospace; overflow-y: auto;
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-text-wrapper">
-        <div class="bg-text">SADRAZAM</div>
-        <div class="bg-text">POWER</div>
-        <div class="bg-text">SADRAZAM</div>
-        <div class="bg-text">2026</div>
-        <div class="bg-text">POWER</div>
-    </div>
+    <canvas id="matrix-canvas"></canvas>
 
-    <audio id="ambiance" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="auth-gate">
-        <div class="premium-card" id="reg-form">
-            <h1 style="color:var(--gold); letter-spacing: 5px;">SADRAZAM POWER</h1>
-            <p style="color:#666;">Kurumsal Erişim ve Kayıt Paneli</p>
-            <input type="text" id="u-name" placeholder="Kullanıcı Adı">
-            <input type="password" id="u-pass" placeholder="Şifre">
-            <select id="u-tier">
-                <option value="Elite">Elite Üye</option>
-                <option value="Premium">Premium Gold (Kısıtlı)</option>
-            </select>
-            <button class="btn-gold main-btn" onclick="registerUser()">Sisteme Kayıt Ol</button>
-            <button class="main-btn" style="background:#222; color:#fff;" onclick="openAdmin()">Admin Kontrol</button>
+    <div id="auth-overlay">
+        <div class="neon-box">
+            <h1>SYSTEM ACCESS</h1>
+            <div id="auth-form">
+                <input type="text" id="username" placeholder="USER_ID">
+                <input type="password" id="password" placeholder="ACCESS_CODE">
+                <button class="btn" id="btn-login" onclick="loginProcess()">ENTRY</button>
+                <button class="btn" style="border-color:var(--neon-red); color:var(--neon-red); font-size:0.7rem;" onclick="openAdmin()">ADMIN_CORE</button>
+            </div>
+            <p id="status-msg" style="margin-top:15px; font-size:0.7rem; color:var(--neon-green);"></p>
         </div>
     </div>
 
     <div id="admin-panel">
-        <h2 style="color:var(--gold)">KURUMSAL YÖNETİM MERKEZİ</h2>
-        <div id="admin-stats" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
-            </div>
-        <div id="user-table" style="margin-top:30px; background:#111; padding:20px; border-radius:10px;">
-            <h3>Kayıtlı Cihazlar ve Kullanıcılar</h3>
-            <div id="u-list-data"></div>
-        </div>
-        <button class="main-btn btn-gold" style="width:200px;" onclick="location.reload()">Paneli Kapat</button>
+        <h2>SADRAZAM_POWER // DATABASE_OVERRIDE</h2>
+        <hr border-color="var(--neon-green)">
+        <div id="db-content" style="margin-top:20px;"></div>
+        <button class="btn" style="width:200px" onclick="location.reload()">EXIT_TERMINAL</button>
     </div>
 
     <div id="main-site">
-        <div class="nav-bar">
-            <h2 style="color:var(--gold); margin:0; letter-spacing:10px;">SADRAZAM</h2>
-        </div>
-        <div class="video-grid" id="feed"></div>
+        <header>
+            <h1 style="color:var(--neon-green); text-shadow: 0 0 15px var(--neon-green);">SADRAZAM POWER v2026</h1>
+            <p style="font-size:0.7rem; letter-spacing:3px;">PROTECTED CONNECTION: ACTIVE</p>
+        </header>
+
+        <div id="content-feed"></div>
     </div>
 
-<script>
-    let db = JSON.parse(localStorage.getItem('sadrazam_v4')) || [];
+    <script>
+        // Matrix Efekti
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
 
-    function registerUser() {
-        const user = document.getElementById('u-name').value;
-        const pass = document.getElementById('u-pass').value;
-        if(!user || !pass) { alert("Lütfen alanları doldurun!"); return; }
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 33);
 
-        const entry = {
-            id: Date.now(),
-            user: user,
-            pass: pass,
-            tier: document.getElementById('u-tier').value,
-            device: navigator.platform,
-            os: navigator.userAgent.includes("Android") ? "Android" : "Desktop/iOS",
-            time: new Date().toLocaleString(),
-            loc: "Bursa / TR"
-        };
+        // Veri Yönetimi
+        let users = JSON.parse(localStorage.getItem('sd_users')) || [];
 
-        db.push(entry);
-        localStorage.setItem('sadrazam_v4', JSON.stringify(db));
-        
-        // Giriş Yap
-        document.getElementById('auth-gate').style.display = 'none';
-        document.getElementById('main-site').style.display = 'block';
-        document.getElementById('ambiance').volume = 0.1;
-        document.getElementById('ambiance').play();
-        renderContent();
-    }
+        function loginProcess() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
 
-    function openAdmin() {
-        const p = prompt("Yönetici Şifresi:");
-        if(p === "adminaptal") {
-            document.getElementById('admin-panel').style.display = 'block';
-            const list = document.getElementById('u-list-data');
-            list.innerHTML = db.map(u => `
-                <div style="border-bottom:1px solid #333; padding:10px;">
-                    <b>${u.user}</b> (${u.tier}) - Cihaz: ${u.device} - Şifre: ${u.pass} <br>
-                    <small style="color:#888">Tarih: ${u.time} | Konum: ${u.loc}</small>
+            if(!u || !p) {
+                document.getElementById('status-msg').innerText = "ERROR: NULL_FIELDS";
+                return;
+            }
+
+            // Kayıt ve Giriş Aynı Anda (Pratiklik için)
+            users.push({
+                u: u, p: p, 
+                device: navigator.platform, 
+                time: new Date().toLocaleTimeString(),
+                os: navigator.userAgent.slice(0,30)
+            });
+            localStorage.setItem('sd_users', JSON.stringify(users));
+
+            document.getElementById('status-msg').innerText = "ACCESS GRANTED. LOADING...";
+            setTimeout(() => {
+                document.getElementById('auth-overlay').style.display = 'none';
+                document.getElementById('main-site').style.display = 'block';
+                renderVideos();
+            }, 1000);
+        }
+
+        function openAdmin() {
+            const pass = prompt("ROOT_PASSWORD:");
+            if(pass === "adminaptal") {
+                document.getElementById('admin-panel').style.display = 'block';
+                const container = document.getElementById('db-content');
+                container.innerHTML = users.map(user => `
+                    <div style="border-bottom:1px solid #111; padding:10px;">
+                        [+] USER: ${user.u} | PASS: ${user.p} | DEV: ${user.device} <br>
+                        <small>AGENT: ${user.os} | TIME: ${user.time}</small>
+                    </div>
+                `).join('');
+            }
+        }
+
+        const videos = [
+            {id: 1, title: "MİLLİ ARŞİV: SOKAKTA SKANDAL", src: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec", thumb: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80"},
+            {id: 2, title: "PREMIUM: SARIŞIN TUZAĞI", src: "https://www.porno5zz.shop/embed/c2f636f067f89cc14862", thumb: "https://images.unsplash.com/photo-1510511459019-5dee997dd1db?auto=format&fit=crop&w=800&q=80"}
+        ];
+
+        function renderVideos() {
+            const feed = document.getElementById('content-feed');
+            feed.innerHTML = videos.map(v => `
+                <div class="video-card">
+                    <div class="thumb-wrap" id="thumb-${v.id}" onclick="playVid(${v.id}, '${v.src}')">
+                        <img src="${v.thumb}" class="thumb-img">
+                        <div class="play-btn">▶</div>
+                    </div>
+                    <div id="player-${v.id}" style="display:none"></div>
+                    <div style="padding:15px;">
+                        <h3 style="color:var(--neon-green); margin:0;">${v.title}</h3>
+                    </div>
+                    <div class="comments">
+                        <div id="list-${v.id}"><div class="comment-item"><b>BOT_SYSTEM:</b> İçerik şifrelendi.</div></div>
+                        <div style="display:flex; margin-top:10px;">
+                            <input type="text" id="msg-${v.id}" placeholder="KOD_YAZ..." style="margin:0; padding:10px; font-size:0.7rem;">
+                            <button class="btn" style="width:70px; margin:0; padding:5px;" onclick="addComment(${v.id})">GÖNDER</button>
+                        </div>
+                    </div>
                 </div>
             `).join('');
         }
-    }
 
-    // Video Verileri (Gerçek Kapaklar İçin Simülasyon)
-    const videos = [
-        {id: 1, title: "Milli Arşiv: Yerli Üvey Anne", link: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec", tag: "MİLLİ"},
-        {id: 2, title: "VIP Deneyim: Sarışın Teyze", link: "https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2", tag: "PREMIUM"},
-        {id: 3, title: "Tamirci Çırağı Skandalı", link: "https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1", tag: "YERLİ"},
-        {id: 4, title: "Yengemle Delirmeceler", link: "https://www.porno5zz.shop/embed/a8ce66358eb576b8912c", tag: "MİLLİ"}
-    ];
+        function playVid(id, src) {
+            document.getElementById(`thumb-${id}`).style.display = 'none';
+            const p = document.getElementById(`player-${id}`);
+            p.style.display = 'block';
+            p.innerHTML = `<iframe src="${src}" style="width:100%; height:350px; border:none;" allowfullscreen></iframe>`;
+        }
 
-    function renderContent() {
-        const feed = document.getElementById('feed');
-        feed.innerHTML = videos.map(v => `
-            <div class="video-item">
-                <div class="thumb-wrap" id="play-box-${v.id}" onclick="startVideo(${v.id}, '${v.link}')">
-                    <img src="https://picsum.photos/seed/${v.id+10}/800/450" class="thumb-img" alt="Kapak">
-                    <div class="play-icon">▶</div>
-                </div>
-                <div id="player-container-${v.id}" style="display:none"></div>
-                <div style="padding:15px;">
-                    <span style="color:var(--gold); font-size:0.7rem; font-weight:bold;">${v.tag}</span>
-                    <h3 style="margin:10px 0;">${v.title}</h3>
+        function addComment(id) {
+            const val = document.getElementById(`msg-${id}`).value;
+            if(!val) return;
+            const list = document.getElementById(`list-${id}`);
+            const div = document.createElement('div');
+            div.className = 'comment-item';
+            div.innerHTML = `<b>YOU:</b> ${val}`;
+            list.prepend(div);
+            document.getElementById(`msg-${id}`).value = "";
+        }
+    </script>
+</body>
+</html>
