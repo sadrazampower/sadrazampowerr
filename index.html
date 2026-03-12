@@ -7,80 +7,191 @@
 <style>
 :root {
     --neon-red: #ff0000;
-    --dark-bg: #050505;
-    --card-bg: #111111;
+    --neon-yellow: #f4ea0a;
+    --neon-blue: #00f2ff;
+    --dark-bg: #020202;
+    --card-bg: #0a0a0a;
     --text-white: #fff;
 }
+
 body {
     margin:0; padding:0;
     background-color: var(--dark-bg);
     color: var(--text-white);
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    overflow-x: hidden;
 }
+
+/* Hareketli ve Parlayan Başlık */
 header {
     text-align:center;
-    padding:20px;
-    font-size:2rem;
-    font-weight:bold;
+    padding:40px 20px;
+    font-size:3.5rem;
+    font-weight:900;
     color: var(--neon-red);
-    text-shadow: 0 0 5px #fff,0 0 10px var(--neon-red);
+    text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red), 0 0 40px #ff4d4d;
+    animation: pulseTitle 1.5s infinite ease-in-out;
+    letter-spacing: 5px;
 }
-.wrapper {
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    padding:20px;
+
+@keyframes pulseTitle {
+    0% { transform: scale(1); text-shadow: 0 0 10px var(--neon-red); }
+    50% { transform: scale(1.03); text-shadow: 0 0 30px var(--neon-red), 0 0 60px #fff; }
+    100% { transform: scale(1); text-shadow: 0 0 10px var(--neon-red); }
 }
+
+/* Giriş Overlay */
+#entry-overlay {
+    position: fixed;
+    top:0; left:0; width: 100%; height: 100%;
+    background: radial-gradient(circle, #1a0000 0%, #000 100%);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: 5px solid var(--neon-red);
+    box-sizing: border-box;
+}
+
+.welcome-text {
+    max-width: 800px;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.btn-group { display: flex; gap: 30px; margin-top: 20px; }
+.entry-btn {
+    padding: 20px 40px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: 3px solid var(--neon-red);
+    background: transparent;
+    color: white;
+    box-shadow: 0 0 15px var(--neon-red);
+    transition: 0.4s;
+    text-transform: uppercase;
+}
+.entry-btn:hover { background: var(--neon-red); transform: translateY(-5px); box-shadow: 0 0 40px var(--neon-red); }
+
+/* Çerez Kutusu */
+#cookie-box {
+    display: none;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background: #050505;
+    border: 4px solid var(--neon-blue);
+    padding: 40px;
+    z-index: 10000;
+    box-shadow: 0 0 70px var(--neon-blue);
+    text-align: center;
+    max-width: 500px;
+}
+
+/* Göz Alıcı Duyuru Bandı */
+.announcement {
+    background: #000;
+    color: var(--neon-yellow);
+    border-top: 2px solid var(--neon-yellow);
+    border-bottom: 2px solid var(--neon-yellow);
+    padding: 25px;
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 800;
+    box-shadow: 0 0 20px var(--neon-yellow);
+    text-shadow: 0 0 5px var(--neon-yellow);
+}
+
+/* Aşağılayıcı Beyaz Ekran */
+#loser-screen {
+    display: none;
+    position: fixed;
+    top:0; left:0; width: 100%; height: 100%;
+    background: #ffffff;
+    color: #000;
+    z-index: 30000;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+}
+
+/* Video Kartları (Neon Dokunuşlu) */
+.wrapper { display:flex; flex-wrap:wrap; justify-content:center; padding:20px; }
 .video-card {
     background: var(--card-bg);
-    margin:15px;
-    border-radius:10px;
+    margin:20px;
+    border-radius:15px;
     overflow:hidden;
-    width:300px;
-    box-shadow: 0 0 15px var(--neon-red);
+    width:320px;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    border: 2px solid var(--neon-red);
     transition: 0.3s;
 }
-.video-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 30px var(--neon-red);
-}
-.video-frame {
-    position:relative;
-    padding-bottom:56.25%;
-    height:0;
-}
-.video-frame iframe {
-    position:absolute;
-    top:0; left:0;
-    width:100%; height:100%;
-    border:none;
-}
-.video-title {
-    padding:10px;
-    font-size:0.9rem;
-    text-align:center;
-}
+.video-card:hover { transform: scale(1.05); box-shadow: 0 0 40px var(--neon-red); }
+.video-frame { position:relative; padding-bottom:56.25%; height:0; }
+.video-frame iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
+.video-title { padding:15px; font-size:1rem; text-align:center; font-weight: bold; }
 .category-badge {
     display:inline-block;
     margin:5px;
-    padding:3px 8px;
-    background:#222;
-    border-radius:5px;
-    font-size:0.7rem;
-    color:#ccc;
+    padding:4px 10px;
+    background:#1a1a1a;
+    border: 1px solid #444;
+    border-radius:4px;
+    font-size:0.75rem;
+    color:var(--neon-blue);
 }
 </style>
 </head>
 <body>
 
-<header>SADRAZAM POWER</header>
+<iframe src="https://www.youtube.com/embed/8v_4p9m_lIs?autoplay=1&loop=1&playlist=8v_4p9m_lIs&volume=10" allow="autoplay" style="display:none"></iframe>
 
-<div class="wrapper" id="video-grid">
-    <!-- Videolar buraya JS ile eklenecek -->
+<div id="entry-overlay">
+    <h1 style="color: var(--neon-red); font-size: 3rem; text-shadow: 0 0 20px red;">DUR! DOĞRU YERDESİN 🔞</h1>
+    <div class="welcome-text">
+        <p>🔥 <b>Sadrazam Power</b> dünyasına adım atmak üzeresin. Burası sıradan bir site değil, bir yaşam tarzı! <br> 
+        İçerideki arşiv seni benden alacak, her bir kare özenle seçildi. 💎</p>
+        <p>👇 Aşağıdaki butonlardan birini seç ama dikkatli ol, geri dönüşü yok! 👇</p>
+    </div>
+    <div class="btn-group">
+        <button class="entry-btn" onclick="showCookies()">ÜCRETSİZ İZLE 🔓 <br> <small style="font-size: 10px;">(Fakirler İçin)</small></button>
+        <button class="entry-btn" style="border-color:var(--neon-yellow); box-shadow: 0 0 20px var(--neon-yellow); color: var(--neon-yellow);" onclick="goPremium()">PREMIUM ÜYE 👑 <br> <small style="font-size: 10px;">(Elite Class)</small></button>
+    </div>
 </div>
 
+<div id="cookie-box">
+    <h2 style="color: var(--neon-blue);">DUR BAKALIM! 🍪</h2>
+    <p>Sitemize girmeden önce tüm verilerini, ruhunu ve tarayıcı geçmişini <b>Sadrazam'ın</b> ellerine bırakmayı kabul ediyor musun? <br><br> 👹 Kabul etmezsen kapı orada, korkaklara yerimiz yok!</p>
+    <button class="entry-btn" onclick="acceptCookies()">EVET, KÖLEYİM</button>
+    <button class="entry-btn" style="border-color:#555; color: #888;" onclick="rejectCookies()">HAYIR, KORKUYORUM</button>
+</div>
+
+<div id="loser-screen">
+    <p>GİT SÜTÜNÜ İÇ VE ÇİZGİ FİLM İZLE... 🍼</p>
+    <p style="font-size: 1.2rem; margin-top: 20px;">SADRAZAM SİSTEMİ SENİN GİBİ KORKAKLARI SEVMEZ. <br> İYİ GÜNLER (DİLEYEMEDİK)!</p>
+</div>
+
+<header>SADRAZAM POWER</header>
+
+<div class="announcement" id="main-announcement" style="display:none;">
+    📢 <b>DUYURU:</b> ARŞİVİMİZ HER HAFTA SON SÜRAT GÜNCELLENİYOR! 🚀 <br>
+    HER PAZARTESİ VE CUMA YENİ VİDEOLAR, 4K KALİTESİNDE VE TÜRKÇE ALTYAZI SEÇENEKLERİYLE EKLENİYOR. 🔥 <br>
+    BURASI SADRAZAM'IN KRALLIĞI, TAKLİTLERİMİZDEN SAKININ! GÖZ ALICI BİR DENEYİME HAZIR OLUN! 🎬✨
+</div>
+
+<div class="wrapper" id="video-grid">
+    </div>
+
 <script>
-// Videolar ve başlıklar
+// Orijinal Video Verileri
 const videos = [
   {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/c2f636f067f89cc14862" allowfullscreen></iframe>', title: 'Jav porno: Üvey anneye dayama pornosu Türkçe altyazılı'},
   {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2" allowfullscreen></iframe>', title: 'Sarışın teyzemin pembe amcığı bana çok iyi geldi! Teyze Pornosu'},
@@ -92,25 +203,18 @@ const videos = [
   {embed: '<iframe width="640" height="360" src="https://www.porno5zz.shop/embed/20d2abefe558796b9958" allowfullscreen></iframe>', title: 'Üvey ablasına bakarak 31 çekerken yakalanıyor - Balık etli kız pornosu'}
 ];
 
-// Kategoriler (rastgele atanacak)
 const categories = ["Türk", "4K Porno", "HD Videolar", "Amatör", "Anne", "MILF", "Lezbiyen", "BDSM", "Grup Seks"];
-
-// Video gridini oluştur
 const grid = document.getElementById('video-grid');
 
 videos.forEach(video => {
     const card = document.createElement('div');
     card.className = 'video-card';
-    
     const frame = document.createElement('div');
     frame.className = 'video-frame';
     frame.innerHTML = video.embed;
-    
     const title = document.createElement('div');
     title.className = 'video-title';
     title.innerText = video.title;
-    
-    // Rastgele 1-2 kategori ekle
     let randomCats = [];
     const count = Math.floor(Math.random()*2)+1;
     for(let i=0;i<count;i++){
@@ -123,11 +227,53 @@ videos.forEach(video => {
         badge.innerText = c;
         title.appendChild(badge);
     });
-    
     card.appendChild(frame);
     card.appendChild(title);
     grid.appendChild(card);
 });
+
+// Fonksiyonlar
+function showCookies() {
+    document.getElementById('cookie-box').style.display = 'block';
+}
+
+function acceptCookies() {
+    document.getElementById('cookie-box').style.display = 'none';
+    document.getElementById('entry-overlay').style.display = 'none';
+    document.getElementById('main-announcement').style.display = 'block';
+}
+
+function rejectCookies() {
+    document.getElementById('cookie-box').style.display = 'none';
+    document.getElementById('loser-screen').style.display = 'flex';
+}
+
+function goPremium() {
+    let count = 10;
+    const overlay = document.getElementById('entry-overlay');
+    overlay.innerHTML = `
+        <div style="padding: 40px; border: 4px dashed gold; background: #111;">
+            <h1 style="color:var(--neon-yellow); font-size: 2.5rem;">💎 PREMIUM SİSTEMİ YAPILANDIRILIYOR 💎</h1>
+            <p style="font-size: 1.2rem; line-height: 1.8; color: #ddd; max-width: 700px;">
+                Şu anda dünyanın dört bir yanındaki Sadrazam sunucuları bu özel üyelik için optimize ediliyor. 
+                Premium üyelerimiz için reklamsız, 8K ultra HD ve özel "Gizli Oda" içerikleri çok yakında aktif edilecek. 
+                Sistemimiz henüz senin gibi elit bir kullanıcıyı ağırlamak için son testlerden geçiyor. 
+                Lütfen sabırlı ol, bu kaliteyi başka hiçbir yerde bulamazsın! 🥂
+            </p>
+            <h2 id="countdown" style="font-size:5rem; color: #fff; text-shadow: 0 0 20px gold;">10</h2>
+            <p style="color: var(--neon-red); font-weight: bold;">Sistemden atılmadan önce son saniyelerin...</p>
+        </div>`;
+    
+    const timer = setInterval(() => {
+        count--;
+        const cd = document.getElementById('countdown');
+        if(cd) cd.innerText = count;
+        if(count <= 0) {
+            clearInterval(timer);
+            location.reload();
+        }
+    }, 1000);
+}
 </script>
 
 </body>
