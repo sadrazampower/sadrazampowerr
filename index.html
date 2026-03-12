@@ -3,78 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SADRAZAM POWER | ELITE</title>
+    <meta name="referrer" content="no-referrer"> <title>SADRAZAM POWER | ELITE</title>
     <style>
-        :root { 
-            --neon-green: #00ff41; 
-            --neon-pink: #ff00ff; 
-            --neon-red: #ff0000; /* Yeni kırmızı neon rengi */
-            --bg: #000; 
-        }
+        :root { --neon-red: #ff0000; --bg: #000; }
         
         body { 
             margin: 0; padding: 0; background: var(--bg); color: #fff;
-            font-family: 'Arial', sans-serif; overflow-x: hidden;
+            font-family: 'Arial', sans-serif;
         }
 
-        /* GİRİŞ EKRANI */
         #gate {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 100000; display: flex; align-items: center; justify-content: center;
         }
         .auth-card {
-            background: #0a0a0a; padding: 30px; border: 2px solid var(--neon-green);
+            background: #0a0a0a; padding: 30px; border: 2px solid var(--neon-red);
             border-radius: 20px; text-align: center; width: 85%; max-width: 350px;
-        }
-        .btn {
-            display: block; width: 100%; padding: 15px 0; margin: 10px 0;
-            background: transparent; border: 2px solid var(--neon-green);
-            color: var(--neon-green); font-weight: bold; cursor: pointer; border-radius: 10px;
+            box-shadow: 0 0 20px var(--neon-red);
         }
 
-        /* ANA SİTE */
         #site { display: none; }
-        header { padding: 20px; text-align: center; border-bottom: 1px solid #222; background: #080808; }
+        header { padding: 20px; text-align: center; border-bottom: 2px solid var(--neon-red); background: #080808; }
 
-        .video-container { padding: 15px; display: flex; flex-direction: column; gap: 40px; align-items: center; }
+        .video-container { padding: 20px; display: flex; flex-direction: column; gap: 50px; align-items: center; }
         
-        /* KIRMIZI NEON ÇERÇEVE BURADA */
+        /* KIRMIZI NEON ÇERÇEVE */
         .video-box { 
             background: #111; 
             border-radius: 15px; 
-            overflow: hidden; 
             width: 100%; 
             max-width: 600px; 
-            border: 2px solid var(--neon-red); 
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); /* Dışa doğru kırmızı parlama */
+            border: 3px solid var(--neon-red); 
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6); 
+            overflow: hidden;
         }
 
-        .v-cover {
-            position: relative; width: 100%; aspect-ratio: 16/9;
-            background: linear-gradient(45deg, #050505, #151515);
-            cursor: pointer; display: flex; align-items: center; justify-content: center; text-align: center;
+        .v-player-wrapper {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
-        
-        .v-cover-text {
-            font-size: 1.4rem; font-weight: 900; padding: 20px;
-            background: linear-gradient(to right, #ff0000, #ff00ff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(255,0,0,0.5);
-            text-transform: uppercase;
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .cover-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
         }
 
         .play-btn {
-            position: absolute; bottom: 10px; right: 10px;
-            background: var(--neon-red); color: #fff; padding: 8px 18px;
-            border-radius: 5px; font-weight: bold; font-size: 0.8rem;
-            box-shadow: 0 0 10px var(--neon-red);
+            background: var(--neon-red);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px var(--neon-red);
         }
 
-        iframe { width: 100%; height: 100%; border: none; aspect-ratio: 16/9; }
-
-        #admin-panel {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 100001; padding: 20px; color: var(--neon-green); font-family: monospace;
+        .btn {
+            display: block; width: 100%; padding: 15px 0; margin: 10px 0;
+            background: transparent; border: 2px solid var(--neon-red);
+            color: white; font-weight: bold; cursor: pointer; border-radius: 10px;
         }
     </style>
 </head>
@@ -82,20 +87,13 @@
 
     <div id="gate">
         <div class="auth-card">
-            <h1 style="color:var(--neon-green); letter-spacing:3px;">SADRAZAM</h1>
-            <button class="btn" onclick="openSite()">MİSAFİR GİRİŞİ</button>
-            <button class="btn" style="border-color:#444; color:#555;" onclick="openAdmin()">ADMİN PANEL</button>
+            <h1 style="color:var(--neon-red); text-shadow: 0 0 10px red;">SADRAZAM</h1>
+            <button class="btn" onclick="openSite()">SİTEYE GİRİŞ YAP</button>
         </div>
     </div>
 
-    <div id="admin-panel">
-        <h2>SADRAZAM CONTROL CENTER</h2>
-        <div id="logs" style="margin:20px 0; border:1px solid #222; padding:10px; height:70%; overflow-y:auto;"></div>
-        <button class="btn" onclick="location.reload()">KAPAT</button>
-    </div>
-
     <div id="site">
-        <header><h2 style="color:var(--neon-red); margin:0; text-shadow: 0 0 10px red;">SADRAZAM POWER</h2></header>
+        <header><h2>SADRAZAM POWER</h2></header>
         <div class="video-container" id="feed"></div>
     </div>
 
@@ -109,70 +107,39 @@
     ];
 
     function openSite() {
-        saveLog("Misafir Girişi");
         document.getElementById('gate').style.display = 'none';
         document.getElementById('site').style.display = 'block';
         renderContent();
-    }
-
-    function openAdmin() {
-        const p = prompt("ADMİN ŞİFRE:");
-        if(p === "adminaptal") {
-            document.getElementById('admin-panel').style.display = 'block';
-            const history = JSON.parse(localStorage.getItem('sd_history')) || [];
-            document.getElementById('logs').innerHTML = history.reverse().map(h => 
-                `<div>> [${h.t}] ${h.a} | Cihaz: ${h.d}</div>`
-            ).join('');
-        }
     }
 
     function renderContent() {
         const feed = document.getElementById('feed');
         feed.innerHTML = videos.map(v => `
             <div class="video-box">
-                <div class="v-cover" id="cover-${v.id}" onclick="loadVideo(${v.id}, '${v.src}')">
-                    <div class="v-cover-text">EN İYİ VİDEOLAR<br>SADRAZAM POWER</div>
-                    <div class="play-btn">VİDEOYU OYNAT ▶</div>
-                </div>
-                <div style="padding:15px; border-top:1px solid #333;">
-                    <b style="color:var(--neon-red)">${v.title}</b>
-                </div>
-                <div style="padding:15px; background:#080808;">
-                    <div id="list-${v.id}" style="font-size:0.8rem; color:#666; margin-bottom:10px;">
-                        <div><b>Misafir:</b> Efsane video knk!</div>
+                <div class="v-player-wrapper" id="container-${v.id}">
+                    <div class="cover-overlay" onclick="startVideo(${v.id}, '${v.src}')">
+                        <div style="color:red; font-weight:bold; margin-bottom:10px;">SADRAZAM ÖZEL İÇERİK</div>
+                        <div class="play-btn">VİDEOYU BAŞLAT ▶</div>
                     </div>
-                    <input type="text" id="in-${v.id}" placeholder="Yorum yaz..." style="width:65%; background:#000; border:1px solid #333; color:#fff; padding:5px;">
-                    <button onclick="addC(${v.id})" style="background:var(--neon-red); color:#fff; border:none; padding:5px 10px; font-weight:bold; cursor:pointer;">GÖNDER</button>
+                </div>
+                <div style="padding:15px; background:#0a0a0a; border-top:2px solid var(--neon-red)">
+                    <b style="color:var(--neon-red); font-size:1.1rem;">${v.title}</b>
                 </div>
             </div>
         `).join('');
     }
 
-    // Videoyu yükleyen düzeltilmiş fonksiyon
-    function loadVideo(id, src) {
-        const container = document.getElementById(`cover-${id}`);
-        // Embed kodunu iframe içine düzgünce yerleştiriyoruz
-        container.innerHTML = `<iframe src="${src}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
-        container.onclick = null; // Çift tıklamayı engelle
-    }
-
-    function addC(id) {
-        const val = document.getElementById(`in-${id}`).value;
-        if(!val) return;
-        const div = document.createElement('div');
-        div.innerHTML = `<b>Misafir:</b> ${val}`;
-        document.getElementById(`list-${id}`).prepend(div);
-        document.getElementById(`in-${id}`).value = "";
-    }
-
-    function saveLog(type) {
-        let history = JSON.parse(localStorage.getItem('sd_history')) || [];
-        history.push({
-            t: new Date().toLocaleString(),
-            a: type,
-            d: navigator.userAgent.includes("Android") ? "Android" : "PC/iOS"
-        });
-        localStorage.setItem('sd_history', JSON.stringify(history));
+    function startVideo(id, src) {
+        const container = document.getElementById(`container-${id}`);
+        // sandbox ve allow öznitelikleri tarayıcı kısıtlamalarını esnetir
+        container.innerHTML = `
+            <iframe 
+                src="${src}" 
+                allow="autoplay; fullscreen; picture-in-picture" 
+                allowfullscreen 
+                sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation"
+                referrerpolicy="no-referrer">
+            </iframe>`;
     }
 </script>
 </body>
