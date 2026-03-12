@@ -3,83 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SADRAZAM POWER | CORPORATE</title>
+    <title>SADRAZAM POWER | ELITE</title>
     <style>
-        :root { --neon: #00ff41; --gold: #d4af37; --bg: #050505; }
+        :root { --neon-green: #00ff41; --neon-pink: #ff00ff; --bg: #000; }
         
         body { 
             margin: 0; padding: 0; background: var(--bg); color: #fff;
-            font-family: 'Inter', sans-serif; overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Arial', sans-serif; overflow-x: hidden;
         }
 
-        /* --- GİRİŞ PANELİ --- */
+        /* GİRİŞ EKRANI */
         #gate {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 100000; display: flex; align-items: center; justify-content: center;
         }
-
         .auth-card {
-            background: #0a0a0a; padding: 40px; border: 1px solid #222;
+            background: #0a0a0a; padding: 30px; border: 2px solid var(--neon-green);
             border-radius: 20px; text-align: center; width: 85%; max-width: 350px;
-            box-shadow: 0 0 30px rgba(0,0,0,1);
         }
-
-        .logo-main { font-size: 2.2rem; font-weight: 900; letter-spacing: 6px; margin-bottom: 30px; }
-
         .btn {
-            display: block; width: 100%; padding: 16px 0; margin: 12px 0;
-            background: transparent; border: 1px solid var(--neon);
-            color: var(--neon); font-weight: bold; cursor: pointer;
-            border-radius: 8px; text-transform: uppercase; transition: 0.3s;
-            font-size: 0.9rem;
+            display: block; width: 100%; padding: 15px 0; margin: 10px 0;
+            background: transparent; border: 2px solid var(--neon-green);
+            color: var(--neon-green); font-weight: bold; cursor: pointer; border-radius: 10px;
         }
 
-        .btn:active { background: var(--neon); color: #000; transform: scale(0.96); }
-
-        /* --- ANA SİTE --- */
+        /* ANA SİTE */
         #site { display: none; }
-        header { 
-            padding: 25px; text-align: center; border-bottom: 1px solid #1a1a1a; 
-            background: #080808; position: sticky; top: 0; z-index: 50;
-        }
+        header { padding: 20px; text-align: center; border-bottom: 1px solid #222; background: #080808; }
 
-        .v-grid { padding: 15px; display: flex; flex-direction: column; gap: 25px; align-items: center; }
+        .video-container { padding: 15px; display: flex; flex-direction: column; gap: 30px; align-items: center; }
+        .video-box { background: #111; border-radius: 15px; overflow: hidden; width: 100%; max-width: 600px; border: 1px solid #333; }
 
-        .v-card { 
-            background: #111; border-radius: 12px; overflow: hidden; 
-            border: 1px solid #1a1a1a; width: 100%; max-width: 600px;
-        }
-
-        /* Kapak Fotoğrafı Alanı */
+        /* ÖZEL KAPAK FOTOĞRAFI */
         .v-cover {
             position: relative; width: 100%; aspect-ratio: 16/9;
-            background: #000; cursor: pointer; display: flex;
-            align-items: center; justify-content: center;
-            background-size: cover; background-position: center;
+            background: linear-gradient(45deg, #050505, #151515);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+        .v-cover-text {
+            font-size: 1.4rem; font-weight: 900; padding: 20px;
+            background: linear-gradient(to right, #00ff41, #00d2ff, #ff00ff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(0,255,65,0.5);
+            text-transform: uppercase;
+        }
+        .play-btn {
+            position: absolute; bottom: 10px; right: 10px;
+            background: var(--neon-green); color: #000; padding: 5px 15px;
+            border-radius: 5px; font-weight: bold; font-size: 0.8rem;
         }
 
-        .v-play-btn {
-            width: 70px; height: 70px; background: rgba(0,255,65,0.15);
-            border: 2px solid var(--neon); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--neon); font-size: 28px; transition: 0.3s;
-        }
-
-        .v-info { padding: 18px; border-top: 1px solid #1a1a1a; }
-        .v-tag { color: var(--neon); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
-        .v-title { font-size: 1.1rem; font-weight: 600; margin-top: 5px; color: #eee; }
-
-        /* Yorumlar */
-        .v-comments { padding: 15px; background: #0c0c0c; border-top: 1px solid #1a1a1a; }
-        .c-list { max-height: 120px; overflow-y: auto; margin-bottom: 12px; font-size: 0.85rem; color: #888; }
-        .c-row { margin-bottom: 8px; border-left: 2px solid #333; padding-left: 10px; }
-
-        /* Admin Terminal */
+        /* ADMİN PANEL */
         #admin-panel {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 100001; padding: 30px; box-sizing: border-box;
-            color: var(--neon); font-family: 'Courier New', monospace;
+            background: #000; z-index: 100001; padding: 20px; color: var(--neon-green); font-family: monospace;
         }
     </style>
 </head>
@@ -87,119 +64,96 @@
 
     <div id="gate">
         <div class="auth-card">
-            <div class="logo-main">SADRAZAM</div>
-            <p style="color:#555; font-size: 0.8rem; margin-top:-20px; margin-bottom:30px;">EST. 2026 CORPORATE</p>
-            <button id="entry-guest" class="btn">MİSAFİR OLARAK GİR</button>
-            <button id="entry-admin" class="btn" style="border-color:#333; color:#555;">SİSTEM YÖNETİCİSİ</button>
+            <h1 style="color:var(--neon-green); letter-spacing:3px;">SADRAZAM</h1>
+            <button class="btn" onclick="openSite()">MİSAFİR GİRİŞİ</button>
+            <button class="btn" style="border-color:#444; color:#555;" onclick="openAdmin()">ADMİN PANEL</button>
         </div>
     </div>
 
     <div id="admin-panel">
-        <h2 style="border-bottom: 1px solid var(--neon); padding-bottom: 10px;">SADRAZAM_POWER // ROOT_ACCESS</h2>
-        <div id="logs" style="margin: 20px 0; font-size: 0.9rem; line-height: 1.6;"></div>
-        <button id="close-admin" class="btn" style="width: 180px;">SİSTEMDEN ÇIK</button>
+        <h2>SADRAZAM CONTROL CENTER</h2>
+        <div id="logs" style="margin:20px 0; border:1px solid #222; padding:10px; height:70%; overflow-y:auto;"></div>
+        <button class="btn" onclick="location.reload()">KAPAT</button>
     </div>
 
     <div id="site">
-        <header>
-            <div class="logo-main" style="font-size: 1.5rem; margin:0;">SADRAZAM <span style="color:var(--neon)">POWER</span></div>
-        </header>
-        <div class="v-grid" id="v-feed"></div>
+        <header><h2 style="color:var(--neon-green); margin:0;">SADRAZAM POWER</h2></header>
+        <div class="video-container" id="feed"></div>
     </div>
 
 <script>
-    // Video Havuzu (Garantili Linkler ve Gerçek Kapaklar)
+    // Gerçek EBA (Embed) Kodları
     const videos = [
-        {id: 1, tag: "MİLLİ", title: "Yerli Komşu Kaçamağı", src: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec", img: "https://picsum.photos/id/1/800/450"},
-        {id: 2, tag: "PREMIUM", title: "Üvey Anne Altyazılı Özel", src: "https://www.porno5zz.shop/embed/c2f636f067f89cc14862", img: "https://picsum.photos/id/2/800/450"},
-        {id: 3, tag: "YERLİ", title: "Sarışın Teyze Skandalı", src: "https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2", img: "https://picsum.photos/id/3/800/450"},
-        {id: 4, tag: "POPÜLER", title: "Tamirci Çırağı ve Ev Sahibi", src: "https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1", img: "https://picsum.photos/id/4/800/450"},
-        {id: 5, tag: "MİLLİ", title: "Yengemle Yasak Elma", src: "https://www.porno5zz.shop/embed/a8ce66358eb576b8912c", img: "https://picsum.photos/id/5/800/450"}
+        {id: 1, title: "Milli Arşiv - Yerli Gizli", src: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec"},
+        {id: 2, title: "Üvey Anne Altyazılı", src: "https://www.porno5zz.shop/embed/c2f636f067f89cc14862"},
+        {id: 3, title: "Komşu Kızı İntikam", src: "https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2"},
+        {id: 4, title: "Tamirci ve Ev Sahibi", src: "https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1"},
+        {id: 5, title: "Aşiret Yengesi Yasak", src: "https://www.porno5zz.shop/embed/a8ce66358eb576b8912c"}
     ];
 
-    document.addEventListener('DOMContentLoaded', () => {
-        
-        // Giriş Butonları
-        document.getElementById('entry-guest').addEventListener('click', () => {
-            logAction("Misafir Girişi");
-            document.getElementById('gate').style.display = 'none';
-            document.getElementById('site').style.display = 'block';
-            renderContent();
-        });
+    function openSite() {
+        saveLog("Misafir Girişi");
+        document.getElementById('gate').style.display = 'none';
+        document.getElementById('site').style.display = 'block';
+        renderContent();
+    }
 
-        document.getElementById('entry-admin').addEventListener('click', () => {
-            const p = prompt("YÖNETİCİ ŞİFRESİ:");
-            if(p === "adminaptal") {
-                document.getElementById('admin-panel').style.display = 'block';
-                showAdminLogs();
-            } else { alert("YETKİSİZ ERİŞİM!"); }
-        });
-
-        document.getElementById('close-admin').addEventListener('click', () => {
-            document.getElementById('admin-panel').style.display = 'none';
-        });
-
-    });
+    function openAdmin() {
+        const p = prompt("ADMİN ŞİFRE:");
+        if(p === "adminaptal") {
+            document.getElementById('admin-panel').style.display = 'block';
+            const history = JSON.parse(localStorage.getItem('sd_history')) || [];
+            document.getElementById('logs').innerHTML = history.reverse().map(h => 
+                `<div>> [${h.t}] ${h.a} | Cihaz: ${h.d}</div>`
+            ).join('');
+        }
+    }
 
     function renderContent() {
-        const feed = document.getElementById('v-feed');
+        const feed = document.getElementById('feed');
         feed.innerHTML = videos.map(v => `
-            <div class="v-card">
-                <div class="v-cover" style="background-image: url('${v.img}')" data-src="${v.src}">
-                    <div class="v-play-btn">▶</div>
+            <div class="video-box">
+                <div class="v-cover" onclick="loadVideo(this, '${v.src}')">
+                    <div class="v-cover-text">EN İYİ PORNO SİTESİ<br>SADRAZAM POWER</div>
+                    <div class="play-btn">VİDEOYU OYNAT ▶</div>
                 </div>
-                <div class="v-info">
-                    <span class="v-tag">${v.tag}</span>
-                    <div class="v-title">${v.title}</div>
+                <div style="padding:15px; border-top:1px solid #222;">
+                    <b style="color:var(--neon-green)">${v.title}</b>
                 </div>
-                <div class="v-comments">
-                    <div class="c-list" id="c-list-${v.id}">
-                        <div class="c-row"><b>Sistem:</b> Bu video şifreli tünel üzerinden yüklenmiştir.</div>
+                <div style="padding:15px; background:#080808;">
+                    <div id="c-list-${v.id}" style="font-size:0.8rem; color:#666; margin-bottom:10px;">
+                        <div><b>Misafir:</b> Efsane video knk!</div>
                     </div>
-                    <div style="display:flex; gap:10px;">
-                        <input type="text" id="c-in-${v.id}" placeholder="Yorum ekle..." style="flex:1; background:#000; border:1px solid #222; color:#fff; padding:10px; border-radius:5px; outline:none;">
-                        <button class="btn" style="width:60px; margin:0; padding:0;" onclick="postC(${v.id})">GÖNDER</button>
-                    </div>
+                    <input type="text" id="in-${v.id}" placeholder="Yorum yaz..." style="width:70%; background:#000; border:1px solid #333; color:#fff; padding:5px;">
+                    <button onclick="addC(${v.id})" style="background:var(--neon-green); border:none; padding:5px 10px; font-weight:bold; cursor:pointer;">GÖNDER</button>
                 </div>
             </div>
         `).join('');
-
-        // Video Oynatma Tetikleyici
-        document.querySelectorAll('.v-cover').forEach(cover => {
-            cover.addEventListener('click', function() {
-                const source = this.getAttribute('data-src');
-                this.innerHTML = `<iframe src="${source}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>`;
-                this.style.backgroundImage = 'none';
-            });
-        });
     }
 
-    function postC(id) {
-        const val = document.getElementById(`c-in-${id}`).value;
+    // VİDEOYU ÇALIŞTIRAN ASIL FONKSİYON
+    function loadVideo(element, src) {
+        element.innerHTML = `<iframe src="${src}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>`;
+        element.onclick = null; // Tekrar tıklanmasın
+    }
+
+    function addC(id) {
+        const val = document.getElementById(`in-${id}`).value;
         if(!val) return;
-        const list = document.getElementById(`c-list-${id}`);
         const div = document.createElement('div');
-        div.className = 'c-row';
         div.innerHTML = `<b>Misafir:</b> ${val}`;
-        list.prepend(div);
-        document.getElementById(`c-in-${id}`).value = "";
+        document.getElementById(`list-${id}`).prepend(div);
+        document.getElementById(`in-${id}`).value = "";
     }
 
-    function logAction(type) {
+    function saveLog(type) {
         let history = JSON.parse(localStorage.getItem('sd_history')) || [];
         history.push({
             t: new Date().toLocaleString(),
             a: type,
-            d: navigator.platform + " (" + (navigator.userAgent.includes("Android") ? "Android" : "iOS/PC") + ")"
+            d: navigator.userAgent.includes("Android") ? "Android" : "PC/iOS"
         });
         localStorage.setItem('sd_history', JSON.stringify(history));
-    }
-
-    function showAdminLogs() {
-        const history = JSON.parse(localStorage.getItem('sd_history')) || [];
-        document.getElementById('logs').innerHTML = history.reverse().map(h => 
-            `<div>> [${h.t}] ${h.a} | Cihaz: ${h.d}</div>`
-        ).join('');
     }
 </script>
 </body>
