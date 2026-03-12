@@ -2,233 +2,226 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SADRAZAM POWER | 2026 NEXT-GEN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SADRAZAM POWER | CORPORATE ELITE</title>
     <style>
         :root {
-            --neon-red: #ff0000;
-            --neon-gold: #ffd700;
-            --dark-bg: #020202;
-            --card-bg: #0a0a0a;
-            --messi-blue: #0084ff;
+            --gold: #ffbd39;
+            --deep-red: #8b0000;
+            --dark-glass: rgba(10, 10, 10, 0.9);
+            --neon-blue: #00d2ff;
         }
 
         body {
-            margin:0; padding:0;
-            background-color: var(--dark-bg);
-            color: #fff;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            overflow-x: hidden;
-            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
-                              url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1920'); /* Messi/Stadyum Temalı Arka Plan */
-            background-attachment: fixed;
-            background-size: cover;
-        }
-
-        /* Neon Hareketli Başlık */
-        header {
-            text-align:center;
-            padding: 40px 0;
-            font-size: 5rem;
-            font-weight: 900;
-            text-transform: uppercase;
-            color: #fff;
-            text-shadow: 0 0 10px var(--neon-red), 0 0 30px var(--neon-red);
-            animation: moveTitle 5s infinite alternate ease-in-out;
-            cursor: pointer;
-        }
-
-        @keyframes moveTitle {
-            0% { transform: translateX(-20px) skewX(-5deg); text-shadow: 0 0 20px var(--neon-red); }
-            100% { transform: translateX(20px) skewX(5deg); text-shadow: 0 0 40px var(--messi-blue); }
-        }
-
-        /* Giriş Ekranı */
-        #entry-overlay {
-            position: fixed;
-            top:0; left:0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .welcome-box {
-            border: 3px solid var(--neon-red);
-            padding: 50px;
-            text-align: center;
+            margin: 0; padding: 0;
             background: #000;
-            box-shadow: 0 0 70px rgba(255, 0, 0, 0.4);
-            border-radius: 20px;
-            max-width: 500px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            user-select: none;
         }
 
-        .messi-avatar {
-            width: 150px; height: 150px;
-            border-radius: 50%;
-            border: 4px solid var(--neon-gold);
-            margin-bottom: 20px;
+        /* Arka Plan Hareketli Yazı Efekti (Watermark) */
+        .bg-text-wrapper {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; opacity: 0.05;
+            display: flex; flex-wrap: wrap; justify-content: space-around;
+        }
+
+        .bg-text {
+            font-size: 5rem; font-weight: 900; 
+            animation: colorShift 10s infinite alternate;
+            padding: 50px;
+        }
+
+        @keyframes colorShift {
+            0% { color: var(--gold); transform: scale(1); }
+            50% { color: var(--neon-blue); transform: scale(1.1) rotate(5deg); }
+            100% { color: var(--deep-red); transform: scale(1); }
+        }
+
+        /* Auth Panel */
+        #auth-gate {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center;
+        }
+
+        .premium-card {
+            background: var(--dark-glass); border: 2px solid var(--gold);
+            padding: 40px; border-radius: 20px; width: 85%; max-width: 450px;
+            text-align: center; box-shadow: 0 0 50px rgba(255, 189, 57, 0.1);
+        }
+
+        input, select {
+            width: 100%; padding: 15px; margin: 10px 0;
+            background: #1a1a1a; border: 1px solid #333; color: #fff;
+            border-radius: 8px; font-weight: bold;
+        }
+
+        .main-btn {
+            width: 100%; padding: 15px; border: none; border-radius: 8px;
+            font-weight: 900; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 2px; transition: 0.4s; margin-top: 15px;
+        }
+
+        .btn-gold { background: var(--gold); color: #000; }
+        .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 189, 57, 0.4); }
+
+        /* Video Feed */
+        #main-site { display: none; }
+        .nav-bar {
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
+            padding: 15px; sticky: top; top: 0; z-index: 100;
+            border-bottom: 1px solid #222; text-align: center;
+        }
+
+        .video-grid { padding: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; }
+        
+        .video-item {
+            background: #0d0d0d; border-radius: 15px; overflow: hidden;
+            border: 1px solid #1a1a1a; transition: 0.3s;
+        }
+
+        .video-item:hover { border-color: var(--gold); transform: translateY(-5px); }
+
+        /* Thumbnail Yapısı */
+        .thumb-wrap {
+            position: relative; width: 100%; padding-bottom: 56.25%;
+            background-color: #111; cursor: pointer;
+        }
+
+        .thumb-img {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover;
-            box-shadow: 0 0 20px var(--neon-gold);
         }
 
-        .btn {
-            padding: 15px 30px;
-            margin: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-            transition: 0.3s;
-            text-transform: uppercase;
+        .play-icon {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 80px; height: 80px; background: rgba(255, 189, 57, 0.9);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; color: #000;
         }
 
-        .btn-premium { background: var(--neon-red); color: white; box-shadow: 0 0 20px var(--neon-red); }
-        .btn-admin { background: #333; color: white; }
-        .btn-premium:hover { transform: scale(1.1); filter: brightness(1.2); }
+        /* Yorumlar */
+        .comment-box { padding: 20px; border-top: 1px solid #1a1a1a; }
+        .comment-display { max-height: 150px; overflow-y: auto; margin-bottom: 15px; }
+        .c-item { background: #151515; padding: 10px; border-radius: 5px; margin-bottom: 5px; font-size: 0.85rem; border-left: 3px solid var(--gold); }
 
-        /* Admin Paneli Gelişmiş */
+        /* Admin Dashboard */
         #admin-panel {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%; height: 80%;
-            background: #111;
-            border: 2px solid var(--messi-blue);
-            z-index: 10001;
-            padding: 30px;
-            border-radius: 20px;
-            overflow-y: auto;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #050505; z-index: 10000; padding: 30px;
         }
-
-        .stat-card {
-            background: #222;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 10px;
-            display: inline-block;
-            min-width: 200px;
-            border-left: 5px solid var(--neon-red);
-        }
-
-        /* Çerez Kutusu (Bisküvi Esprili) */
-        #cookie-law {
-            position: fixed;
-            bottom: 20px; left: 20px;
-            background: white; color: black;
-            padding: 20px; border-radius: 15px;
-            z-index: 9999; display: none;
-            width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        /* Video Grid */
-        .wrapper { display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; padding: 50px; }
-        .video-card {
-            background: var(--card-bg);
-            border: 2px solid #222;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: 0.4s;
-        }
-        .video-card:hover { border-color: var(--neon-red); transform: scale(1.03); box-shadow: 0 0 30px rgba(255,0,0,0.2); }
-        .video-frame iframe { width: 100%; height: 200px; border: none; }
-        .video-title { padding: 15px; font-weight: bold; font-size: 0.9rem; text-align: center; }
-
     </style>
 </head>
 <body>
 
-<iframe id="bg-music" src="https://www.youtube.com/embed/8v_4p9m_lIs?autoplay=1&loop=1" style="display:none"></iframe>
-
-<div id="entry-overlay">
-    <div class="welcome-box">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_6uJt1iK8K5h9rD7G7p_uA9eK8O9k1Y8F1A&s" class="messi-avatar" alt="Messi">
-        <h2 id="dynamic-title">SADRAZAM <span style="color:var(--neon-red)">POWER</span></h2>
-        <p>2026 VIP Giriş Protokolü Aktif</p>
-        <button class="btn btn-premium" onclick="startPremium()">ÜCRETSİZ PREMIUM ERİŞİM</button>
-        <button class="btn btn-admin" onclick="openAdmin()">ADMIN GİRİŞİ</button>
+    <div class="bg-text-wrapper">
+        <div class="bg-text">SADRAZAM</div>
+        <div class="bg-text">POWER</div>
+        <div class="bg-text">SADRAZAM</div>
+        <div class="bg-text">2026</div>
+        <div class="bg-text">POWER</div>
     </div>
-</div>
 
-<div id="admin-panel">
-    <h2 style="color:var(--messi-blue)">SADRAZAM KONTROL MERKEZİ</h2>
-    <hr>
-    <div id="stats-area">
-        <div class="stat-card"><h3>Toplam Giriş</h3><p id="total-hits">1,402</p></div>
-        <div class="stat-card"><h3>Anlık Cihaz</h3><p id="device-info">Yükleniyor...</p></div>
-        <div class="stat-card"><h3>Konum</h3><p id="location-info">Bursa, TR</p></div>
-        <div class="stat-card"><h3>Sunucu Durumu</h3><p style="color:lime">AKTİF</p></div>
+    <audio id="ambiance" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="auth-gate">
+        <div class="premium-card" id="reg-form">
+            <h1 style="color:var(--gold); letter-spacing: 5px;">SADRAZAM POWER</h1>
+            <p style="color:#666;">Kurumsal Erişim ve Kayıt Paneli</p>
+            <input type="text" id="u-name" placeholder="Kullanıcı Adı">
+            <input type="password" id="u-pass" placeholder="Şifre">
+            <select id="u-tier">
+                <option value="Elite">Elite Üye</option>
+                <option value="Premium">Premium Gold (Kısıtlı)</option>
+            </select>
+            <button class="btn-gold main-btn" onclick="registerUser()">Sisteme Kayıt Ol</button>
+            <button class="main-btn" style="background:#222; color:#fff;" onclick="openAdmin()">Admin Kontrol</button>
+        </div>
     </div>
-    <button class="btn btn-premium" onclick="closeAdmin()">PANELİ KAPAT</button>
-</div>
 
-<div id="cookie-law">
-    <h3>🍪 BİSKÜVİ ŞART!</h3>
-    <p>Sitemiz "Çay yanına bisküvi" tadında veriler kullanır. Kabul etmiyorsan çay soğur.</p>
-    <button class="btn btn-premium" style="width:100%" onclick="closeCookies()">ÇAYI TAZELE (KABUL ET)</button>
-</div>
+    <div id="admin-panel">
+        <h2 style="color:var(--gold)">KURUMSAL YÖNETİM MERKEZİ</h2>
+        <div id="admin-stats" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
+            </div>
+        <div id="user-table" style="margin-top:30px; background:#111; padding:20px; border-radius:10px;">
+            <h3>Kayıtlı Cihazlar ve Kullanıcılar</h3>
+            <div id="u-list-data"></div>
+        </div>
+        <button class="main-btn btn-gold" style="width:200px;" onclick="location.reload()">Paneli Kapat</button>
+    </div>
 
-<header>SADRAZAM POWER</header>
-
-<div class="wrapper" id="video-grid">
+    <div id="main-site">
+        <div class="nav-bar">
+            <h2 style="color:var(--gold); margin:0; letter-spacing:10px;">SADRAZAM</h2>
+        </div>
+        <div class="video-grid" id="feed"></div>
     </div>
 
 <script>
-    // Video Listesi
+    let db = JSON.parse(localStorage.getItem('sadrazam_v4')) || [];
+
+    function registerUser() {
+        const user = document.getElementById('u-name').value;
+        const pass = document.getElementById('u-pass').value;
+        if(!user || !pass) { alert("Lütfen alanları doldurun!"); return; }
+
+        const entry = {
+            id: Date.now(),
+            user: user,
+            pass: pass,
+            tier: document.getElementById('u-tier').value,
+            device: navigator.platform,
+            os: navigator.userAgent.includes("Android") ? "Android" : "Desktop/iOS",
+            time: new Date().toLocaleString(),
+            loc: "Bursa / TR"
+        };
+
+        db.push(entry);
+        localStorage.setItem('sadrazam_v4', JSON.stringify(db));
+        
+        // Giriş Yap
+        document.getElementById('auth-gate').style.display = 'none';
+        document.getElementById('main-site').style.display = 'block';
+        document.getElementById('ambiance').volume = 0.1;
+        document.getElementById('ambiance').play();
+        renderContent();
+    }
+
+    function openAdmin() {
+        const p = prompt("Yönetici Şifresi:");
+        if(p === "adminaptal") {
+            document.getElementById('admin-panel').style.display = 'block';
+            const list = document.getElementById('u-list-data');
+            list.innerHTML = db.map(u => `
+                <div style="border-bottom:1px solid #333; padding:10px;">
+                    <b>${u.user}</b> (${u.tier}) - Cihaz: ${u.device} - Şifre: ${u.pass} <br>
+                    <small style="color:#888">Tarih: ${u.time} | Konum: ${u.loc}</small>
+                </div>
+            `).join('');
+        }
+    }
+
+    // Video Verileri (Gerçek Kapaklar İçin Simülasyon)
     const videos = [
-        {embed: 'https://www.porno5zz.shop/embed/c2f636f067f89cc14862', title: 'Üvey Anne Altyazılı VIP'},
-        {embed: 'https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2', title: 'Pembe Sarışın Özel'},
-        {embed: 'https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1', title: 'Tamirci Çırağı Skandalı'},
-        {embed: 'https://www.porno5zz.shop/embed/a8ce66358eb576b8912c', title: 'Yenge ile Gizli Anlar'},
-        {embed: 'https://www.porno5zz.shop/embed/929b125f8597834fa83a', title: 'İlk Deneyim: Üvey Anne'},
-        {embed: 'https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec', title: 'Türk Köylü Güzeli'},
-        {embed: 'https://www.porno5zz.shop/embed/7f89ddbebc2ac9128303', title: 'Üvey Kardeş Oyunları'},
-        {embed: 'https://www.porno5zz.shop/embed/20d2abefe558796b9958', title: 'Ablaya Yakalanma'}
+        {id: 1, title: "Milli Arşiv: Yerli Üvey Anne", link: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec", tag: "MİLLİ"},
+        {id: 2, title: "VIP Deneyim: Sarışın Teyze", link: "https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2", tag: "PREMIUM"},
+        {id: 3, title: "Tamirci Çırağı Skandalı", link: "https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1", tag: "YERLİ"},
+        {id: 4, title: "Yengemle Delirmeceler", link: "https://www.porno5zz.shop/embed/a8ce66358eb576b8912c", tag: "MİLLİ"}
     ];
 
-    const grid = document.getElementById('video-grid');
-    videos.forEach(v => {
-        grid.innerHTML += `
-            <div class="video-card">
-                <div class="video-frame">
-                    <iframe src="${v.embed}" allowfullscreen></iframe>
+    function renderContent() {
+        const feed = document.getElementById('feed');
+        feed.innerHTML = videos.map(v => `
+            <div class="video-item">
+                <div class="thumb-wrap" id="play-box-${v.id}" onclick="startVideo(${v.id}, '${v.link}')">
+                    <img src="https://picsum.photos/seed/${v.id+10}/800/450" class="thumb-img" alt="Kapak">
+                    <div class="play-icon">▶</div>
                 </div>
-                <div class="video-title">${v.title}</div>
-            </div>`;
-    });
-
-    // Premium Başlatma (Geri Sayım)
-    function startPremium() {
-        let timer = 5;
-        const box = document.querySelector('.welcome-box');
-        const interval = setInterval(() => {
-            box.innerHTML = `<h1 style="font-size:5rem; color:var(--neon-red)">${timer}</h1><p>PREMIUM YÜKLENİYOR...</p>`;
-            timer--;
-            if(timer < 0) {
-                clearInterval(interval);
-                document.getElementById('entry-overlay').style.display = 'none';
-                document.getElementById('cookie-law').style.display = 'block';
-            }
-        }, 1000);
-    }
-
-    // Admin Panel Fonksiyonları
-    function openAdmin() {
-        document.getElementById('admin-panel').style.display = 'block';
-        document.getElementById('device-info').innerText = navigator.platform + " / " + (navigator.userAgent.includes("Mobile") ? "Mobil" : "Masaüstü");
-    }
-    
-    function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
-    function closeCookies() { document.getElementById('cookie-law').style.display = 'none'; }
-
-    // Fake Admin İstatistik Artışı
-    setInterval(() => {
-        let count = parseInt(document.getElementById('total-hits').innerText.replace(',',''));
-        document.getElementById('total-hits').innerText = (count + Math.floor(Math.random()*3)).toLocaleString();
-    }, 3000);
-</script>
-
-</body>
-</html>
+                <div id="player-container-${v.id}" style="display:none"></div>
+                <div style="padding:15px;">
+                    <span style="color:var(--gold); font-size:0.7rem; font-weight:bold;">${v.tag}</span>
+                    <h3 style="margin:10px 0;">${v.title}</h3>
