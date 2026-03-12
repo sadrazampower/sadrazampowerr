@@ -3,46 +3,59 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SADRAZAM POWER | Elite Access</title>
+<title>SADRAZAM POWER | Özel Erişim</title>
 <style>
 :root {
-    --neon-red: #cc0000;
+    --neon-red: #ff0000;
+    --neon-glow: #ff0000;
     --dark-bg: #050505;
-    --card-bg: #0a0a0a;
+    --card-bg: #0d0d0d;
 }
 
 body {
     margin:0; padding:0;
     background-color: var(--dark-bg);
     color: #e0e0e0;
-    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-family: 'Orbitron', 'Segoe UI', sans-serif;
     overflow-x: hidden;
-    zoom: 0.9; /* Ekranı biraz daha uzak ve geniş gösterir */
+    zoom: 0.9;
+}
+
+/* Arka Plan Hareketli Çizgiler */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0), rgba(0, 0, 255, 0.05));
+    z-index: 100;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
 }
 
 /* 3D Hareketli Başlık */
 header {
     text-align:center;
     padding:80px 20px;
-    font-size: 3.5rem;
+    font-size: 4rem;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 12px;
+    letter-spacing: 15px;
     color: var(--neon-red);
-    text-shadow: 0 0 20px rgba(204, 0, 0, 0.6);
-    animation: float 4s ease-in-out infinite;
+    text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red);
+    animation: pulse 3s ease-in-out infinite;
 }
 
-@keyframes float {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 40px var(--neon-red); }
+@keyframes pulse {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.02); filter: brightness(1.5); text-shadow: 0 0 30px var(--neon-red), 0 0 50px var(--neon-red); }
 }
 
-/* Giriş Overlay */
+/* Giriş Ekranı */
 #entry-overlay {
     position: fixed;
     top:0; left:0; width: 100%; height: 100%;
-    background: radial-gradient(circle, #100000 0%, #000 100%);
+    background: radial-gradient(circle, #1a0000 0%, #000 100%);
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -51,120 +64,132 @@ header {
 }
 
 .welcome-box {
-    border-top: 1px solid var(--neon-red);
-    border-bottom: 1px solid var(--neon-red);
+    border: 2px solid var(--neon-red);
     padding: 60px;
     text-align: center;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.9);
+    box-shadow: 0 0 50px rgba(255, 0, 0, 0.2);
+    border-radius: 15px;
 }
 
 .entry-btn {
-    padding: 12px 40px;
+    padding: 15px 45px;
     margin: 15px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    border: 1px solid var(--neon-red);
+    border: 2px solid var(--neon-red);
     background: transparent;
     color: #fff;
-    transition: 0.5s;
-    letter-spacing: 2px;
+    transition: 0.4s;
+    letter-spacing: 3px;
+    text-transform: uppercase;
 }
-.entry-btn:hover { background: var(--neon-red); box-shadow: 0 0 30px var(--neon-red); }
 
-/* Premium Yapılandırma Ekranı (Daha Uzak ve Kırmızı) */
+.entry-btn:hover { 
+    background: var(--neon-red); 
+    box-shadow: 0 0 40px var(--neon-red);
+    color: black;
+}
+
+/* Premium Ekranı (Bol Neonlu) */
 .premium-loader {
     text-align: center;
-    max-width: 900px;
-    padding: 40px;
+    padding: 50px;
 }
 
 #countdown {
-    font-size: 6rem;
+    font-size: 8rem;
     font-weight: 900;
-    color: var(--neon-red);
+    color: #fff;
+    text-shadow: 0 0 20px var(--neon-red), 0 0 40px var(--neon-red), 0 0 60px var(--neon-red);
     margin: 20px 0;
-    font-family: monospace;
 }
 
-/* Duyuru Rozeti */
-.announcement {
-    background: rgba(204, 0, 0, 0.1);
+.neon-text {
     color: var(--neon-red);
-    border: 1px solid var(--neon-red);
-    padding: 8px 25px;
-    margin: 20px auto;
-    width: fit-content;
-    font-size: 0.75rem;
-    border-radius: 2px;
-    letter-spacing: 2px;
+    text-shadow: 0 0 10px var(--neon-red);
+    letter-spacing: 5px;
+    animation: blink 0.8s infinite alternate;
+}
+
+@keyframes blink {
+    from { opacity: 1; }
+    to { opacity: 0.5; }
 }
 
 /* Video Kartları */
-.wrapper { display:flex; flex-wrap:wrap; justify-content:center; padding:40px; gap: 30px; }
+.wrapper { display:flex; flex-wrap:wrap; justify-content:center; padding:40px; gap: 40px; }
 .video-card {
     background: var(--card-bg);
-    width: 380px;
-    border: 1px solid #1a1a1a;
-    transition: 0.4s;
+    width: 400px;
+    border: 1px solid #222;
+    transition: 0.5s;
+    border-radius: 8px;
+    overflow: hidden;
 }
-.video-card:hover { border-color: var(--neon-red); transform: scale(1.02); }
-.video-frame { position:relative; padding-bottom:56.25%; height:0; filter: grayscale(0.3); }
-.video-frame:hover { filter: grayscale(0); }
+.video-card:hover { 
+    border-color: var(--neon-red); 
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+}
+.video-frame { position:relative; padding-bottom:56.25%; height:0; }
 .video-frame iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
-.video-title { padding:20px; font-size:0.85rem; line-height: 1.4; color: #999; }
+.video-title { padding:20px; font-size:0.9rem; font-weight: bold; color: #ccc; }
 
 #cookie-box {
     display: none;
     position: fixed;
     bottom: 40px; right: 40px;
-    background: #000;
-    border: 1px solid #333;
+    background: #111;
+    border: 1px solid var(--neon-red);
     padding: 30px;
     z-index: 10000;
     width: 350px;
+    box-shadow: 0 0 20px rgba(255,0,0,0.2);
 }
 </style>
 </head>
 <body>
 
-<iframe src="https://www.youtube.com/embed/8v_4p9m_lIs?autoplay=1&loop=1&playlist=8v_4p9m_lIs&mute=0&volume=20" allow="autoplay" style="display:none"></iframe>
+<iframe id="bg-music" src="https://www.youtube.com/embed/8v_4p9m_lIs?autoplay=1&loop=1&playlist=8v_4p9m_lIs&controls=0" allow="autoplay" style="display:none"></iframe>
 
 <div id="entry-overlay">
     <div class="welcome-box">
-        <h2 style="letter-spacing: 8px; font-weight: 300;">SADRAZAM <span style="color:var(--neon-red)">POWER</span></h2>
-        <p style="color: #666; font-size: 0.8rem; margin-top: 20px;">BU SİSTEM ELİTE ÜYELER İÇİN ŞİFRELENMİŞTİR.</p>
+        <h2 style="letter-spacing: 10px; font-weight: 900;">SADRAZAM <span style="color:var(--neon-red)">POWER</span></h2>
+        <p style="color: #888; font-size: 0.9rem; margin-top: 20px;">BU SİSTEM ELİT ÜYELER İÇİN ŞİFRELENMİŞTİR.</p>
         <div style="margin-top: 40px;">
             <button class="entry-btn" onclick="showCookies()">STANDART GİRİŞ</button>
-            <button class="entry-btn" style="background: var(--neon-red);" onclick="goPremium()">PREMIUM ACCESS</button>
+            <button class="entry-btn" style="background: var(--neon-red); color: black;" onclick="goPremium()">PREMIUM ERİŞİM</button>
         </div>
     </div>
 </div>
 
 <div id="cookie-box">
     <h4 style="color: var(--neon-red); margin-top:0;">GÜVENLİK PROTOKOLÜ</h4>
-    <p style="font-size: 0.75rem; color: #777;">Sistem verilerinizin işlenmesini ve anonim katılımı onaylıyor musunuz?</p>
-    <button class="entry-btn" style="padding: 8px 20px; font-size: 0.7rem;" onclick="acceptCookies()">ONAYLA</button>
+    <p style="font-size: 0.8rem; color: #aaa;">Sistem verilerinizin işlenmesini ve anonim katılımı onaylıyor musunuz?</p>
+    <button class="entry-btn" style="padding: 10px 20px; font-size: 0.8rem;" onclick="acceptCookies()">ONAYLA</button>
 </div>
 
 <header>SADRAZAM POWER</header>
 
-<div class="announcement" id="main-announcement" style="display:none;">
-    SYSTEM STATUS: ARCHIVE UPDATED // ENCRYPTED CONNECTION ACTIVE
+<div style="text-align: center; margin-bottom: 20px; color: var(--neon-red); letter-spacing: 3px; font-size: 0.8rem;">
+    SİSTEM DURUMU: ARŞİV GÜNCELLENDİ // GÜVENLİ BAĞLANTI AKTİF
 </div>
 
 <div class="wrapper" id="video-grid"></div>
 
 <script>
+// Video listesi (Aynı kaldı)
 const videos = [
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/c2f636f067f89cc14862" allowfullscreen></iframe>', title: 'Jav porno: Üvey anneye dayama pornosu Türkçe altyazılı'},
+  {embed: '<iframe src="https://www.porno5zz.shop/embed/c2f636f067f89cc14862" allowfullscreen></iframe>', title: 'Jav: Üvey anneye dayama pornosu Türkçe altyazılı'},
   {embed: '<iframe src="https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2" allowfullscreen></iframe>', title: 'Sarışın teyzemin pembe amcığı bana çok iyi geldi!'},
   {embed: '<iframe src="https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1" allowfullscreen></iframe>', title: 'Tamirci çırağı kadının götü görünce kuduruyor'},
   {embed: '<iframe src="https://www.porno5zz.shop/embed/a8ce66358eb576b8912c" allowfullscreen></iframe>', title: 'Yengemle delirmeceler - Yengesini siken sapık türk'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/929b125f8597834fa83a" allowfullscreen></iframe>', title: 'İlk Seks Deneyimi! Üvey annem öğretiyor'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec" allowfullscreen></iframe>', title: 'Türk köylü kızı porno filmi - Annem tanıştırdı'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/7f89ddbebc2ac9128303" allowfullscreen></iframe>', title: 'Üvey kardeş sürtüşme porno filmi'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/20d2abefe558796b9958" allowfullscreen></iframe>', title: 'Üvey ablasına bakarak 31 çekerken yakalanıyor'}
+  {embed: '<iframe src="https://www.porno5zz.shop/embed/929b125f8597834fa83a" allowfullscreen></iframe>', title: 'İlk Deneyim! Üvey annem öğretiyor'},
+  {embed: '<iframe src="https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec" allowfullscreen></iframe>', title: 'Türk köylü kızı - Annem tanıştırdı'},
+  {embed: '<iframe src="https://www.porno5zz.shop/embed/7f89ddbebc2ac9128303" allowfullscreen></iframe>', title: 'Üvey kardeş sürtüşme filmi'},
+  {embed: '<iframe src="https://www.porno5zz.shop/embed/20d2abefe558796b9958" allowfullscreen></iframe>', title: 'Üvey ablasına bakarak yakalanıyor'}
 ];
 
 const grid = document.getElementById('video-grid');
@@ -176,33 +201,10 @@ function showCookies() { document.getElementById('cookie-box').style.display = '
 function acceptCookies() {
     document.getElementById('cookie-box').style.display = 'none';
     document.getElementById('entry-overlay').style.display = 'none';
-    document.getElementById('main-announcement').style.display = 'block';
 }
 
 function goPremium() {
-    let count = 15;
+    let count = 10;
     const overlay = document.getElementById('entry-overlay');
     overlay.innerHTML = `
-        <div class="premium-loader">
-            <h1 style="color:var(--neon-red); font-size: 1.5rem; letter-spacing:5px;">PREMIUM PROTOCOL INITIALIZING</h1>
-            <p style="color: #444; font-size: 0.8rem; margin: 20px 0;">Veri tabanı derin taraması yapılıyor. Elite sunuculara bağlantı kuruluyor...</p>
-            <div id="countdown">15</div>
-            <div style="width: 200px; height: 2px; background: #222; margin: 0 auto;">
-                <div id="bar" style="width: 0%; height: 100%; background: var(--neon-red);"></div>
-            </div>
-        </div>`;
-    
-    const timer = setInterval(() => {
-        count--;
-        document.getElementById('countdown').innerText = count;
-        document.getElementById('bar').style.width = ((15-count)/15*100) + '%';
-        if(count <= 0) {
-            clearInterval(timer);
-            location.reload();
-        }
-    }, 1000);
-}
-</script>
-
-</body>
-</html>
+        <div class="premium-loader
