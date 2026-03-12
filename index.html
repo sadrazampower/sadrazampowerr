@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SADRAZAM POWER | ELITE</title>
     <style>
-        :root { --neon-green: #00ff41; --neon-pink: #ff00ff; --bg: #000; }
+        :root { 
+            --neon-green: #00ff41; 
+            --neon-pink: #ff00ff; 
+            --neon-red: #ff0000; /* Yeni kırmızı neon rengi */
+            --bg: #000; 
+        }
         
         body { 
             margin: 0; padding: 0; background: var(--bg); color: #fff;
@@ -31,29 +36,42 @@
         #site { display: none; }
         header { padding: 20px; text-align: center; border-bottom: 1px solid #222; background: #080808; }
 
-        .video-container { padding: 15px; display: flex; flex-direction: column; gap: 30px; align-items: center; }
-        .video-box { background: #111; border-radius: 15px; overflow: hidden; width: 100%; max-width: 600px; border: 1px solid #333; }
+        .video-container { padding: 15px; display: flex; flex-direction: column; gap: 40px; align-items: center; }
+        
+        /* KIRMIZI NEON ÇERÇEVE BURADA */
+        .video-box { 
+            background: #111; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            width: 100%; 
+            max-width: 600px; 
+            border: 2px solid var(--neon-red); 
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4); /* Dışa doğru kırmızı parlama */
+        }
 
-        /* ÖZEL KAPAK FOTOĞRAFI */
         .v-cover {
             position: relative; width: 100%; aspect-ratio: 16/9;
             background: linear-gradient(45deg, #050505, #151515);
             cursor: pointer; display: flex; align-items: center; justify-content: center; text-align: center;
         }
+        
         .v-cover-text {
             font-size: 1.4rem; font-weight: 900; padding: 20px;
-            background: linear-gradient(to right, #00ff41, #00d2ff, #ff00ff);
+            background: linear-gradient(to right, #ff0000, #ff00ff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(0,255,65,0.5);
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
             text-transform: uppercase;
         }
+
         .play-btn {
             position: absolute; bottom: 10px; right: 10px;
-            background: var(--neon-green); color: #000; padding: 5px 15px;
+            background: var(--neon-red); color: #fff; padding: 8px 18px;
             border-radius: 5px; font-weight: bold; font-size: 0.8rem;
+            box-shadow: 0 0 10px var(--neon-red);
         }
 
-        /* ADMİN PANEL */
+        iframe { width: 100%; height: 100%; border: none; aspect-ratio: 16/9; }
+
         #admin-panel {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 100001; padding: 20px; color: var(--neon-green); font-family: monospace;
@@ -77,12 +95,11 @@
     </div>
 
     <div id="site">
-        <header><h2 style="color:var(--neon-green); margin:0;">SADRAZAM POWER</h2></header>
+        <header><h2 style="color:var(--neon-red); margin:0; text-shadow: 0 0 10px red;">SADRAZAM POWER</h2></header>
         <div class="video-container" id="feed"></div>
     </div>
 
 <script>
-    // Gerçek EBA (Embed) Kodları
     const videos = [
         {id: 1, title: "Milli Arşiv - Yerli Gizli", src: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec"},
         {id: 2, title: "Üvey Anne Altyazılı", src: "https://www.porno5zz.shop/embed/c2f636f067f89cc14862"},
@@ -113,28 +130,30 @@
         const feed = document.getElementById('feed');
         feed.innerHTML = videos.map(v => `
             <div class="video-box">
-                <div class="v-cover" onclick="loadVideo(this, '${v.src}')">
-                    <div class="v-cover-text">EN İYİ PORNO SİTESİ<br>SADRAZAM POWER</div>
+                <div class="v-cover" id="cover-${v.id}" onclick="loadVideo(${v.id}, '${v.src}')">
+                    <div class="v-cover-text">EN İYİ VİDEOLAR<br>SADRAZAM POWER</div>
                     <div class="play-btn">VİDEOYU OYNAT ▶</div>
                 </div>
-                <div style="padding:15px; border-top:1px solid #222;">
-                    <b style="color:var(--neon-green)">${v.title}</b>
+                <div style="padding:15px; border-top:1px solid #333;">
+                    <b style="color:var(--neon-red)">${v.title}</b>
                 </div>
                 <div style="padding:15px; background:#080808;">
-                    <div id="c-list-${v.id}" style="font-size:0.8rem; color:#666; margin-bottom:10px;">
+                    <div id="list-${v.id}" style="font-size:0.8rem; color:#666; margin-bottom:10px;">
                         <div><b>Misafir:</b> Efsane video knk!</div>
                     </div>
-                    <input type="text" id="in-${v.id}" placeholder="Yorum yaz..." style="width:70%; background:#000; border:1px solid #333; color:#fff; padding:5px;">
-                    <button onclick="addC(${v.id})" style="background:var(--neon-green); border:none; padding:5px 10px; font-weight:bold; cursor:pointer;">GÖNDER</button>
+                    <input type="text" id="in-${v.id}" placeholder="Yorum yaz..." style="width:65%; background:#000; border:1px solid #333; color:#fff; padding:5px;">
+                    <button onclick="addC(${v.id})" style="background:var(--neon-red); color:#fff; border:none; padding:5px 10px; font-weight:bold; cursor:pointer;">GÖNDER</button>
                 </div>
             </div>
         `).join('');
     }
 
-    // VİDEOYU ÇALIŞTIRAN ASIL FONKSİYON
-    function loadVideo(element, src) {
-        element.innerHTML = `<iframe src="${src}" style="width:100%; height:100%; border:none;" allowfullscreen></iframe>`;
-        element.onclick = null; // Tekrar tıklanmasın
+    // Videoyu yükleyen düzeltilmiş fonksiyon
+    function loadVideo(id, src) {
+        const container = document.getElementById(`cover-${id}`);
+        // Embed kodunu iframe içine düzgünce yerleştiriyoruz
+        container.innerHTML = `<iframe src="${src}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
+        container.onclick = null; // Çift tıklamayı engelle
     }
 
     function addC(id) {
