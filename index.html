@@ -1,210 +1,234 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SADRAZAM POWER | Özel Erişim</title>
-<style>
-:root {
-    --neon-red: #ff0000;
-    --neon-glow: #ff0000;
-    --dark-bg: #050505;
-    --card-bg: #0d0d0d;
-}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SADRAZAM POWER | 2026 NEXT-GEN</title>
+    <style>
+        :root {
+            --neon-red: #ff0000;
+            --neon-gold: #ffd700;
+            --dark-bg: #020202;
+            --card-bg: #0a0a0a;
+            --messi-blue: #0084ff;
+        }
 
-body {
-    margin:0; padding:0;
-    background-color: var(--dark-bg);
-    color: #e0e0e0;
-    font-family: 'Orbitron', 'Segoe UI', sans-serif;
-    overflow-x: hidden;
-    zoom: 0.9;
-}
+        body {
+            margin:0; padding:0;
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow-x: hidden;
+            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                              url('https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1920'); /* Messi/Stadyum Temalı Arka Plan */
+            background-attachment: fixed;
+            background-size: cover;
+        }
 
-/* Arka Plan Hareketli Çizgiler */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.05), rgba(0, 255, 0, 0), rgba(0, 0, 255, 0.05));
-    z-index: 100;
-    background-size: 100% 2px, 3px 100%;
-    pointer-events: none;
-}
+        /* Neon Hareketli Başlık */
+        header {
+            text-align:center;
+            padding: 40px 0;
+            font-size: 5rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #fff;
+            text-shadow: 0 0 10px var(--neon-red), 0 0 30px var(--neon-red);
+            animation: moveTitle 5s infinite alternate ease-in-out;
+            cursor: pointer;
+        }
 
-/* 3D Hareketli Başlık */
-header {
-    text-align:center;
-    padding:80px 20px;
-    font-size: 4rem;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 15px;
-    color: var(--neon-red);
-    text-shadow: 0 0 10px var(--neon-red), 0 0 20px var(--neon-red);
-    animation: pulse 3s ease-in-out infinite;
-}
+        @keyframes moveTitle {
+            0% { transform: translateX(-20px) skewX(-5deg); text-shadow: 0 0 20px var(--neon-red); }
+            100% { transform: translateX(20px) skewX(5deg); text-shadow: 0 0 40px var(--messi-blue); }
+        }
 
-@keyframes pulse {
-    0%, 100% { transform: scale(1); filter: brightness(1); }
-    50% { transform: scale(1.02); filter: brightness(1.5); text-shadow: 0 0 30px var(--neon-red), 0 0 50px var(--neon-red); }
-}
+        /* Giriş Ekranı */
+        #entry-overlay {
+            position: fixed;
+            top:0; left:0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-/* Giriş Ekranı */
-#entry-overlay {
-    position: fixed;
-    top:0; left:0; width: 100%; height: 100%;
-    background: radial-gradient(circle, #1a0000 0%, #000 100%);
-    z-index: 9999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+        .welcome-box {
+            border: 3px solid var(--neon-red);
+            padding: 50px;
+            text-align: center;
+            background: #000;
+            box-shadow: 0 0 70px rgba(255, 0, 0, 0.4);
+            border-radius: 20px;
+            max-width: 500px;
+        }
 
-.welcome-box {
-    border: 2px solid var(--neon-red);
-    padding: 60px;
-    text-align: center;
-    background: rgba(0,0,0,0.9);
-    box-shadow: 0 0 50px rgba(255, 0, 0, 0.2);
-    border-radius: 15px;
-}
+        .messi-avatar {
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            border: 4px solid var(--neon-gold);
+            margin-bottom: 20px;
+            object-fit: cover;
+            box-shadow: 0 0 20px var(--neon-gold);
+        }
 
-.entry-btn {
-    padding: 15px 45px;
-    margin: 15px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    border: 2px solid var(--neon-red);
-    background: transparent;
-    color: #fff;
-    transition: 0.4s;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
+        .btn {
+            padding: 15px 30px;
+            margin: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
 
-.entry-btn:hover { 
-    background: var(--neon-red); 
-    box-shadow: 0 0 40px var(--neon-red);
-    color: black;
-}
+        .btn-premium { background: var(--neon-red); color: white; box-shadow: 0 0 20px var(--neon-red); }
+        .btn-admin { background: #333; color: white; }
+        .btn-premium:hover { transform: scale(1.1); filter: brightness(1.2); }
 
-/* Premium Ekranı (Bol Neonlu) */
-.premium-loader {
-    text-align: center;
-    padding: 50px;
-}
+        /* Admin Paneli Gelişmiş */
+        #admin-panel {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%; height: 80%;
+            background: #111;
+            border: 2px solid var(--messi-blue);
+            z-index: 10001;
+            padding: 30px;
+            border-radius: 20px;
+            overflow-y: auto;
+        }
 
-#countdown {
-    font-size: 8rem;
-    font-weight: 900;
-    color: #fff;
-    text-shadow: 0 0 20px var(--neon-red), 0 0 40px var(--neon-red), 0 0 60px var(--neon-red);
-    margin: 20px 0;
-}
+        .stat-card {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px;
+            display: inline-block;
+            min-width: 200px;
+            border-left: 5px solid var(--neon-red);
+        }
 
-.neon-text {
-    color: var(--neon-red);
-    text-shadow: 0 0 10px var(--neon-red);
-    letter-spacing: 5px;
-    animation: blink 0.8s infinite alternate;
-}
+        /* Çerez Kutusu (Bisküvi Esprili) */
+        #cookie-law {
+            position: fixed;
+            bottom: 20px; left: 20px;
+            background: white; color: black;
+            padding: 20px; border-radius: 15px;
+            z-index: 9999; display: none;
+            width: 300px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
 
-@keyframes blink {
-    from { opacity: 1; }
-    to { opacity: 0.5; }
-}
+        /* Video Grid */
+        .wrapper { display:grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; padding: 50px; }
+        .video-card {
+            background: var(--card-bg);
+            border: 2px solid #222;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.4s;
+        }
+        .video-card:hover { border-color: var(--neon-red); transform: scale(1.03); box-shadow: 0 0 30px rgba(255,0,0,0.2); }
+        .video-frame iframe { width: 100%; height: 200px; border: none; }
+        .video-title { padding: 15px; font-weight: bold; font-size: 0.9rem; text-align: center; }
 
-/* Video Kartları */
-.wrapper { display:flex; flex-wrap:wrap; justify-content:center; padding:40px; gap: 40px; }
-.video-card {
-    background: var(--card-bg);
-    width: 400px;
-    border: 1px solid #222;
-    transition: 0.5s;
-    border-radius: 8px;
-    overflow: hidden;
-}
-.video-card:hover { 
-    border-color: var(--neon-red); 
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
-}
-.video-frame { position:relative; padding-bottom:56.25%; height:0; }
-.video-frame iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:none; }
-.video-title { padding:20px; font-size:0.9rem; font-weight: bold; color: #ccc; }
-
-#cookie-box {
-    display: none;
-    position: fixed;
-    bottom: 40px; right: 40px;
-    background: #111;
-    border: 1px solid var(--neon-red);
-    padding: 30px;
-    z-index: 10000;
-    width: 350px;
-    box-shadow: 0 0 20px rgba(255,0,0,0.2);
-}
-</style>
+    </style>
 </head>
 <body>
 
-<iframe id="bg-music" src="https://www.youtube.com/embed/8v_4p9m_lIs?autoplay=1&loop=1&playlist=8v_4p9m_lIs&controls=0" allow="autoplay" style="display:none"></iframe>
+<iframe id="bg-music" src="https://www.youtube.com/embed/8v_4p9m_lIs?autoplay=1&loop=1" style="display:none"></iframe>
 
 <div id="entry-overlay">
     <div class="welcome-box">
-        <h2 style="letter-spacing: 10px; font-weight: 900;">SADRAZAM <span style="color:var(--neon-red)">POWER</span></h2>
-        <p style="color: #888; font-size: 0.9rem; margin-top: 20px;">BU SİSTEM ELİT ÜYELER İÇİN ŞİFRELENMİŞTİR.</p>
-        <div style="margin-top: 40px;">
-            <button class="entry-btn" onclick="showCookies()">STANDART GİRİŞ</button>
-            <button class="entry-btn" style="background: var(--neon-red); color: black;" onclick="goPremium()">PREMIUM ERİŞİM</button>
-        </div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_6uJt1iK8K5h9rD7G7p_uA9eK8O9k1Y8F1A&s" class="messi-avatar" alt="Messi">
+        <h2 id="dynamic-title">SADRAZAM <span style="color:var(--neon-red)">POWER</span></h2>
+        <p>2026 VIP Giriş Protokolü Aktif</p>
+        <button class="btn btn-premium" onclick="startPremium()">ÜCRETSİZ PREMIUM ERİŞİM</button>
+        <button class="btn btn-admin" onclick="openAdmin()">ADMIN GİRİŞİ</button>
     </div>
 </div>
 
-<div id="cookie-box">
-    <h4 style="color: var(--neon-red); margin-top:0;">GÜVENLİK PROTOKOLÜ</h4>
-    <p style="font-size: 0.8rem; color: #aaa;">Sistem verilerinizin işlenmesini ve anonim katılımı onaylıyor musunuz?</p>
-    <button class="entry-btn" style="padding: 10px 20px; font-size: 0.8rem;" onclick="acceptCookies()">ONAYLA</button>
+<div id="admin-panel">
+    <h2 style="color:var(--messi-blue)">SADRAZAM KONTROL MERKEZİ</h2>
+    <hr>
+    <div id="stats-area">
+        <div class="stat-card"><h3>Toplam Giriş</h3><p id="total-hits">1,402</p></div>
+        <div class="stat-card"><h3>Anlık Cihaz</h3><p id="device-info">Yükleniyor...</p></div>
+        <div class="stat-card"><h3>Konum</h3><p id="location-info">Bursa, TR</p></div>
+        <div class="stat-card"><h3>Sunucu Durumu</h3><p style="color:lime">AKTİF</p></div>
+    </div>
+    <button class="btn btn-premium" onclick="closeAdmin()">PANELİ KAPAT</button>
+</div>
+
+<div id="cookie-law">
+    <h3>🍪 BİSKÜVİ ŞART!</h3>
+    <p>Sitemiz "Çay yanına bisküvi" tadında veriler kullanır. Kabul etmiyorsan çay soğur.</p>
+    <button class="btn btn-premium" style="width:100%" onclick="closeCookies()">ÇAYI TAZELE (KABUL ET)</button>
 </div>
 
 <header>SADRAZAM POWER</header>
 
-<div style="text-align: center; margin-bottom: 20px; color: var(--neon-red); letter-spacing: 3px; font-size: 0.8rem;">
-    SİSTEM DURUMU: ARŞİV GÜNCELLENDİ // GÜVENLİ BAĞLANTI AKTİF
-</div>
-
-<div class="wrapper" id="video-grid"></div>
+<div class="wrapper" id="video-grid">
+    </div>
 
 <script>
-// Video listesi (Aynı kaldı)
-const videos = [
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/c2f636f067f89cc14862" allowfullscreen></iframe>', title: 'Jav: Üvey anneye dayama pornosu Türkçe altyazılı'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2" allowfullscreen></iframe>', title: 'Sarışın teyzemin pembe amcığı bana çok iyi geldi!'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1" allowfullscreen></iframe>', title: 'Tamirci çırağı kadının götü görünce kuduruyor'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/a8ce66358eb576b8912c" allowfullscreen></iframe>', title: 'Yengemle delirmeceler - Yengesini siken sapık türk'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/929b125f8597834fa83a" allowfullscreen></iframe>', title: 'İlk Deneyim! Üvey annem öğretiyor'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec" allowfullscreen></iframe>', title: 'Türk köylü kızı - Annem tanıştırdı'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/7f89ddbebc2ac9128303" allowfullscreen></iframe>', title: 'Üvey kardeş sürtüşme filmi'},
-  {embed: '<iframe src="https://www.porno5zz.shop/embed/20d2abefe558796b9958" allowfullscreen></iframe>', title: 'Üvey ablasına bakarak yakalanıyor'}
-];
+    // Video Listesi
+    const videos = [
+        {embed: 'https://www.porno5zz.shop/embed/c2f636f067f89cc14862', title: 'Üvey Anne Altyazılı VIP'},
+        {embed: 'https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2', title: 'Pembe Sarışın Özel'},
+        {embed: 'https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1', title: 'Tamirci Çırağı Skandalı'},
+        {embed: 'https://www.porno5zz.shop/embed/a8ce66358eb576b8912c', title: 'Yenge ile Gizli Anlar'},
+        {embed: 'https://www.porno5zz.shop/embed/929b125f8597834fa83a', title: 'İlk Deneyim: Üvey Anne'},
+        {embed: 'https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec', title: 'Türk Köylü Güzeli'},
+        {embed: 'https://www.porno5zz.shop/embed/7f89ddbebc2ac9128303', title: 'Üvey Kardeş Oyunları'},
+        {embed: 'https://www.porno5zz.shop/embed/20d2abefe558796b9958', title: 'Ablaya Yakalanma'}
+    ];
 
-const grid = document.getElementById('video-grid');
-videos.forEach(v => {
-    grid.innerHTML += `<div class="video-card"><div class="video-frame">${v.embed}</div><div class="video-title">${v.title}</div></div>`;
-});
+    const grid = document.getElementById('video-grid');
+    videos.forEach(v => {
+        grid.innerHTML += `
+            <div class="video-card">
+                <div class="video-frame">
+                    <iframe src="${v.embed}" allowfullscreen></iframe>
+                </div>
+                <div class="video-title">${v.title}</div>
+            </div>`;
+    });
 
-function showCookies() { document.getElementById('cookie-box').style.display = 'block'; }
-function acceptCookies() {
-    document.getElementById('cookie-box').style.display = 'none';
-    document.getElementById('entry-overlay').style.display = 'none';
-}
+    // Premium Başlatma (Geri Sayım)
+    function startPremium() {
+        let timer = 5;
+        const box = document.querySelector('.welcome-box');
+        const interval = setInterval(() => {
+            box.innerHTML = `<h1 style="font-size:5rem; color:var(--neon-red)">${timer}</h1><p>PREMIUM YÜKLENİYOR...</p>`;
+            timer--;
+            if(timer < 0) {
+                clearInterval(interval);
+                document.getElementById('entry-overlay').style.display = 'none';
+                document.getElementById('cookie-law').style.display = 'block';
+            }
+        }, 1000);
+    }
 
-function goPremium() {
-    let count = 10;
-    const overlay = document.getElementById('entry-overlay');
-    overlay.innerHTML = `
-        <div class="premium-loader
+    // Admin Panel Fonksiyonları
+    function openAdmin() {
+        document.getElementById('admin-panel').style.display = 'block';
+        document.getElementById('device-info').innerText = navigator.platform + " / " + (navigator.userAgent.includes("Mobile") ? "Mobil" : "Masaüstü");
+    }
+    
+    function closeAdmin() { document.getElementById('admin-panel').style.display = 'none'; }
+    function closeCookies() { document.getElementById('cookie-law').style.display = 'none'; }
+
+    // Fake Admin İstatistik Artışı
+    setInterval(() => {
+        let count = parseInt(document.getElementById('total-hits').innerText.replace(',',''));
+        document.getElementById('total-hits').innerText = (count + Math.floor(Math.random()*3)).toLocaleString();
+    }, 3000);
+</script>
+
+</body>
+</html>
