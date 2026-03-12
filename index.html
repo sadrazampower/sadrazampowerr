@@ -3,142 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="referrer" content="no-referrer"> <title>SADRAZAM POWER | ELITE</title>
+    <meta name="referrer" content="no-referrer">
+    <title>SADRAZAM ELITE v3</title>
     <style>
-        :root { --neon-red: #ff0000; --bg: #000; }
+        :root { --neon-red: #ff0000; --dark-red: #8b0000; }
         
         body { 
-            margin: 0; padding: 0; background: var(--bg); color: #fff;
-            font-family: 'Arial', sans-serif;
+            margin: 0; padding: 0; background: #000; color: #fff;
+            font-family: 'Courier New', Courier, monospace;
         }
 
+        /* GİRİŞ EKRANI - MATRIX TARZI */
         #gate {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 100000; display: flex; align-items: center; justify-content: center;
+            background: radial-gradient(circle, #200000 0%, #000 100%);
+            z-index: 100000; display: flex; align-items: center; justify-content: center;
         }
         .auth-card {
-            background: #0a0a0a; padding: 30px; border: 2px solid var(--neon-red);
-            border-radius: 20px; text-align: center; width: 85%; max-width: 350px;
-            box-shadow: 0 0 20px var(--neon-red);
+            padding: 40px; border: 3px double var(--neon-red);
+            background: rgba(0,0,0,0.9); border-radius: 5px; text-align: center;
+            box-shadow: 0 0 30px var(--dark-red);
         }
 
+        /* ANA SİTE */
         #site { display: none; }
-        header { padding: 20px; text-align: center; border-bottom: 2px solid var(--neon-red); background: #080808; }
-
-        .video-container { padding: 20px; display: flex; flex-direction: column; gap: 50px; align-items: center; }
-        
-        /* KIRMIZI NEON ÇERÇEVE */
-        .video-box { 
-            background: #111; 
-            border-radius: 15px; 
-            width: 100%; 
-            max-width: 600px; 
-            border: 3px solid var(--neon-red); 
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.6); 
-            overflow: hidden;
+        header { 
+            padding: 15px; text-align: center; 
+            border-bottom: 3px solid var(--neon-red);
+            box-shadow: 0 0 15px var(--neon-red);
+            background: #050505;
         }
 
-        .v-player-wrapper {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .video-list { 
+            padding: 20px; display: flex; flex-direction: column; gap: 60px; align-items: center; 
+        }
+
+        /* KIRMIZI NEON KUTU STİLİ */
+        .video-card {
+            width: 100%; max-width: 650px;
+            background: #0a0a0a;
+            border: 2px solid var(--neon-red);
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--dark-red), inset 0 0 10px #300000;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .video-card:hover {
+            box-shadow: 0 0 40px var(--neon-red);
+            transform: scale(1.01);
+        }
+
+        .player-area {
+            width: 100%; aspect-ratio: 16/9;
+            background: #000 url('https://www.icegif.com/wp-content/uploads/loading-icegif-1.gif') no-repeat center;
+            background-size: 50px;
             position: relative;
         }
 
         iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+            width: 100%; height: 100%; border: none;
+            display: block;
         }
 
-        .cover-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 10;
+        .video-info {
+            padding: 15px; background: linear-gradient(to bottom, #111, #000);
+            border-top: 1px solid var(--dark-red);
         }
 
-        .play-btn {
-            background: var(--neon-red);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-weight: bold;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px var(--neon-red);
+        .play-overlay {
+            position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.7); display:flex; align-items:center; 
+            justify-content:center; cursor:pointer; z-index: 5;
         }
 
-        .btn {
-            display: block; width: 100%; padding: 15px 0; margin: 10px 0;
-            background: transparent; border: 2px solid var(--neon-red);
-            color: white; font-weight: bold; cursor: pointer; border-radius: 10px;
+        .neon-btn {
+            background: none; border: 2px solid var(--neon-red);
+            color: #fff; padding: 10px 25px; font-weight: bold;
+            text-transform: uppercase; cursor: pointer;
+            text-shadow: 0 0 5px var(--neon-red);
+            box-shadow: 0 0 10px var(--dark-red);
         }
+        .neon-btn:hover { background: var(--neon-red); color: #000; }
+
     </style>
 </head>
 <body>
 
     <div id="gate">
         <div class="auth-card">
-            <h1 style="color:var(--neon-red); text-shadow: 0 0 10px red;">SADRAZAM</h1>
-            <button class="btn" onclick="openSite()">SİTEYE GİRİŞ YAP</button>
+            <h1 style="color:var(--neon-red); margin:0;">SADRAZAM <span style="font-size:0.5em;">v4.0</span></h1>
+            <p style="color:#666; font-size:0.8rem;">SYSTEM ENCRYPTED - RED LINE</p>
+            <button class="neon-btn" style="margin-top:20px; width:100%" onclick="access()">SİSTEME SIZ</button>
         </div>
     </div>
 
     <div id="site">
-        <header><h2>SADRAZAM POWER</h2></header>
-        <div class="video-container" id="feed"></div>
+        <header>
+            <h2 style="color:var(--neon-red); letter-spacing: 5px; margin:0;">SADRAZAM POWER</h2>
+        </header>
+        <div class="video-list" id="content"></div>
     </div>
 
 <script>
-    const videos = [
-        {id: 1, title: "Milli Arşiv - Yerli Gizli", src: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec"},
-        {id: 2, title: "Üvey Anne Altyazılı", src: "https://www.porno5zz.shop/embed/c2f636f067f89cc14862"},
-        {id: 3, title: "Komşu Kızı İntikam", src: "https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2"},
-        {id: 4, title: "Tamirci ve Ev Sahibi", src: "https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1"},
-        {id: 5, title: "Aşiret Yengesi Yasak", src: "https://www.porno5zz.shop/embed/a8ce66358eb576b8912c"}
+    const db = [
+        {id: 1, name: "YERLİ ARŞİV #01", link: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec"},
+        {id: 2, name: "ÜVEY ANNE SERİSİ NEW PORNO ", link: "https://www.porno5zz.shop/embed/c2f636f067f89cc14862"},
+        {id: 3, name: "KOMŞU İNTİKAMI", link: "https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2"},
+        {id: 4, name: "EV SAHİBİ & TAMİRCİ PORNO ", link: "https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1"},
+        {id: 5, name: "YASAK AŞİRET PORNO ", link: "https://www.porno5zz.shop/embed/a8ce66358eb576b8912c"}
     ];
 
-    function openSite() {
+    function access() {
         document.getElementById('gate').style.display = 'none';
         document.getElementById('site').style.display = 'block';
-        renderContent();
+        loadFeed();
     }
 
-    function renderContent() {
-        const feed = document.getElementById('feed');
-        feed.innerHTML = videos.map(v => `
-            <div class="video-box">
-                <div class="v-player-wrapper" id="container-${v.id}">
-                    <div class="cover-overlay" onclick="startVideo(${v.id}, '${v.src}')">
-                        <div style="color:red; font-weight:bold; margin-bottom:10px;">SADRAZAM ÖZEL İÇERİK</div>
-                        <div class="play-btn">VİDEOYU BAŞLAT ▶</div>
+    function loadFeed() {
+        const target = document.getElementById('content');
+        target.innerHTML = db.map(v => `
+            <div class="video-card">
+                <div class="player-area" id="p-${v.id}">
+                    <div class="play-overlay" onclick="inject('${v.id}', '${v.link}')">
+                        <button class="neon-btn">BAĞLANTIYI KUR ▶</button>
                     </div>
                 </div>
-                <div style="padding:15px; background:#0a0a0a; border-top:2px solid var(--neon-red)">
-                    <b style="color:var(--neon-red); font-size:1.1rem;">${v.title}</b>
+                <div class="video-info">
+                    <div style="color:var(--neon-red); font-weight:bold;">${v.name}</div>
+                    <div style="font-size:0.7rem; color:#444; margin-top:5px;">SDR_STREAM_ACTIVE_${v.id}</div>
                 </div>
             </div>
         `).join('');
     }
 
-    function startVideo(id, src) {
-        const container = document.getElementById(`container-${id}`);
-        // sandbox ve allow öznitelikleri tarayıcı kısıtlamalarını esnetir
-        container.innerHTML = `
+    function inject(id, url) {
+        const box = document.getElementById(`p-${id}`);
+        // Tarayıcı kısıtlamalarını aşmak için en geniş izinleri veriyoruz
+        box.innerHTML = `
             <iframe 
-                src="${src}" 
-                allow="autoplay; fullscreen; picture-in-picture" 
-                allowfullscreen 
-                sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation"
-                referrerpolicy="no-referrer">
+                src="${url}" 
+                allowfullscreen="true" 
+                webkitallowfullscreen="true" 
+                mozallowfullscreen="true" 
+                referrerpolicy="no-referrer"
+                sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation">
             </iframe>`;
     }
 </script>
