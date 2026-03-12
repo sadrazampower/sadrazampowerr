@@ -1,154 +1,332 @@
 <!DOCTYPE html>
+
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="referrer" content="no-referrer">
-    <title>SADRAZAM ELITE v3</title>
-    <style>
-        :root { --neon-red: #ff0000; --dark-red: #8b0000; }
-        
-        body { 
-            margin: 0; padding: 0; background: #000; color: #fff;
-            font-family: 'Courier New', Courier, monospace;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SADRAZAM POWER</title>
 
-        /* GİRİŞ EKRANI - MATRIX TARZI */
-        #gate {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #200000 0%, #000 100%);
-            z-index: 100000; display: flex; align-items: center; justify-content: center;
-        }
-        .auth-card {
-            padding: 40px; border: 3px double var(--neon-red);
-            background: rgba(0,0,0,0.9); border-radius: 5px; text-align: center;
-            box-shadow: 0 0 30px var(--dark-red);
-        }
+<style>
 
-        /* ANA SİTE */
-        #site { display: none; }
-        header { 
-            padding: 15px; text-align: center; 
-            border-bottom: 3px solid var(--neon-red);
-            box-shadow: 0 0 15px var(--neon-red);
-            background: #050505;
-        }
+body{
+margin:0;
+font-family:Arial;
+background:#050505;
+color:white;
+}
 
-        .video-list { 
-            padding: 20px; display: flex; flex-direction: column; gap: 60px; align-items: center; 
-        }
+.logo{
+text-align:center;
+font-size:40px;
+font-weight:bold;
+padding:20px;
+text-shadow:
+0 0 5px white,
+0 0 10px red,
+0 0 20px red,
+0 0 40px red;
+animation:flicker 2s infinite;
+}
 
-        /* KIRMIZI NEON KUTU STİLİ */
-        .video-card {
-            width: 100%; max-width: 650px;
-            background: #0a0a0a;
-            border: 2px solid var(--neon-red);
-            border-radius: 10px;
-            box-shadow: 0 0 20px var(--dark-red), inset 0 0 10px #300000;
-            overflow: hidden;
-            transition: 0.3s;
-        }
-        .video-card:hover {
-            box-shadow: 0 0 40px var(--neon-red);
-            transform: scale(1.01);
-        }
+@keyframes flicker{
+0%{opacity:1}
+50%{opacity:.8}
+100%{opacity:1}
+}
 
-        .player-area {
-            width: 100%; aspect-ratio: 16/9;
-            background: #000 url('https://www.icegif.com/wp-content/uploads/loading-icegif-1.gif') no-repeat center;
-            background-size: 50px;
-            position: relative;
-        }
+.container{
+display:flex;
+}
 
-        iframe {
-            width: 100%; height: 100%; border: none;
-            display: block;
-        }
+.sidebar{
+width:230px;
+background:#0a0a0a;
+padding:20px;
+}
 
-        .video-info {
-            padding: 15px; background: linear-gradient(to bottom, #111, #000);
-            border-top: 1px solid var(--dark-red);
-        }
+.sidebar button{
+width:100%;
+padding:10px;
+margin-bottom:8px;
+background:#111;
+border:1px solid #222;
+color:#aaa;
+cursor:pointer;
+}
 
-        .play-overlay {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.7); display:flex; align-items:center; 
-            justify-content:center; cursor:pointer; z-index: 5;
-        }
+.sidebar button:hover{
+border:1px solid red;
+color:white;
+}
 
-        .neon-btn {
-            background: none; border: 2px solid var(--neon-red);
-            color: #fff; padding: 10px 25px; font-weight: bold;
-            text-transform: uppercase; cursor: pointer;
-            text-shadow: 0 0 5px var(--neon-red);
-            box-shadow: 0 0 10px var(--dark-red);
-        }
-        .neon-btn:hover { background: var(--neon-red); color: #000; }
+.content{
+flex:1;
+padding:25px;
+}
 
-    </style>
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:20px;
+}
+
+.card{
+background:#111;
+border:1px solid #222;
+border-radius:10px;
+overflow:hidden;
+}
+
+.card video{
+width:100%;
+}
+
+.card h3{
+padding:10px;
+font-size:15px;
+}
+
+.adminBtn{
+position:fixed;
+top:10px;
+right:10px;
+background:red;
+border:none;
+color:white;
+padding:8px 12px;
+cursor:pointer;
+}
+
+/* cookie */
+
+.cookie{
+position:fixed;
+bottom:0;
+width:100%;
+background:#111;
+padding:20px;
+text-align:center;
+border-top:2px solid red;
+}
+
+.cookie small{
+display:block;
+margin-top:5px;
+color:#bbb;
+}
+
+.cookie button{
+margin:8px;
+padding:10px 15px;
+border:none;
+cursor:pointer;
+}
+
+.accept{
+background:red;
+color:white;
+}
+
+.reject{
+background:#333;
+color:white;
+}
+
+/* premium */
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:black;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+}
+
+.popup h1{
+color:gold;
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <div id="gate">
-        <div class="auth-card">
-            <h1 style="color:var(--neon-red); margin:0;">SADRAZAM <span style="font-size:0.5em;">v4.0</span></h1>
-            <p style="color:#666; font-size:0.8rem;">SYSTEM ENCRYPTED - RED LINE</p>
-            <button class="neon-btn" style="margin-top:20px; width:100%" onclick="access()">SİSTEME SIZ</button>
-        </div>
-    </div>
+<audio id="music" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-10.mp3">
+</audio>
 
-    <div id="site">
-        <header>
-            <h2 style="color:var(--neon-red); letter-spacing: 5px; margin:0;">SADRAZAM POWER</h2>
-        </header>
-        <div class="video-list" id="content"></div>
-    </div>
+<div class="logo">SADRAZAM POWER</div>
+
+<button class="adminBtn" onclick="adminLogin()">Admin</button>
+
+<div class="container">
+
+<div class="sidebar">
+
+<h3>Kategoriler</h3>
+
+<button onclick="coming()">Türk</button> <button onclick="coming()">HD</button> <button onclick="coming()">4K</button> <button onclick="coming()">Amatör</button> <button onclick="coming()">MILF</button>
+
+<button onclick="premium()">👑 Premium</button>
+
+</div>
+
+<div class="content">
+
+<div class="grid" id="videoGrid">
+
+<div class="card">
+<video controls>
+<source src="" type="video/mp4">
+</video>
+<h3>Demo Video</h3>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- COOKIE -->
+
+<div class="cookie" id="cookie">
+
+<b>🍪 Çerez Kullanımı</b>
+
+<small>
+Bu site daha iyi video performansı ve kullanıcı deneyimi için çerezler kullanır.
+</small>
+
+<small>
+Devam ederek çerez kullanımını kabul etmiş olursunuz.
+</small>
+
+<button class="accept" onclick="acceptCookie()">Kabul Ediyorum</button>
+
+<button class="reject" onclick="rejectCookie()">Reddet</button>
+
+</div>
+
+<!-- PREMIUM -->
+
+<div class="popup" id="premiumBox">
+
+<h1>👑 PREMIUM ÜYELİK</h1>
+
+<p>
+Ödeme yöntemleri hazırlanıyor.
+Premium üyelik aktif olduğunda:
+
+<br><br>
+HD içerikler<br>
+Reklamsız izleme<br>
+Özel videolar
+
+</p>
+
+<h2 id="count">15</h2>
+
+</div>
 
 <script>
-    const db = [
-        {id: 1, name: "YERLİ ARŞİV #01", link: "https://www.porno5zz.shop/embed/3dff4b38fc8d2872f1ec"},
-        {id: 2, name: "ÜVEY ANNE SERİSİ NEW PORNO ", link: "https://www.porno5zz.shop/embed/c2f636f067f89cc14862"},
-        {id: 3, name: "KOMŞU İNTİKAMI", link: "https://www.porno5zz.shop/embed/96369ab93e4f3bb068c2"},
-        {id: 4, name: "EV SAHİBİ & TAMİRCİ PORNO ", link: "https://www.porno5zz.shop/embed/a5425d6965fbd4c8fbe1"},
-        {id: 5, name: "YASAK AŞİRET PORNO ", link: "https://www.porno5zz.shop/embed/a8ce66358eb576b8912c"}
-    ];
 
-    function access() {
-        document.getElementById('gate').style.display = 'none';
-        document.getElementById('site').style.display = 'block';
-        loadFeed();
-    }
+const grid=document.getElementById("videoGrid")
+const music=document.getElementById("music")
 
-    function loadFeed() {
-        const target = document.getElementById('content');
-        target.innerHTML = db.map(v => `
-            <div class="video-card">
-                <div class="player-area" id="p-${v.id}">
-                    <div class="play-overlay" onclick="inject('${v.id}', '${v.link}')">
-                        <button class="neon-btn">BAĞLANTIYI KUR ▶</button>
-                    </div>
-                </div>
-                <div class="video-info">
-                    <div style="color:var(--neon-red); font-weight:bold;">${v.name}</div>
-                    <div style="font-size:0.7rem; color:#444; margin-top:5px;">SDR_STREAM_ACTIVE_${v.id}</div>
-                </div>
-            </div>
-        `).join('');
-    }
+function loadVideos(){
 
-    function inject(id, url) {
-        const box = document.getElementById(`p-${id}`);
-        // Tarayıcı kısıtlamalarını aşmak için en geniş izinleri veriyoruz
-        box.innerHTML = `
-            <iframe 
-                src="${url}" 
-                allowfullscreen="true" 
-                webkitallowfullscreen="true" 
-                mozallowfullscreen="true" 
-                referrerpolicy="no-referrer"
-                sandbox="allow-forms allow-pointer-lock allow-same-origin allow-scripts allow-top-navigation">
-            </iframe>`;
-    }
+const videos=JSON.parse(localStorage.getItem("videos")||"[]")
+
+videos.forEach(v=>{
+
+const card=document.createElement("div")
+
+card.className="card"
+
+card.innerHTML=`
+<video controls>
+<source src="${v.url}" type="video/mp4">
+</video>
+<h3>${v.title}</h3>
+`
+
+grid.appendChild(card)
+
+})
+
+}
+
+loadVideos()
+
+function adminLogin(){
+
+const pass=prompt("Admin şifre")
+
+if(pass==="1234"){
+
+const title=prompt("Video başlık")
+
+const url=prompt("Video mp4 link")
+
+const videos=JSON.parse(localStorage.getItem("videos")||"[]")
+
+videos.push({title,url})
+
+localStorage.setItem("videos",JSON.stringify(videos))
+
+location.reload()
+
+}
+
+}
+
+function acceptCookie(){
+document.getElementById("cookie").style.display="none"
+music.play()
+}
+
+function rejectCookie(){
+document.body.innerHTML="<h1 style='text-align:center;margin-top:200px'>İyi günler ☀️</h1>"
+}
+
+function premium(){
+
+const box=document.getElementById("premiumBox")
+box.style.display="flex"
+
+let s=15
+
+const count=document.getElementById("count")
+
+const timer=setInterval(()=>{
+
+s--
+count.innerText=s
+
+if(s==0){
+
+clearInterval(timer)
+box.style.display="none"
+
+}
+
+},1000)
+
+}
+
+function coming(){
+alert("🚧 Bu kategori yakında aktif olacak.")
+}
+
 </script>
+
 </body>
 </html>
