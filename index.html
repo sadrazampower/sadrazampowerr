@@ -1,228 +1,306 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SADRAZAM NETWORK | Under Maintenance</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #ff00ff; /* Pembe Neon */
-            --accent: #ff0055;
-            --dark-surface: #050505;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SADRAZAM NETWORK | Maintenance</title>
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--dark-surface);
-            color: #ffffff;
-            font-family: 'Montserrat', sans-serif;
-            overflow: hidden;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 
-        /* Arkaplan Matrix Animasyonu */
-        #matrix-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            opacity: 0.3;
-            display: none;
-        }
+<style>
 
-        /* Giriş Paneli */
-        #entry-screen {
-            position: fixed;
-            inset: 0;
-            background: black;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+:root{
+--primary:#ff00ff;
+--dark:#050505;
+}
 
-        .login-card {
-            width: 90%;
-            max-width: 400px;
-            background: #111;
-            border: 2px solid #222;
-            border-radius: 20px;
-            padding: 40px 20px;
-            text-align: center;
-            z-index: 1001;
-            transition: 0.5s;
-        }
+body{
+margin:0;
+background:#000;
+font-family:Montserrat;
+color:white;
+overflow:hidden;
+}
 
-        .logo {
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 30px;
-            color: white;
-        }
+/* MATRIX */
 
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+#matrix{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+opacity:0.25;
+z-index:1;
+display:none;
+}
 
-        .main-btn {
-            padding: 18px;
-            border-radius: 12px;
-            border: none;
-            font-weight: 900;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+/* ENTRY */
 
-        .btn-standard { background: #333; color: white; }
-        .btn-premium { background: var(--primary); color: white; box-shadow: 0 0 20px var(--primary); }
+#entry{
+position:fixed;
+inset:0;
+display:flex;
+align-items:center;
+justify-content:center;
+background:black;
+z-index:100;
+}
 
-        /* Kapalı Mesajı Stili */
-        #maintenance-overlay {
-            position: fixed;
-            inset: 0;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            background: rgba(0,0,0,0.8);
-            text-align: center;
-            padding: 20px;
-        }
+.card{
+background:#111;
+padding:40px;
+border-radius:20px;
+width:90%;
+max-width:400px;
+text-align:center;
+border:2px solid #222;
+}
 
-        .neon-text {
-            font-size: 3rem;
-            font-weight: 900;
-            color: #fff;
-            text-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary), 0 0 40px var(--primary);
-            margin-bottom: 20px;
-            animation: pulse 1.5s infinite;
-        }
+.logo{
+font-size:2rem;
+font-weight:900;
+margin-bottom:30px;
+}
 
-        .sub-text {
-            font-size: 1.2rem;
-            color: #eee;
-            max-width: 600px;
-            line-height: 1.6;
-            background: rgba(255, 0, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid var(--primary);
-        }
+.logo span{
+color:var(--primary);
+}
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-    </style>
+button{
+width:100%;
+padding:18px;
+margin-top:10px;
+border:none;
+border-radius:12px;
+font-weight:900;
+cursor:pointer;
+}
+
+.free{
+background:#333;
+color:white;
+}
+
+.premium{
+background:var(--primary);
+color:white;
+box-shadow:0 0 20px var(--primary);
+}
+
+/* MAINTENANCE */
+
+#maintenance{
+position:fixed;
+inset:0;
+display:none;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+z-index:200;
+padding:30px;
+background:rgba(0,0,0,0.85);
+}
+
+.neon{
+font-size:3rem;
+font-weight:900;
+color:white;
+text-shadow:
+0 0 10px var(--primary),
+0 0 20px var(--primary),
+0 0 40px var(--primary);
+animation:pulse 1.5s infinite;
+margin-bottom:20px;
+}
+
+.text{
+max-width:700px;
+background:rgba(255,0,255,0.1);
+padding:25px;
+border-radius:15px;
+border:1px solid var(--primary);
+line-height:1.7;
+}
+
+@keyframes pulse{
+0%,100%{transform:scale(1)}
+50%{transform:scale(1.05)}
+}
+
+</style>
 </head>
+
 <body>
 
-<canvas id="matrix-canvas"></canvas>
+<canvas id="matrix"></canvas>
 
 <div id="player"></div>
 
-<div id="entry-screen">
-    <div class="login-card">
-        <div class="logo">SADRAZAM <span style="color:var(--primary)">POWER</span></div>
-        <div class="btn-group">
-            <button class="main-btn btn-standard" onclick="triggerC5()">ÜCRETSİZ ERİŞİM</button>
-            <button class="main-btn btn-premium" onclick="triggerC5()">PREMIUM GİRİŞ</button>
-        </div>
-    </div>
+<!-- Giriş -->
+
+<div id="entry">
+
+<div class="card">
+
+<div class="logo">
+SADRAZAM <span>POWER</span>
 </div>
 
-<div id="maintenance-overlay">
-    <div class="neon-text">LVBEL C5</div>
-    <div class="sub-text">
-        <h2 style="color: var(--primary);">SİSTEM GEÇİCİ OLARAK ÇEVRİMDIŞI</h2>
-        Şu an içeride çok büyük bir güncelleme var baba! Sadrazam Network, Lvbel C5 hızıyla yenileniyor. 
-        Sizlere daha elit, daha hızlı ve daha kesintisiz bir deneyim sunmak için kısa bir süreliğine 
-        kapıları kapattık. En yakın zamanda, eskisinden daha güçlü bir şekilde döneceğiz. 
-        <br><br>
-        <b>"Baba hızlı, sistem daha hızlı!"</b>
-    </div>
+<button class="free" onclick="start()">ÜCRETSİZ ERİŞİM</button>
+<button class="premium" onclick="start()">PREMIUM GİRİŞ</button>
+
+</div>
+
+</div>
+
+<!-- Maintenance -->
+
+<div id="maintenance">
+
+<div class="neon">LVBEL C5</div>
+
+<div class="text">
+
+<h2 style="color:#ff00ff">SİSTEM GEÇİCİ OLARAK ÇEVRİMDIŞI</h2>
+
+Sadrazam Network şu anda büyük bir güncelleme sürecinden geçiyor.
+
+Sunucu altyapısı tamamen yenileniyor, güvenlik sistemleri güçlendiriliyor ve performans en üst seviyeye çıkarılıyor.
+
+Ekibimiz arka planda gece gündüz çalışıyor. Amaçımız size daha hızlı, daha stabil ve daha elit bir deneyim sunmak.
+
+Yeni sistem açıldığında Sadrazam Network eskisinden çok daha güçlü olacak.
+
+Bu süreçte:
+
+• Sunucu sistemi yükseltiliyor  
+• Yeni premium özellikler ekleniyor  
+• Güvenlik katmanları güçlendiriliyor  
+• Bağlantı hızı artırılıyor  
+• Arayüz tamamen yenileniyor  
+
+Bu sadece bir bakım değil…
+
+Bu bir **seviye atlama.**
+
+Kapılar tekrar açıldığında sistem eskisinden çok daha güçlü olacak.
+
+<br><br>
+
+<b>"Baba hızlı… ama sistem daha hızlı."</b>
+
+<br><br>
+
+⏳ Lütfen biraz bekleyin…
+
+</div>
+
 </div>
 
 <script>
-    // YouTube IFrame API yükleme
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    var player;
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '0',
-            width: '0',
-            videoId: 'mD2I0y9VzL4', // Lvbel C5 - Doğuştan Beri (Örnektir)
-            playerVars: { 'autoplay': 0, 'controls': 0 },
-            events: { 'onReady': onPlayerReady }
-        });
-    }
+/* YOUTUBE */
 
-    function onPlayerReady(event) {
-        player.setVolume(0);
-    }
+var tag=document.createElement('script');
+tag.src="https://www.youtube.com/iframe_api";
+document.body.appendChild(tag);
 
-    function triggerC5() {
-        // Ekranları değiştir
-        document.getElementById('entry-screen').style.display = 'none';
-        document.getElementById('maintenance-overlay').style.display = 'flex';
-        document.getElementById('matrix-canvas').style.display = 'block';
-        
-        // Müziği başlat
-        player.playVideo();
-        
-        // Sesi azdan çoğa artır
-        let volume = 0;
-        let volInterval = setInterval(() => {
-            volume += 2;
-            player.setVolume(volume);
-            if (volume >= 100) clearInterval(volInterval);
-        }, 100);
+var player;
 
-        startMatrix();
-    }
+function onYouTubeIframeAPIReady(){
 
-    // Pembe Matrix Efekti
-    function startMatrix() {
-        const canvas = document.getElementById('matrix-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+player=new YT.Player('player',{
+height:'0',
+width:'0',
 
-        const words = "LVBEL C5 BABA HIZLI 10 NUMARA";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = [];
+videoId:'7Oqz2pQ9F0A',
 
-        for (let x = 0; x < columns; x++) drops[x] = 1;
+playerVars:{
+autoplay:0,
+controls:0
+},
 
-        function draw() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#ff00ff'; // Pembe renk
-            ctx.font = fontSize + 'px arial';
+events:{
+onReady:function(e){
+e.target.setVolume(0);
+}
+}
 
-            for (let i = 0; i < drops.length; i++) {
-                const text = words.charAt(Math.floor(Math.random() * words.length));
-                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                drops[i]++;
-            }
-        }
-        setInterval(draw, 33);
-    }
+});
+
+}
+
+function start(){
+
+document.getElementById("entry").style.display="none";
+document.getElementById("maintenance").style.display="flex";
+document.getElementById("matrix").style.display="block";
+
+player.playVideo();
+
+let v=0;
+
+let interval=setInterval(function(){
+
+v+=2;
+
+player.setVolume(v);
+
+if(v>=100)clearInterval(interval);
+
+},100);
+
+matrix();
+
+}
+
+/* MATRIX */
+
+function matrix(){
+
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+const letters="LVBELC5BABA10NUMARA";
+const font=16;
+const columns=canvas.width/font;
+
+const drops=[];
+
+for(let x=0;x<columns;x++)drops[x]=1;
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#ff00ff";
+ctx.font=font+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+
+const text=letters.charAt(Math.floor(Math.random()*letters.length));
+
+ctx.fillText(text,i*font,drops[i]*font);
+
+if(drops[i]*font>canvas.height&&Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,33);
+
+}
+
 </script>
 
 </body>
