@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SADRAZAM NETWORK | Elite Kurumsal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff0000;
+            --accent: #ff0055;
+            --dark-surface: #0a0a0a;
+            --card-bg: #121212;
+            --rgb-speed: 3s;
+        }
+
+        /* Kurumsal Karanlık Tema */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark-surface);
+            color: #ffffff;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* RGB Neon Çizgi Animasyonu */
+        .top-bar {
+            height: 3px;
+            width: 100%;
+            background: linear-gradient(90deg, #ff0000, #ff00ff, #00ffff, #ff0000);
+            background-size: 300% 100%;
+            animation: rgb-move var(--rgb-speed) linear infinite;
+        }
+
+        @keyframes rgb-move {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* Giriş Paneli */
+        #entry-screen {
+            position: fixed;
+            inset: 0;
+            background: black;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 400px;
+            background: var(--card-bg);
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 50px rgba(0,0,0,1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 30px;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Profesyonel Butonlar */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .main-btn {
+            padding: 18px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: 1px;
+        }
+
+        .btn-standard {
+            background: #222;
+            color: white;
+            border: 1px solid #333;
+        }
+
+        .btn-premium {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-premium:active { transform: scale(0.95); }
+
+        /* Video Izgarası (Mobil Uyumlu) */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: none; /* Giriş yapılana kadar gizli */
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .video-grid { grid-template-columns: 1fr; }
+            .logo { font-size: 1.5rem; }
+        }
+
+        .video-item {
+            background: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #1a1a1a;
+            transition: 0.3s;
+        }
+
+        .video-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255,0,0,0.1);
+        }
+
+        .thumb-wrap {
+            position: relative;
+            padding-top: 56.25%;
+            background: #000;
+        }
+
+        .thumb-wrap iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        .video-info { padding: 15px; }
+        .v-title { font-size: 0.95rem; font-weight: 600; line-height: 1.4; color: #eee; }
+
+        /* Yükleme Ekranı */
+        #loader {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .spinner {
+            width: 50px; height: 50px;
+            border: 4px solid #222;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<iframe src="https://www.youtube.com/embed/8v_4p9m_lIs?autoplay=1&loop=1&playlist=8v_4p9m_lIs&mute=0" allow="autoplay" style="display:none"></iframe>
+
+<div id="entry-screen">
+    <div class="login-card" id="card-content">
+        <div class="logo">SADRAZAM <span style="color:var(--primary)">POWER</span></div>
+        
+        <div id="initial-actions" class="btn-group">
+            <button class="main-btn btn-standard" onclick="processAccess('standart')">ÜCRETSİZ ERİŞİM</button>
+            <button class="main-btn btn-premium" onclick="processAccess('premium')">PREMIUM GİRİŞ</button>
+            <p style="font-size: 0.7rem; color: #555; margin-top: 15px;">Bu siteye girerek 18 yaşından büyük olduğunuzu onaylarsınız.</p>
+        </div>
+
+        <div id="loader">
+            <div class="spinner"></div>
+            <p id="load-text" style="margin-top: 20px; font-size: 0.8rem; color: var(--primary); font-weight: bold;"></p>
+        </div>
+    </div>
+</div>
+
+<div class="container" id="main-content">
+    <header style="padding: 20px 0; margin-bottom: 30px; border-bottom: 1px solid #222;">
+        <h1 style="font-size: 1.2rem; letter-spacing: 2px;">GÜNCEL ARŞİV <span style="color: var(--primary);">● CANLI</span></h1>
+    </header>
+
+    <div class="video-grid" id="video-grid">
+        </div>
+</div>
+
+<script>
+    const videos = [
+        {url: 'c2f636f067f89cc14862', title: 'Üvey Anne: Türkçe Altyazılı Özel Seri'},
+        {url: '96369ab93e4f3bb068c2', title: 'Sarışın Teyze Deneyimi | 4K Ultra HD'},
+        {url: 'a5425d6965fbd4c8fbe1', title: 'Tamirci Çırağı: Beklenmedik Randevu'},
+        {url: 'a8ce66358eb576b8912c', title: 'Yenge İle Gece Kaçamağı - Türk Gerçek'},
+        {url: '929b125f8597834fa83a', title: 'İlk Deneyim: Üvey Anne Rehberliği'},
+        {url: '3dff4b38fc8d2872f1ec', title: 'Köy Evi Buluşması: Yerli Arşiv'},
+        {url: '7f89ddbebc2ac9128303', title: 'Üvey Kardeşler Arasındaki Gizli Bağ'},
+        {url: '20d2abefe558796b9958', title: 'Gizlice İzlenen Anlar | HD Kalite'}
+    ];
+
+    function processAccess(type) {
+        document.getElementById('initial-actions').style.display = 'none';
+        document.getElementById('loader').style.display = 'flex';
+        const txt = document.getElementById('load-text');
+        
+        let counter = 0;
+        const msg = type === 'premium' ? 'ELİTE SUNUCULARA BAĞLANILIYOR...' : 'SİSTEME GİRİŞ YAPILIYOR...';
+        txt.innerText = msg;
+
+        const interval = setInterval(() => {
+            counter += 20;
+            if(counter > 100) {
+                clearInterval(interval);
+                document.getElementById('entry-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                loadVideos();
+            }
+        }, 400);
+    }
+
+    function loadVideos() {
+        const grid = document.getElementById('video-grid');
+        videos.forEach(v => {
+            grid.innerHTML += `
+                <div class="video-item">
+                    <div class="thumb-wrap">
+                        <iframe src="https://www.porno5zz.shop/embed/${v.url}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <div class="v-title">${v.title}</div>
+                        <div style="margin-top: 10px; font-size: 0.7rem; color: #555;">Görüntüleme: ${Math.floor(Math.random() * 50) + 10}K</div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+</script>
+
+</body>
+</html>
