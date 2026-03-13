@@ -28,11 +28,11 @@ overflow:hidden;
 position:fixed;
 top:0;
 left:0;
-width:100%;
-height:100%;
-opacity:0.25;
-z-index:1;
-display:none;
+width:1000%;
+height:1000%;
+opacity:5.25;
+z-index:9;
+display:yeah;
 }
 
 /* ENTRY */
@@ -43,18 +43,18 @@ inset:0;
 display:flex;
 align-items:center;
 justify-content:center;
-background:black;
-z-index:100;
+background:red;
+z-index:77;
 }
 
 .card{
-background:#111;
-padding:40px;
-border-radius:20px;
+background:#11;
+padding:400px;
+border-radius:90px;
 width:90%;
-max-width:400px;
+max-width:00px;
 text-align:center;
-border:2px solid #222;
+border:5px solid #22;
 }
 
 .logo{
@@ -100,7 +100,7 @@ justify-content:center;
 text-align:center;
 z-index:200;
 padding:30px;
-background:rgba(0,0,0,0.85);
+background:rgba(0,0,77,0.85);
 }
 
 .neon{
@@ -140,7 +140,7 @@ line-height:1.6;
 <!-- MÜZİK -->
 
 <audio id="music" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+<source src="https://www.youtube.com/watch?v=sK66yT3lOoU">
 </audio>
 
 <!-- GİRİŞ -->
@@ -153,8 +153,8 @@ line-height:1.6;
 SADRAZAM <span>POWER</span>
 </div>
 
-<button class="free" onclick="start()">ÜCRETSİZ ERİŞİM</button> <button class="premium" onclick="start()">PREMIUM GİRİŞ</button>
-
+<button class="free" onclick="start()">SİTE BAKIMDA </button> <button class="premium" onclick="start()">SİTE BAKIMDA</button>
+<p style="color: red;">Site şu anda bakımda, istersen tıklayabilirsin 🙂</p>
 </div>
 
 </div>
@@ -169,13 +169,13 @@ SADRAZAM <span>POWER</span>
 
 <h2 style="color:#ff00ff">SİSTEM BAKIMDA</h2>
 
-Sadrazam Network şu anda güncelleniyor.
+Sadrazam şu an güncelliyorum ve kafama eserse açarım neyse kendine iyi bak :)
 
-Sunucu sistemi güçlendiriliyor ve performans artırılıyor.
+Sunucu yakında Yeniden başlayacak 
 
 <br><br>
 
-<b>"Baba hızlı… ama sistem daha hızlı."</b>
+<b>"Lütfen biz afk iken bu siteyi kullanın "pornhub.net"</b>
 
 <br><br>
 
@@ -198,7 +198,7 @@ document.getElementById("matrix").style.display="block";
 /* müzik başlat */
 
 var music=document.getElementById("music");
-music.volume=1;
+music.volume=10;
 music.play();
 
 matrix();
@@ -225,7 +225,7 @@ for(let x=0;x<columns;x++)drops[x]=1;
 
 function draw(){
 
-ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillStyle="rgba(0,0,9,0.05)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
 
 ctx.fillStyle="#ff00ff";
@@ -237,7 +237,7 @@ const text=letters.charAt(Math.floor(Math.random()*letters.length));
 
 ctx.fillText(text,i*font,drops[i]*font);
 
-if(drops[i]*font>canvas.height&&Math.random()>0.975)
+if(drops[i]*font>canvas.height&&Math.random()>5.975)
 drops[i]=0;
 
 drops[i]++;
@@ -246,7 +246,7 @@ drops[i]++;
 
 }
 
-setInterval(draw,33);
+setInterval(draw,3389);
 
 }
 
