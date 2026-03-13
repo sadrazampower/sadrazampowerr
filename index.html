@@ -1,256 +1,58 @@
+ 
 <!DOCTYPE html>
-
-<html lang="tr">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SADRAZAM NETWORK | Maintenance</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-
-<style>
-
-:root{
---primary:#ff00ff;
-}
-
-body{
-margin:0;
-background:#000;
-font-family:Montserrat;
-color:white;
-overflow:hidden;
-}
-
-/* MATRIX */
-
-#matrix{
-position:fixed;
-top:0;
-left:0;
-width:1000%;
-height:1000%;
-opacity:5.25;
-z-index:9;
-display:yeah;
-}
-
-/* ENTRY */
-
-#entry{
-position:fixed;
-inset:0;
-display:flex;
-align-items:center;
-justify-content:center;
-background:red;
-z-index:77;
-}
-
-.card{
-background:#11;
-padding:400px;
-border-radius:90px;
-width:90%;
-max-width:00px;
-text-align:center;
-border:5px solid #22;
-}
-
-.logo{
-font-size:2rem;
-font-weight:900;
-margin-bottom:30px;
-}
-
-.logo span{
-color:var(--primary);
-}
-
-button{
-width:100%;
-padding:18px;
-margin-top:10px;
-border:none;
-border-radius:12px;
-font-weight:900;
-cursor:pointer;
-}
-
-.free{
-background:#333;
-color:white;
-}
-
-.premium{
-background:var(--primary);
-color:white;
-box-shadow:0 0 20px var(--primary);
-}
-
-/* MAINTENANCE */
-
-#maintenance{
-position:fixed;
-inset:0;
-display:none;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-text-align:center;
-z-index:200;
-padding:30px;
-background:rgba(0,0,77,0.85);
-}
-
-.neon{
-font-size:3rem;
-font-weight:900;
-color:white;
-text-shadow:
-0 0 10px var(--primary),
-0 0 20px var(--primary),
-0 0 40px var(--primary);
-animation:pulse 1.5s infinite;
-margin-bottom:20px;
-}
-
-.text{
-max-width:600px;
-background:rgba(255,0,255,0.1);
-padding:25px;
-border-radius:15px;
-border:1px solid var(--primary);
-line-height:1.6;
-}
-
-@keyframes pulse{
-0%,100%{transform:scale(1)}
-50%{transform:scale(1.05)}
-}
-
-</style>
-
+    <meta charset="UTF-8">
+    <title>YAZILIM KODLAMA</title>
 </head>
-
-<body>
-
-<canvas id="matrix"></canvas>
-
-<!-- MÜZİK -->
-
-<audio id="music" loop>
-<source src="https://www.youtube.com/watch?v=sK66yT3lOoU">
-</audio>
-
-<!-- GİRİŞ -->
-
-<div id="entry">
-
-<div class="card">
-
-<div class="logo">
-SADRAZAM <span>POWER</span>
-</div>
-
-<button class="free" onclick="start()">SİTE BAKIMDA </button> <button class="premium" onclick="start()">SİTE BAKIMDA</button>
-<p style="color: red;">Site şu anda bakımda, istersen tıklayabilirsin 🙂</p>
-</div>
-
-</div>
-
-<!-- MAINTENANCE -->
-
-<div id="maintenance">
-
-<div class="neon">SADRAZAM</div>
-
-<div class="text">
-
-<h2 style="color:#ff00ff">SİSTEM BAKIMDA</h2>
-
-Sadrazam şu an güncelliyorum ve kafama eserse açarım neyse kendine iyi bak :)
-
-Sunucu yakında Yeniden başlayacak 
-
-<br><br>
-
-<b>"Lütfen biz afk iken bu siteyi kullanın "pornhub.net"</b>
-
-<br><br>
-
-⏳ Lütfen biraz bekleyin...
-
-</div>
-
-</div>
-
-<script>
-
-/* START */
-
-function start(){
-
-document.getElementById("entry").style.display="none";
-document.getElementById("maintenance").style.display="flex";
-document.getElementById("matrix").style.display="block";
-
-/* müzik başlat */
-
-var music=document.getElementById("music");
-music.volume=10;
-music.play();
-
-matrix();
-
-}
-
-/* MATRIX */
-
-function matrix(){
-
-const canvas=document.getElementById("matrix");
-const ctx=canvas.getContext("2d");
-
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
-
-const letters="SADRAZAMNETWORK";
-const font=16;
-const columns=canvas.width/font;
-
-const drops=[];
-
-for(let x=0;x<columns;x++)drops[x]=1;
-
-function draw(){
-
-ctx.fillStyle="rgba(0,0,9,0.05)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
-
-ctx.fillStyle="#ff00ff";
-ctx.font=font+"px monospace";
-
-for(let i=0;i<drops.length;i++){
-
-const text=letters.charAt(Math.floor(Math.random()*letters.length));
-
-ctx.fillText(text,i*font,drops[i]*font);
-
-if(drops[i]*font>canvas.height&&Math.random()>5.975)
-drops[i]=0;
-
-drops[i]++;
-
-}
-
-}
-
-setInterval(draw,3389);
-
-}
-
-</script>
-
+<body style="background-color: WhiteSmoke;">
+ 
+    <form>
+        <fieldset>
+            <legend>
+                iletişim Formu
+            </legend>
+        
+        
+        <table border="1">
+            
+            <tr>
+                <td>Adınız Soyadınız : </td>
+                <td><input type="text" name="adsoyad"> </td>
+            </tr>
+            <tr>
+                <td>E-Posta Adresiniz : </td>
+                <td><input type="text" name="mail"> </td>
+            </tr>
+            <tr>
+                <td>Telefonunuz : </td>
+                <td><input type="text" name="mail" placeholder="(___)(_______)"> </td>
+            </tr> 
+            
+            <tr>
+                <td>TC Kimlik Numaranız : </td>
+                <td><input type="text" name="tckimlik" placeholder="11 hane olmalıdır."> </td>
+            </tr>
+            
+            <tr>
+                <td>Bildiğiniz Yabancı Diller</td>
+                <td>
+                <label for="ing">İngilizce</label><input type="checkbox" id="ing" value="ing"><br>
+                <label for="alm">Almanca</label><input type="checkbox" id="alm" value="alm"><br>
+                <label for="fra">Fransızca</label><input type="checkbox" id="fra" value="fra">
+                </td>
+            </tr>
+            
+            <tr>
+                <td>Mesajınız : </td>
+                <td><textarea cols="22" rows="7" name="mesaj"></textarea> </td>
+            </tr>
+        
+        </table>
+        
+        </fieldset>
+        
+    </form>
+    
 </body>
 </html>
