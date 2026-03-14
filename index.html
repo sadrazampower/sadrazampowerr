@@ -1335,6 +1335,62 @@
 <button class="btn-ghost" data-close-panel>Kapat</button>
 </div>
 
+<style>
+/* Uyarı notu stili */
+.warning {
+  color: #d8000c; /* kırmızı yazı */
+  background: #ffe5e5; /* hafif pembe arka plan */
+  border-left: 4px solid #d8000c; /* solda uyarı çubuğu */
+  padding: 10px;
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: default;
+  animation: pulse 1.5s infinite alternate;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+/* Büyüyüp küçülme animasyonu */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Hover efekti: hafif titreme ve renk değişimi */
+.warning:hover {
+  animation: shake 0.5s infinite;
+  background: #ffd2d2; /* daha canlı arka plan */
+  color: #ff0000; /* daha canlı kırmızı */
+}
+
+/* Hafif titreme animasyonu */
+@keyframes shake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-2px); }
+  50%  { transform: translateX(2px); }
+  75%  { transform: translateX(-2px); }
+  100% { transform: translateX(2px); }
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 480px) {
+  .warning {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
+</style>
+
+<div class="label">Sizi Arayalım</div>
+<h2>Telefon ile geri dönüş talebi</h2>
+<p>Bilgilerinizi bırakın, kaydınız doğrudan oluşturulsun.</p>
+</div>
+<button class="btn-ghost" data-close-panel>Kapat</button>
+</div>
+
 <form id="call-form" class="form-grid">
   <label class="field">
     Ad Soyad
