@@ -2,33 +2,52 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Site Kapalı</title>
 <style>
-  body {
+  html, body {
     margin: 0;
-    height: 100vh;
-    background: black;
+    padding: 0;
+    height: 100%;
     overflow: hidden;
     font-family: monospace;
-    color: #0F0;
+    background: linear-gradient(to bottom, #001f3f, #0074D9); /* lacivert / mavi degrade */
   }
   canvas {
-    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
   }
   .message {
     position: absolute;
     top: 40%;
-    width: 100%;
+    width: 90%;
+    left: 5%;
     text-align: center;
-    font-size: 2em;
-    color: #0F0;
-    text-shadow: 0 0 10px #0F0, 0 0 20px #0F0;
+    font-size: 1.5em;
+    color: #00ffff;
+    text-shadow: 0 0 15px #00ffff, 0 0 30px #00ffff;
+    z-index: 1;
+    line-height: 1.6em;
+  }
+  audio {
+    display: none;
   }
 </style>
 </head>
 <body>
 <canvas id="matrix"></canvas>
-<div class="message">Site kalıcı olarak kapalı 🚫</div>
+<div class="message">
+  🚫 **Dikkat! Site Kapalı** 🚫<br><br>
+  Evet dostum, doğru okudun. Bu site artık kalıcı olarak kapalıdır.  
+  Biz de üzgünüz ama artık burada çerezler yok, meme yok, wifi sinyali yok…  
+  Ama moralini bozma! Sen yine de başka sitelerde dolaşabilir, kahveni alabilir ve hayata devam edebilirsin.  
+  Eğer buraya tekrar gelmek istersen… üzgünüz, boşuna uğraşma.  
+  Ama merak etme, Matrix hala arka planda seni izliyor. 💻🌀  
+  Eğlenceyi kaçırdın ama biraz da komik bir kapanış oldu, ne dersin? 😎
+</div>
+
 <audio id="muzik" autoplay loop>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   Tarayıcınız audio desteklemiyor.
@@ -39,27 +58,28 @@
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
 
 const letters = '01';
-const fontSize = 20;
-const columns = canvas.width / fontSize;
-const drops = [];
-
-for (let x = 0; x < columns; x++) drops[x] = Math.random() * canvas.height;
+const fontSize = 16;
+const columns = Math.floor(canvas.width / fontSize);
+const drops = Array(columns).fill(1);
 
 function draw() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#0F0";
-    ctx.font = fontSize + "px monospace";
-    for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-        drops[i]++;
-    }
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#00ffff";
+  ctx.font = fontSize + "px monospace";
+  for (let i = 0; i < drops.length; i++) {
+    const text = letters[Math.floor(Math.random() * letters.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+    drops[i]++;
+  }
 }
 
 setInterval(draw, 50);
