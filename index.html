@@ -11,7 +11,8 @@
     height: 100%;
     overflow: hidden;
     font-family: monospace;
-    background: linear-gradient(to bottom, #001f3f, #0074D9); /* lacivert / mavi degrade */
+    background: linear-gradient(to bottom, #001f3f, #004080); /* lacivert / mavi degrade */
+    color: #00ffff;
   }
   canvas {
     position: absolute;
@@ -21,7 +22,7 @@
   }
   .message {
     position: absolute;
-    top: 40%;
+    top: 30%;
     width: 90%;
     left: 5%;
     text-align: center;
@@ -38,23 +39,26 @@
 </head>
 <body>
 <canvas id="matrix"></canvas>
+
 <div class="message">
-  🚫 **Dikkat! Site Kapalı** 🚫<br><br>
-  Evet dostum, doğru okudun. Bu site artık kalıcı olarak kapalıdır.  
-  Biz de üzgünüz ama artık burada çerezler yok, meme yok, wifi sinyali yok…  
-  Ama moralini bozma! Sen yine de başka sitelerde dolaşabilir, kahveni alabilir ve hayata devam edebilirsin.  
-  Eğer buraya tekrar gelmek istersen… üzgünüz, boşuna uğraşma.  
-  Ama merak etme, Matrix hala arka planda seni izliyor. 💻🌀  
-  Eğlenceyi kaçırdın ama biraz da komik bir kapanış oldu, ne dersin? 😎
+  🚫 <b>ÖNEMLİ DUYURU</b> 🚫<br><br>
+  Evet… doğru gördün. Bu site artık kapalıdır.  
+  Bizi merak etme, üzülme, ama artık burası bir daha açılmayacak.  
+  Aslında teknik olarak açılabilirdi ama dün gece sunucu, çayını döktü ve bir daha açılmayacağını ilan etti.  
+  Eğer buraya girmeye çalışıyorsan… üzgünüz, boşuna uğraşıyorsun.  
+  Arada sırada eski ziyaretçiler gelir, bakar, “Ah be ne güzelmiş” derler.  
+  Biz de hafif gülümseriz ve sessizce sunucuyu yeniden başlatmayı düşünürüz ama sonra çay kahve molası veririz.  
+  Sonuç olarak: burası artık kapalı. Ama moralini bozma, başka sitelerde bolca kahkaha ve komik GIFler seni bekliyor.  
+  Ve unutma… bu ciddi bir açıklama gibi duruyor ama aslında her satırıyla biraz seni kandırıyoruz. Şaşırdın mı? İşte gerçek internet tadı bu! 😏  
 </div>
 
 <audio id="muzik" autoplay loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
   Tarayıcınız audio desteklemiyor.
 </audio>
 
 <script>
-// Matrix efekti
+// Matrix tarzı düşen 0-1 efekti (şeffaf)
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 
@@ -72,7 +76,7 @@ const drops = Array(columns).fill(1);
 
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "#00ffff";
+  ctx.fillStyle = "#00ffff"; // yazı rengi
   ctx.font = fontSize + "px monospace";
   for (let i = 0; i < drops.length; i++) {
     const text = letters[Math.floor(Math.random() * letters.length)];
