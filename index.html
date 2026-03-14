@@ -1279,44 +1279,95 @@
                 <section class="section panel-wrap">
                   <div class="panel-head">
                     <div>
-                      <div class="label">Sizi Arayalım</div>
-                      <h2>Telefon ile geri dönüş talebi</h2>
-                      <p>Bilgilerinizi bırakın, kaydınız doğrudan oluşturulsun.</p>
-                    </div>
-                    <button class="btn-ghost" data-close-panel>Kapat</button>
-                  </div>
+     <style>
+/* Uyarı notu stili */
+.warning {
+  color: #d8000c; /* kırmızı yazı */
+  background: #ffe5e5; /* hafif pembe arka plan */
+  border-left: 4px solid #d8000c; /* solda uyarı çubuğu */
+  padding: 10px;
+  margin-top: 15px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: default;
+  animation: pulse 1.5s infinite alternate;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
 
-                  <form id="call-form" class="form-grid">
-                    <label class="field">
-                      Ad Soyad
-                      <input required name="name" placeholder="Adınızı yazın" />
-                    </label>
-                    <label class="field">
-                      Telefon Numaranız
-                      <input required name="phone" placeholder="05xx xxx xx xx" />
-                    </label>
-                    <label class="field">
-                      Konu
-                      <input required name="subject" placeholder="Kısa konu başlığı" />
-                    </label>
-                    <label class="field">
-                      Hangi saatlerde boşsunuz?
-                      <select name="availability">
-                        ${CALL_TIME_OPTIONS.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}
-                      </select>
-                    </label>
-                    <label class="field-wide">
-                      Açıklama
-                      <textarea required name="details" placeholder="Talebinizi kısaca yazın"></textarea>
-                    </label>
-                    <div class="form-foot">
-                      <p>Talebiniz en geç 1 iş günü içinde yanıtlanır.</p>
-                      <button class="btn-light" type="submit">Talep oluştur</button>
-                    </div>
-                  </form>
-                </section>
-              </div>
+/* Büyüyüp küçülme animasyonu */
+@keyframes pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
 
+/* Hover efekti: hafif titreme ve renk değişimi */
+.warning:hover {
+  animation: shake 0.5s infinite;
+  background: #ffd2d2; /* daha canlı arka plan */
+  color: #ff0000; /* daha canlı kırmızı */
+}
+
+/* Hafif titreme animasyonu */
+@keyframes shake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(-2px); }
+  50%  { transform: translateX(2px); }
+  75%  { transform: translateX(-2px); }
+  100% { transform: translateX(2px); }
+}
+
+/* Mobil uyumluluk */
+@media (max-width: 480px) {
+  .warning {
+    font-size: 12px;
+    padding: 8px;
+  }
+}
+</style>
+
+<div class="label">Sizi Arayalım</div>
+<h2>Telefon ile geri dönüş talebi</h2>
+<p>Bilgilerinizi bırakın, kaydınız doğrudan oluşturulsun.</p>
+</div>
+<button class="btn-ghost" data-close-panel>Kapat</button>
+</div>
+
+<form id="call-form" class="form-grid">
+  <label class="field">
+    Ad Soyad
+    <input required name="name" placeholder="Adınızı yazın" />
+  </label>
+  <label class="field">
+    Telefon Numaranız
+    <input required name="phone" placeholder="05xx xxx xx xx" />
+  </label>
+  <label class="field">
+    Konu
+    <input required name="subject" placeholder="Kısa konu başlığı" />
+  </label>
+  <label class="field">
+    Hangi saatlerde boşsunuz?
+    <select name="availability">
+      ${CALL_TIME_OPTIONS.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}
+    </select>
+  </label>
+  <label class="field-wide">
+    Açıklama
+    <textarea required name="details" placeholder="Talebinizi kısaca yazın"></textarea>
+  </label>
+  <div class="form-foot">
+    <p>Talebiniz en geç 1 iş günü içinde yanıtlanır.</p>
+    <button class="btn-light" type="submit">Talep oluştur</button>
+  </div>
+
+  <!-- Uyarı notu eklendi -->
+  <p class="warning">Telefonunuzun gizli numaralar açık olduğundan emin olun, aksi takdirde işlem direkt iptal edilir!</p>
+</form>
+</section>
+</div>
               <div id="mail-panel" class="${mailOpen ? "" : "hidden"}">
                 <section class="section panel-wrap">
                   <div class="panel-head">
