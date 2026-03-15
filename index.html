@@ -1,229 +1,2513 @@
-<?php
-$page_title = 'Ana Sayfa';
-include 'includes/header.php';
-renderHeroBackground();
-?>
 
-<!-- Hero Section -->
-<section class="hero" id="hero">
-    <div class="hero-bg">
-        <div class="hero-gradient"></div>
-        <div class="hero-particles" id="particles"></div>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <title>Doctor Checker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+    <link href="assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/icons.min.css" rel="stylesheet">
+    <link href="assets/css/app.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    /* GENEL AYARLAR */
+    .vertical-menu, #sidebar-menu, #side-menu {
+        background: linear-gradient(180deg, #0a0a0a 0%, #000000 100%) !important;
+    }
+   
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+        background: #0a0a0a;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #FFD700;
+    }
+   
+    /* ARAMA ÇUBUĞU */
+    .search-wrapper {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        position: sticky;
+        top: 0;
+        background: #000;
+        z-index: 100;
+        border-bottom: 2px solid rgba(255, 215, 0, 0.2);
+    }
+    .search-input-container {
+        position: relative;
+    }
+    .search-input {
+        width: 100%;
+        background: linear-gradient(135deg, rgba(255,215,0,0.05), rgba(0,0,0,0.8));
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        border-radius: 10px;
+        padding: 8px 12px 8px 35px;
+        color: #fff;
+        font-size: 0.8rem;
+        outline: none;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }
+    .search-input::placeholder {
+        color: #888;
+    }
+    .search-input:focus {
+        border-color: #FFD700;
+        background: rgba(255, 215, 0, 0.1);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    }
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #FFD700;
+        font-size: 1rem;
+        pointer-events: none;
+    }
+    .no-results {
+        padding: 20px;
+        text-align: center;
+        color: #888;
+        font-size: 0.9rem;
+        display: none;
+    }
+   
+    /* KULLANICI BİLGİ KUTUSU - YENİDEN TASARLANMIŞ VE KÜÇÜLTÜLMÜŞ */
+    .user-profile-card {
+        margin: 10px 8px;
+        padding: 12px;
+        background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(0,0,0,0.5) 100%);
+        border-radius: 12px;
+        border: 2px solid rgba(255, 215, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    .user-profile-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+    }
+    @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    .user-profile-card.premium::before {
+        background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%);
+    }
+    .user-profile-card.admin::before {
+        background: radial-gradient(circle, rgba(255,107,53,0.15) 0%, transparent 70%);
+    }
+    .user-profile-card.kurucu::before {
+        background: radial-gradient(circle, rgba(0,245,255,0.15) 0%, transparent 70%);
+    }
+   
+    .user-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        position: relative;
+        z-index: 1;
+    }
+    .user-info-left {
+        flex: 1;
+    }
+    .welcome-label {
+        font-size: 0.65rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 3px;
+    }
+    .username-display {
+        font-size: 1rem;
+        font-weight: 700;
+        color: #FFFFFF;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+        margin-bottom: 3px;
+        letter-spacing: 0.3px;
+    }
+    .role-badge {
+        display: inline-block;
+        padding: 2px 8px;
+        background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05));
+        border: 1px solid rgba(255, 215, 0, 0.4);
+        border-radius: 12px;
+        font-size: 0.65rem;
+        color: #FFD700;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+    }
+    .verified-icon {
+        font-size: 24px;
+        color: #FFD700;
+        animation: pulse-glow 2s infinite;
+        filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.5));
+    }
+    .verified-icon.inactive {
+        color: #333;
+        animation: none;
+        filter: none;
+    }
+    @keyframes pulse-glow {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.8; transform: scale(1.08); }
+    }
+   
+    .premium-expire-info {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 215, 0, 0.2);
+        position: relative;
+        z-index: 1;
+    }
+    .expire-label {
+        font-size: 0.65rem;
+        color: #999;
+        margin-bottom: 3px;
+    }
+    .expire-days {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #FFD700;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+    }
+   
+    /* BAKİYE VE SEPET KUTUSU - YENİ TASARIM VE KÜÇÜLTÜLMÜŞ */
+    .info-cards-container {
+        margin: 8px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .info-card {
+        background: linear-gradient(135deg, rgba(30,30,30,0.8), rgba(10,10,10,0.9));
+        border-radius: 10px;
+        padding: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+        display: block;
+    }
+    .info-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #FFD700, transparent);
+        animation: shimmer 3s infinite;
+    }
+    @keyframes shimmer {
+        0%, 100% { transform: translateX(-100%); }
+        50% { transform: translateX(100%); }
+    }
+    .info-card:hover {
+        border-color: rgba(255, 215, 0, 0.4);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(255, 215, 0, 0.1);
+    }
+    .info-card-clickable {
+        cursor: pointer;
+    }
+    .info-card-clickable:hover {
+        border-color: rgba(255, 215, 0, 0.6);
+        box-shadow: 0 5px 25px rgba(255, 215, 0, 0.2);
+    }
+    .info-card-icon {
+        font-size: 1.2rem;
+        color: #FFD700;
+        margin-bottom: 5px;
+    }
+    .info-card-label {
+        font-size: 0.65rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 4px;
+    }
+    .info-card-value {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #FFD700;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.2);
+    }
+    .cart-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 3px;
+    }
+    .cart-count {
+        font-size: 0.75rem;
+        color: #bbb;
+    }
+    .cart-price {
+        font-size: 0.8rem;
+        color: #66FF66;
+        font-weight: 600;
+    }
+   
+    /* MENÜ BAŞLIKLARI */
+    .menu-title {
+        font-weight: 700;
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin: 12px 10px 6px;
+        padding: 5px 8px;
+        color: #FFD700 !important;
+        background: linear-gradient(90deg, rgba(255,215,0,0.1), transparent);
+        border-left: 3px solid #FFD700;
+        border-radius: 0 5px 5px 0;
+    }
+   
+    /* PREMİUM ÖZELLİKLER BAŞLIĞI - ÖZEL STIL */
+    .premium-features-title {
+        position: relative;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+    .premium-features-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #FFD700, rgba(255,215,0,0.3), transparent);
+        animation: premium-line 3s infinite;
+    }
+    @keyframes premium-line {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+    }
+   
+    /* MENÜ ÖĞELER - İYİLEŞTİRİLMİŞ VE KÜÇÜLTÜLMÜŞ */
+    #side-menu {
+        padding: 0 5px 20px;
+    }
+    .menu-item {
+        margin: 2px 0;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .menu-item > a {
+        color: #fff !important;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        font-weight: 500;
+        font-size: 0.85rem;
+    }
+    .menu-item > a i {
+        font-size: 1.1rem;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+    }
+    .menu-item:hover > a {
+        background: linear-gradient(135deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
+        transform: translateX(5px);
+        color: #FFD700 !important;
+    }
+    .menu-item:hover > a i {
+        color: #FFD700;
+        transform: scale(1.1);
+    }
+   
+    /* PREMİUM BUTON - ÖZEL STIL */
+    .premium-get-btn > a {
+        background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,165,0,0.1));
+        border: 2px solid rgba(255, 215, 0, 0.4);
+        padding: 8px 10px;
+        font-weight: 700;
+        animation: premium-glow 3s infinite;
+    }
+    .premium-get-btn > a:hover {
+        background: linear-gradient(135deg, rgba(255,215,0,0.3), rgba(255,165,0,0.2));
+        border-color: #FFD700;
+        box-shadow: 0 5px 25px rgba(255, 215, 0, 0.4);
+    }
+    @keyframes premium-glow {
+        0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+        50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); }
+    }
+   
+    /* VIP BADGE */
+    .badge {
+        font-size: 0.65rem;
+        padding: 3px 8px;
+        border-radius: 12px;
+        margin-left: auto;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .badge.bg-success {
+        background: linear-gradient(135deg, #00FF00, #00CC00) !important;
+        color: #000 !important;
+        box-shadow: 0 2px 10px rgba(0, 255, 0, 0.3);
+    }
+    .badge.bg-warning {
+        background: linear-gradient(135deg, #FFD700, #FFA500) !important;
+        color: #000 !important;
+        box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        animation: badge-pulse 2s infinite;
+    }
+    .badge.bg-danger {
+        background: linear-gradient(135deg, #FF0000, #CC0000) !important;
+        color: #fff !important;
+        box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
+    }
+    @keyframes badge-pulse {
+        0%, 100% { box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3); }
+        50% { box-shadow: 0 2px 20px rgba(255, 215, 0, 0.6); }
+    }
+   
+    /* SUB-MENU - DÜZELTME */
+    .has-arrow {
+        position: relative;
+        cursor: pointer;
+    }
+    .has-arrow::after {
+        content: '\ea50';
+        font-family: 'boxicons' !important;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%) rotate(0deg);
+        transition: transform 0.3s ease;
+        color: #FFD700;
+        font-size: 1.2rem;
+    }
+    .has-arrow.mm-active::after {
+        transform: translateY(-50%) rotate(90deg);
+    }
+   
+    .sub-menu {
+        background: rgba(0, 0, 0, 0.5) !important;
+        border-radius: 6px;
+        margin: 3px 0 3px 10px;
+        border-left: 2px solid rgba(255, 215, 0, 0.3);
+        padding: 3px 0 !important;
+        list-style: none;
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: all 0.4s ease;
+    }
+    .sub-menu.mm-show {
+        max-height: 1000px;
+        opacity: 1;
+    }
+    .sub-menu li {
+        margin: 1px 0;
+    }
+    .sub-menu a {
+        padding: 7px 12px 7px 28px !important;
+        font-size: 0.8rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        color: #ccc !important;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+    .sub-menu a i {
+        margin-right: 6px;
+        font-size: 0.9rem;
+    }
+    .sub-menu a:hover {
+        background: rgba(255, 215, 0, 0.1) !important;
+        color: #FFD700 !important;
+        transform: translateX(5px);
+    }
+    .sub-menu a:hover i {
+        color: #FFD700;
+    }
+   
+    /* VIP İKON */
+    .vip-icon {
+        color: #FFD700;
+        font-size: 1rem;
+        filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
+    }
+   
+    /* AKTİF LİNK */
+    #side-menu .mm-active > a {
+        background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05)) !important;
+        color: #FFD700 !important;
+        border-left: 3px solid #FFD700;
+    }
+   
+    /* RESPONSIVE - MOBİL İÇİN GELİŞTİRİLMİŞ */
+    @media (max-width: 768px) {
+        .info-cards-container {
+            grid-template-columns: 1fr;
+        }
+        .user-profile-card {
+            margin: 6px 5px !important;
+            padding: 8px !important;           /* daha az padding */
+        }
+        .user-header {
+            margin-bottom: 6px;
+        }
+        .welcome-label {
+            font-size: 0.58rem;
+        }
+        .username-display {
+            font-size: 0.92rem;
+            margin-bottom: 2px;
+        }
+        .role-badge {
+            font-size: 0.58rem;
+            padding: 1px 5px;
+        }
+        .verified-icon {
+            font-size: 20px;
+        }
+
+        /* Premium süre + Bakiye satırları - MOBİLDE ÇOK DAHA KÜÇÜK */
+        .premium-expire-info {
+            margin-top: 5px !important;
+            padding-top: 5px !important;
+            border-top-width: 1px;
+        }
+        .expire-label {
+            font-size: 0.58rem !important;
+            margin-bottom: 1px !important;
+        }
+        .expire-days {
+            font-size: 0.82rem !important;
+            line-height: 1.1;
+        }
+        .expire-days i {
+            font-size: 0.9rem;
+            margin-right: 4px;
+        }
+        /* İki satır arası boşluğu iyice sıkıştır */
+        .premium-expire-info + .premium-expire-info {
+            margin-top: 3px !important;
+            padding-top: 3px !important;
+        }
+
+        .info-card {
+            padding: 8px;
+        }
+        .info-card-icon {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        .info-card-label {
+            font-size: 0.6rem;
+        }
+        .info-card-value {
+            font-size: 1rem;
+        }
+        .cart-count, .cart-price {
+            font-size: 0.7rem;
+        }
+        .search-wrapper {
+            padding: 8px 10px;
+        }
+        .search-input {
+            padding: 7px 10px 7px 32px;
+            font-size: 0.75rem;
+        }
+        .search-icon {
+            font-size: 0.9rem;
+            left: 10px;
+        }
+        .menu-title {
+            font-size: 0.6rem;
+            margin: 10px 8px 5px;
+            padding: 4px 6px;
+        }
+        .menu-item > a {
+            padding: 7px 10px;
+            font-size: 0.8rem;
+        }
+        .menu-item > a i {
+            font-size: 1rem;
+            margin-right: 8px;
+        }
+        .sub-menu a {
+            padding: 6px 10px 6px 24px !important;
+            font-size: 0.75rem;
+        }
+        .premium-get-btn > a {
+            padding: 7px 10px;
+            font-size: 0.8rem;
+        }
+        .badge {
+            font-size: 0.6rem;
+            padding: 2px 6px;
+        }
+    }
+
+    /* Çok küçük ekranlar için ekstra küçültme (örneğin 360-400px genişlik) */
+    @media (max-width: 576px) {
+        .user-profile-card {
+            padding: 7px !important;
+            margin: 5px 4px !important;
+        }
+        .username-display {
+            font-size: 0.88rem;
+        }
+        .expire-label {
+            font-size: 0.55rem !important;
+        }
+        .expire-days {
+            font-size: 0.78rem !important;
+        }
+        .verified-icon {
+            font-size: 18px;
+        }
+    }
+</style>
+</head>
+<body data-sidebar="dark" data-bs-theme="dark">
+<div id="layout-wrapper">
+    <div class="vertical-menu">
+        <div data-simplebar class="h-100">
+            <div id="sidebar-menu">
+
+                <!-- ARAMA ÇUBUĞU -->
+                <div class="search-wrapper">
+                    <div class="search-input-container">
+                        <i class="bx bx-search search-icon"></i>
+                        <input type="text" id="menuSearch" class="search-input" placeholder="Menüde ara...">
+                    </div>
+                </div>
+
+                <ul class="metismenu list-unstyled" id="side-menu">
+                    <!-- KULLANICI PROFİL KARTI -->
+                    <li>
+                        <div class="user-profile-card freemium">
+                            <div class="user-header">
+                                <div class="user-info-left">
+                                    <div class="welcome-label">Hoş Geldiniz</div>
+                                    <div class="username-display">ahmet12hsas</div>
+                                    <span class="role-badge">Freemium</span>
+                                </div>
+                                <div>
+                                    <i class="bx bxs-badge-check verified-icon inactive"></i>
+                                </div>
+                            </div>
+                                                            <div class="premium-expire-info">
+                                    <div class="expire-label">Premium Süreniz</div>
+                                    <div class="expire-days"><i class="bx bx-time"></i> 1386 Gün Kaldı</div>
+                                </div>
+                                <div class="premium-expire-info" style="margin-top: 8px;">
+                                    <div class="expire-label">Sistem Bakiyeniz</div>
+                                    <div class="expire-days">
+                                        <i class="bx bx-wallet"></i> ₺0,00                                    </div>
+                                </div>
+                                                    </div>
+                    </li>
+
+                                        <!-- BAKİYE VE SEPET KARTLARI (SADECE DOKTOR KULLANICILAR) -->
+                    <li>
+                        <div class="info-cards-container">
+                            <div class="info-card">
+                                <div class="info-card-icon">
+                                    <i class="bx bx-wallet"></i>
+                                </div>
+                                <div class="info-card-label">Bakiyeniz</div>
+                                <div class="info-card-value">₺0,00</div>
+                            </div>
+                            
+                            <a href="/cart" class="info-card info-card-clickable">
+                                <div class="info-card-icon">
+                                    <i class="bx bx-cart"></i>
+                                </div>
+                                <div class="info-card-label">Sepet</div>
+                                <div class="cart-details">
+                                    <span class="cart-count">0 Ürün</span>
+                                    <span class="cart-price">₺0,00</span>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                    
+                    <!-- ANA MENÜ -->
+                    <li class="menu-title">Ana Menü</li>
+                    
+                    <!-- PREMİUM ÜYELİK AL BUTONU -->
+                    <li class="menu-item premium-get-btn">
+                        <a href="/premiumal">
+                            <i class="bx bxs-crown"></i>
+                            <span>Premium Üyelik Al</span>
+                            <span class="badge bg-warning">PRO</span>
+                        </a>
+                    </li>
+                    
+                    <li class="menu-item">
+                        <a href="/anasayfa">
+                            <i class="bx bx-home-alt"></i>
+                            <span>Ana Sayfa</span>
+                        </a>
+                    </li>
+                    
+                                        <!-- SADECE DOKTOR KULLANICILAR İÇİN GÖSTERİLECEK MENÜLER -->
+                    <li class="menu-item">
+                        <a href="/cart">
+                            <i class="bx bx-cart-alt"></i>
+                            <span>Sepetimdeki Ürünler</span>
+                                                    </a>
+                    </li>
+                    
+                    <li class="menu-item">
+                        <a href="/otoodeme">
+                            <i class="bx bx-history"></i>
+                            <span>Satin alim gecmişim</span>
+                        </a>
+                    </li>
+                    
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bx-cog"></i>
+                            <span>Destek/sistem</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/mesajlar"><i class="bx bx-message-rounded-dots"></i>Mesajlarım</a></li>
+                            <li><a href="/help"><i class="bx bx-support"></i>Yardım & Destek</a></li>
+                            <li><a href="/sorgusıralama"><i class="bx bx-list-ul"></i>Sorgu Sıralama</a></li>
+                        </ul>
+                    </li>
+
+                    
+                    
+                    <!-- FREE ÇÖZÜMLER -->
+                    <li class="menu-title">Ücretsiz Sorgular</li>
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bx-gift"></i>
+                            <span>Free Sorgular</span>
+                            <span class="badge bg-success">FREE</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/adsoyad1">Ad Soyad Sorgu</a></li>
+                            <li><a href="/ailepro1">Aile Sorgu</a></li>
+                            <li><a href="/tcpro1">TC Pro Sorgu</a></li>
+                            <li><a href="/gsmtc1">GSM'den TCKN</a></li>
+                            <li><a href="/tcgsm1">TCKN'den GSM</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- VIP ÇÖZÜMLER -->
+                    <li class="menu-title premium-features-title">
+                        <i class="bx bxs-crown" style="color: #FFD700; margin-right: 5px;"></i> Premium Özellikler
+                    </li>
+
+                    <!-- Kişi Pro++ -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-user-detail vip-icon"></i>
+                            <span>Kişi Pro++</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/adsoyad"><i class="bx bx-user vip-icon"></i>Ad Soyad Sorgulama</a></li>
+                            <li><a href="/adililce"><i class="bx bx-map-pin vip-icon"></i>Ad Soyadsiz sorgulama</a></li>
+                            <li><a href="/tcpro"><i class="bx bx-id-card vip-icon"></i>TC Pro Sorgulama</a></li>
+                            <li><a href="/serino"><i class="bx bx-barcode vip-icon"></i>Seri No & SKT Sorgu</a></li>
+                            <li><a href="/secmen2015"><i class="bx bx-location-plus vip-icon"></i>2015 Seçmen Sorgu</a></li>
+                            <li><a href="/hayathikayesi"><i class="bx bx-book-content vip-icon"></i>Hayat Hikayesi</a></li>
+                            <li><a href="/kızlık"><i class="bx bx-user-circle vip-icon"></i>Kızlık Soyadı</a></li>
+                            <li><a href="/yaspro"><i class="bx bx-calendar vip-icon"></i>Yaş Pro Sorgu</a></li>
+                            <li><a href="/vize"><i class="bx bx-globe vip-icon"></i>Vize Sorgulama</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Plaka -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-car vip-icon"></i>
+                            <span>Plaka Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/plakatc"><i class="bx bx-search-alt vip-icon"></i>Plaka Arac Ceza Sahiblik sorgu</a></li>
+                            <li><a href="/plakatc"><i class="bx bx-search-alt vip-icon"></i>Tc Plaka Sorgu</a></li>
+                            <li><a href="/ingcar"><i class="bx bx-world vip-icon"></i>UK Araç Sorgu</a></li>
+                            <li><a href="/trafikmen"><i class="bx bx-error-circle vip-icon"></i>Trafik Men Sorgu</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Aile -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-group vip-icon"></i>
+                            <span>Aile Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/topluaile"><i class="bx bx-layer vip-icon"></i>Aile Gsm Sorgulama Toplu</a></li>
+                            <li><a href="/ailepro"><i class="bx bx-group vip-icon"></i>Aile Bilgileri Sorgulama</a></li>
+                            <li><a href="/evlilik"><i class="bx bx-heart vip-icon"></i>Kişi Evlilik Sorgu</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- İkametgah -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-home vip-icon"></i>
+                            <span>Adres Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/günceladres"><i class="bx bx-current-location vip-icon"></i>Güncel Adres (2026)</a></li>
+                            <li><a href="/adres"><i class="bx bx-map vip-icon"></i>Adres v1 (2023)</a></li>
+                            <li><a href="/konum"><i class="bx bx-map-pin vip-icon"></i>GSM uzerınden ıkametgah konumu</a></li>
+                            <li><a href="/2024adres"><i class="bx bx-history vip-icon"></i>2009-2024 arası Adresler Sorgu</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Sağlık -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-heart vip-icon"></i>
+                            <span>Sağlık Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/güncelaşı"><i class="bx bx-injection vip-icon"></i>Güncel Aşı Sorgu</a></li>
+                            <li><a href="/ası"><i class="bx bx-shield-plus vip-icon"></i>COVID-19 Aşı Sorgu(6m)</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- İşyeri -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-briefcase vip-icon"></i>
+                            <span>İşyeri Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/isyeri"><i class="bx bx-building vip-icon"></i>İşyeri Pro</a></li>
+                            <li><a href="/isyeriy"><i class="bx bx-user-check vip-icon"></i>İşyeri Yetkili</a></li>
+                            <li><a href="/isyeriark"><i class="bx bx-layer-plus vip-icon"></i>İşyeri PLUS</a></li>
+                            <li><a href="/mimarsorg"><i class="bx bx-paint vip-icon"></i>İç Mimar Sorgulama</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Akraba -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-tree vip-icon"></i>
+                            <span>Akraba Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/sulale"><i class="bx bx-git-branch vip-icon"></i>7 Kuşak Soy Ağacı Sorgulama</a></li>
+                            <li><a href="/yetim"><i class="bx bx-user-x vip-icon"></i>Yetim Sorgu</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Kimlik -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-id-card vip-icon"></i>
+                            <span>Kimlik Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/serino"><i class="bx bx-barcode vip-icon"></i>Tcden Seri No & SKT Sorgu</a></li>
+                            <li><a href="/tcpro"><i class="bx bx-id-card vip-icon"></i>TC Pro Sorgu</a></li>
+                            <li><a href="/secmen2015"><i class="bx bx-location-plus vip-icon"></i>2015 Seçmen Sorgu (55m)</a></li>
+                            <li><a href="/kimlik-olusturucu"><i class="bx bx-duplicate vip-icon"></i>Kimlik Oluşturucu</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Adliye -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-badge-check vip-icon"></i>
+                            <span>Adli Sorgular</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/adlisicil"><i class="bx bx-history vip-icon"></i>Adli Sicil Sorgu (Bakımda)</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Vesika -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-camera vip-icon"></i>
+                            <span>Vesika Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/ösymvesika"><i class="bx bx-certification vip-icon"></i>ÖSYM Vesika Sorgu</a></li>
+                            <li><a href="/eokulvesika"><i class="bx bx-book vip-icon"></i>E-OKUL Vesika Sorgu</a></li>
+                            <li><a href="/ehliyetvesika"><i class="bx bx-car vip-icon"></i>Ehliyet Vesika Sorgu</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Okul -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-graduation vip-icon"></i>
+                            <span>Eğitim Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/ösymvesika"><i class="bx bx-certification vip-icon"></i>ÖSYM Sınav Sorgu</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Banka -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-bank vip-icon"></i>
+                            <span>Banka Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/iban"><i class="bx bx-wallet vip-icon"></i>IBAN Sorgu</a></li>
+                            <li><a href="/tckniban"><i class="bx bx-transfer vip-icon"></i>IBAN → TCKN</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Diğer -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-bolt-circle vip-icon"></i>
+                            <span>Özel Araçlar</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/logo"><i class="bx bx-palette vip-icon"></i>Logo Oluştur</a></li>
+                            <li><a href="/logogem"><i class="bx bx-brush vip-icon"></i>Logo v2</a></li>
+                            <li><a href="/film"><i class="bx bx-movie vip-icon"></i>Film İzle HD</a></li>
+                            <li><a href="/yapayzeka"><i class="bx bx-bot vip-icon"></i>Yapay Zeka</a></li>
+                            <li><a href="/instagram"><i class="bx bxl-instagram vip-icon"></i>Instagram Sorgu</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Mülk -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-home-heart vip-icon"></i>
+                            <span>Tapu Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/tapupro"><i class="bx bx-home-circle vip-icon"></i>45 İl Tapu</a></li>
+                            <li><a href="/adaparselpro"><i class="bx bx-map-alt vip-icon"></i>45 İl Ada Parsel</a></li>
+                            <li><a href="/mulkadsorgu"><i class="bx bx-search-alt vip-icon"></i>Ad'dan Parsel</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- GSM -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-phone vip-icon"></i>
+                            <span>GSM Sorguları</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/tcgsm"><i class="bx bx-mobile vip-icon"></i>TC → GSM (145M)</a></li>
+                            <li><a href="/gsmtc"><i class="bx bx-mobile-alt vip-icon"></i>GSM → TC (145M)</a></li>
+                            <li><a href="/tcgsmpro"><i class="bx bx-phone vip-icon"></i>TC → GSM Pro (200M)</a></li>
+                            <li><a href="/gsmtcpro"><i class="bx bx-phone-call vip-icon"></i>GSM → TC Pro (200M)</a></li>
+                            <li><a href="/tcgsmtoplu"><i class="bx bx-layer vip-icon"></i>Toplu TC → GSM</a></li>
+                            <li><a href="/gsmtctoplu"><i class="bx bx-layer-plus vip-icon"></i>Toplu GSM → TC</a></li>
+                            <li><a href="/konum"><i class="bx bx-current-location vip-icon"></i>GSM üzerinden ikametgah Konum</a></li>
+                            <li><a href="/operator"><i class="bx bx-signal-5 vip-icon"></i>Operatör Sorgulama</a></li>
+                            <li><a href="/smsbomb"><i class="bx bx-message-square-x vip-icon"></i>SMS Bomb</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Global -->
+                    <li class="menu-item">
+                        <a href="javascript:void(0);" class="has-arrow">
+                            <i class="bx bxs-globe vip-icon"></i>
+                            <span>Global Sorgular</span>
+                            <span class="badge bg-warning">VIP</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li><a href="/pakno"><i class="bx bx-world vip-icon"></i>Pakistan GSM</a></li>
+                            <li><a href="/ingcar"><i class="bx bx-world vip-icon"></i>UK Araç</a></li>
+                            <li><a href="/indiacar"><i class="bx bx-world vip-icon"></i>India Araç</a></li>
+                            <li><a href="/indiagsm"><i class="bx bx-world vip-icon"></i>India GSM</a></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <!-- ARAMA SONUCU YOK -->
+                <div id="noResults" class="no-results">
+                    <i class="bx bx-search-alt" style="font-size: 2rem; color: #555;"></i>
+                    <p style="margin-top: 10px;">Sonuç bulunamadı</p>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <div class="container">
-        <div class="hero-content">
-            <div class="hero-text">
-                <span class="hero-greeting"><?php echo HERO_GREETING; ?></span>
-                <h1 class="hero-title">
-                    <span class="name-highlight"><?php echo SITE_NAME; ?></span>
-                </h1>
-                <h2 class="hero-subtitle typing-text">
-                    <span id="typed-text"></span>
-                    <span class="cursor">|</span>
-                </h2>
-                <p class="hero-description">
-                    <?php echo HERO_DESCRIPTION; ?>
-                </p>
-                <div class="hero-cta">
-                    <?php if (getSetting('section_projects', '1') === '1'): ?>
-                    <a href="portfolio.php" class="btn btn-primary">
-                        <span>Projelerimi Gör</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
-                    <?php endif; ?>
-                    <a href="contact.php" class="btn btn-outline">
-                        <span>İletişime Geç</span>
-                    </a>
-                </div>
+
+    <div id="preloader">
+        <div id="status">
+            <div class="spinner-chase">
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+                <div class="chase-dot"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/plugin.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="assets/libs/metismenu/metisMenu.min.js"></script>
+
+<script>
+    toastr.options = {
+        closeButton: false,
+        progressBar: false,
+        positionClass: "toast-top-right",
+        timeOut: 4000,
+        extendedTimeOut: 800,
+        showDuration: 200,
+        hideDuration: 500
+    };
+
+    $(document).ready(function() {
+        // MetisMenu'yu devre dışı bırak - manuel kontrol
+        // $('#side-menu').metisMenu();
+        
+        // ARAMA FONKSİYONU
+        const $search = $('#menuSearch');
+        const $menuItems = $('#side-menu > li');
+        const $noResults = $('#noResults');
+
+        $search.on('keyup', function() {
+            const query = $(this).val().toLowerCase().trim();
+            let visible = 0;
+
+            if (query === '') {
+                $menuItems.show();
+                $('.sub-menu').removeClass('mm-show').css('max-height', '0');
+                $('.has-arrow').removeClass('mm-active');
+                $noResults.hide();
+                return;
+            }
+
+            $menuItems.each(function() {
+                const $item = $(this);
                 
-                <?php if (getSetting('section_social', '1') === '1'): ?>
-                <div class="hero-social">
-                    <?php foreach ($social_links as $platform => $url): ?>
-                    <a href="<?php echo $url; ?>" target="_blank" rel="noopener" class="social-icon" aria-label="<?php echo ucfirst($platform); ?>">
-                        <i class="fab fa-<?php echo $platform; ?>"></i>
-                    </a>
-                    <?php endforeach; ?>
-                </div>
-                <?php endif; ?>
+                // Profil kartı ve info kartlarını atla
+                if ($item.find('.user-profile-card').length || $item.find('.info-cards-container').length) {
+                    return;
+                }
+
+                const text = $item.text().toLowerCase();
+                const hasMatch = text.includes(query);
+                const $submenu = $item.find('.sub-menu');
+
+                if (hasMatch) {
+                    $item.show();
+                    visible++;
+                    if ($submenu.length) {
+                        $submenu.addClass('mm-show').css('max-height', '1000px');
+                        $item.find('.has-arrow').addClass('mm-active');
+                    }
+                } else {
+                    $item.hide();
+                }
+            });
+
+            $noResults.toggle(visible === 0);
+        });
+
+        // MENÜ AÇILMA/KAPANMA - MANUEL KONTROL
+        $(document).on('click', '.has-arrow', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const $this = $(this);
+            const $parent = $this.parent();
+            const $submenu = $parent.find('> .sub-menu');
+
+            // Mevcut durumu kontrol et
+            if ($submenu.hasClass('mm-show')) {
+                // Kapat
+                $this.removeClass('mm-active');
+                $submenu.removeClass('mm-show').css('max-height', '0');
+            } else {
+                // Aç
+                $this.addClass('mm-active');
+                $submenu.addClass('mm-show').css('max-height', '1000px');
+            }
+        });
+
+        // AKTİF SAYFA VURGULAMA
+        const path = location.pathname;
+        $('#side-menu a[href]').each(function() {
+            const href = $(this).attr('href');
+            if (href && href !== 'javascript:void(0);' && href !== '#' && path.includes(href)) {
+                $(this).addClass('mm-active');
+                
+                // Parent sub-menu varsa aç
+                const $parent = $(this).closest('.sub-menu');
+                if ($parent.length) {
+                    $parent.addClass('mm-show').css('max-height', '1000px');
+                    $parent.prev('.has-arrow').addClass('mm-active');
+                }
+            }
+        });
+    });
+
+    $(window).on('load', function() {
+        $('#preloader').fadeOut(300, function() {
+            $(this).remove();
+        });
+    });
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Systems Paneli</title>
+    <!-- 🆕 DYNAMIC FAVICON - BUNU EKLE -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    <link rel="shortcut icon" href="/assets/images/favicon.ico">
+    <script src="assets/libs/jquery/jquery.min.js"></script>
+    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/metismenu/metisMenu.min.js"></script>
+    <script src="assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="assets/libs/node-waves/waves.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simplebar/5.3.6/simplebar.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous"/>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <style>
+:root {
+    --primary-color: #3b82f6;
+    --secondary-color: #1e293b;
+    --accent-color: #f59e0b;
+    --text-light: #f8fafc;
+    --text-muted: #94a3b8;
+    --bg-dark: #0f172a;
+    --bg-card: #1e293b;
+    --border-color: #334155;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    overflow-x: hidden;
+}
+
+/* MODAL STYLES */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, #0f172a 100%);
+    border: 2px solid var(--border-color);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    max-width: 500px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-card.banned {
+    border-color: #dc2626;
+}
+
+.modal-card.session-expired {
+    border-color: var(--warning-color);
+}
+
+.modal-card.spam {
+    border-color: var(--danger-color);
+}
+
+.modal-icon {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    animation: bounce 1s infinite;
+}
+
+.modal-card.banned .modal-icon {
+    color: #dc2626;
+}
+
+.modal-card.session-expired .modal-icon {
+    color: var(--warning-color);
+}
+
+.modal-card.spam .modal-icon {
+    color: var(--danger-color);
+}
+
+.modal-card h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    letter-spacing: -0.5px;
+}
+
+.modal-card p {
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.countdown-timer {
+    font-size: 3.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--danger-color), #dc2626);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 2rem 0;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+
+.timer-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 1rem;
+}
+
+.progress-bar-custom {
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 2rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--danger-color), #dc2626);
+    border-radius: 3px;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+.modal-info {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 4px solid var(--primary-color);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 2rem 0;
+    text-align: left;
+}
+
+.modal-info-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0.75rem 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.modal-info-item i {
+    color: var(--primary-color);
+    min-width: 20px;
+}
+
+.modal-info.danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-left-color: var(--danger-color);
+}
+
+.modal-info.danger .modal-info-item i {
+    color: var(--danger-color);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    justify-content: center;
+}
+
+.btn-modal {
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-modal.primary {
+    background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+    color: white;
+}
+
+.btn-modal.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.btn-modal.danger {
+    background: linear-gradient(135deg, var(--danger-color), #dc2626);
+    color: white;
+}
+
+.btn-modal.danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* NAVBAR STYLES */
+.navbar-modern {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, #0f172a 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.navbar-brand-modern {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: 700;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.logo-gif-modern {
+    height: 32px;
+    width: auto;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.logo-gif-modern:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 8px rgba(59, 130, 246, 0.4));
+}
+
+/* 🆕 BAKİYE GÖSTERGE STİLLERİ */
+.bakiye-gostergesi {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(59, 130, 246, 0.1));
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    color: var(--text-light);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.bakiye-gostergesi::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.bakiye-gostergesi:hover::before {
+    left: 100%;
+}
+
+.bakiye-gostergesi:hover {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(59, 130, 246, 0.2));
+    border-color: rgba(16, 185, 129, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+}
+
+.bakiye-icon {
+    color: #10b981;
+    font-size: 1.1rem;
+    animation: pulse 2s infinite;
+}
+
+.bakiye-miktar {
+    font-weight: 700;
+    color: #10b981;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.bakiye-birim {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+/* MOBILE MENU BUTTON - 3 DOTS */
+.mobile-menu-toggle {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-light);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+    font-size: 1rem;
+    display: none;
+}
+
+.mobile-menu-toggle:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.profile-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color)) border-box;
+    padding: 2px;
+    transition: all 0.3s ease;
+    object-fit: cover;
+}
+
+.profile-avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: linear-gradient(135deg, var(--danger-color), #dc2626);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--secondary-color);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.dropdown-modern {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+}
+
+.dropdown-header-modern {
+    background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+    color: white;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dropdown-header-modern h6 {
+    margin: 0;
+}
+
+.dropdown-item-modern {
+    padding: 0.75rem 1rem;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.dropdown-item-modern:hover {
+    background: rgba(59, 130, 246, 0.1);
+    color: var(--primary-color);
+    transform: translateX(5px);
+    text-decoration: none;
+}
+
+.dropdown-item-modern:last-child {
+    border-bottom: none;
+}
+
+/* NOTIFICATION ITEM STYLES */
+.notification-item-modern {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.notification-item-modern:hover {
+    background: rgba(59, 130, 246, 0.08);
+    transform: translateX(3px);
+}
+
+.notification-item-modern:last-child {
+    border-bottom: none;
+}
+
+.notification-item-modern.unread {
+    background: rgba(59, 130, 246, 0.1);
+    border-left: 3px solid var(--primary-color);
+    padding-left: calc(1rem - 3px);
+}
+
+.notification-title {
+    font-weight: 600;
+    color: var(--text-light);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.notification-content {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+    word-break: break-word;
+}
+
+.notification-content a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.notification-content a:hover {
+    color: #60a5fa;
+    text-decoration: underline;
+}
+
+.notification-time {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.notification-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--border-color);
+}
+
+.header-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-light);
+    border-radius: 10px;
+    padding: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+}
+
+.header-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+}
+
+.dropdown-scrollable {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.dropdown-footer {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    color: var(--text-muted);
+    text-align: center;
+}
+
+.empty-state-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+/* SIDEBAR ANIMATION */
+.sidebar-open .vertical-menu {
+    transform: translateX(0) !important;
+}
+
+.vertical-menu {
+    transition: transform 0.3s ease;
+    -webkit-transition: transform 0.3s ease;
+}
+
+/* RIPPLE EFFECT */
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* SHAKE ANIMATION */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .navbar-modern {
+        padding: 0.5rem;
+    }
+    
+    .mobile-menu-toggle {
+        display: inline-block;
+    }
+    
+    .logo-gif-modern {
+        height: 28px;
+    }
+    
+    .profile-avatar {
+        width: 38px;
+        height: 38px;
+    }
+    
+    .header-btn {
+        padding: 0.4rem;
+    }
+    
+    .dropdown-modern {
+        position: fixed !important;
+        top: 70px !important;
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+        max-height: 50vh;
+        overflow-y: auto;
+    }
+    
+    .navbar-brand-modern span {
+        display: none;
+    }
+    
+    .dropdown-scrollable {
+        max-height: 35vh;
+    }
+    
+    /* 🆕 MOBILE BAKİYE STİLİ */
+    .bakiye-gostergesi {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.85rem;
+        margin-right: 0.3rem;
+    }
+    
+    .bakiye-icon {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-modern {
+        padding: 0.4rem;
+    }
+    
+    .logo-gif-modern {
+        height: 24px;
+    }
+    
+    .header-btn {
+        padding: 0.3rem;
+        font-size: 0.9rem;
+    }
+    
+    .profile-avatar {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .notification-badge {
+        width: 16px;
+        height: 16px;
+        font-size: 0.6rem;
+    }
+    
+    .mobile-menu-toggle {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.9rem;
+    }
+    
+    /* 🆕 MOBILE BAKİYE STİLİ */
+    .bakiye-gostergesi {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+        margin-right: 0.2rem;
+    }
+    
+    .bakiye-icon {
+        font-size: 0.9rem;
+    }
+    
+    .bakiye-birim {
+        display: none;
+    }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}
+    </style>
+</head>
+<body>
+
+
+<!-- Modern Header -->
+<header class="navbar-modern">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-between align-items-center w-100">
+            <!-- Left Section -->
+            <!-- Left Section -->
+<div class="d-flex align-items-center">
+    <!-- Logo - 🆕 LOGO CLICK SIDEBAR TOGGLE -->
+    <div class="navbar-brand-modern" id="navbar-logo" style="cursor: pointer;" title="Sidebar'ı Aç/Kapat">
+        <img src="/assets/images/baba3.gif" 
+             alt="Doctor Systems" 
+             class="logo-gif-modern"
+             onerror="this.src='/assets/images/baba3.gif'">
+        <span>Doctor Systems</span>
+    </div>
+                
+                <!-- Mobile Menu Button (3 DOTS) -->
+                <button class="mobile-menu-toggle" id="mobile-menu-btn" title="Menüyü Aç">
+                    <i class="fas fa-ellipsis-v"></i>
+                </button>
             </div>
             
-            <div class="hero-image">
-                <div class="image-wrapper">
-                    <div class="image-glow"></div>
-                    <?php 
-                    $profileImage = getSetting('profile_image', '');
-                    if ($profileImage && file_exists($profileImage)): 
-                    ?>
-                        <img src="<?php echo htmlspecialchars($profileImage); ?>" alt="<?php echo SITE_NAME; ?>" class="profile-image">
-                    <?php else: ?>
-                        <div class="profile-placeholder">
-                            <i class="fas fa-user"></i>
+            <!-- Right Section: Navigation -->
+            <div class="d-flex align-items-center gap-2">
+                <!-- 🆕 BAKİYE GÖSTERGE -->
+                <div class="bakiye-gostergesi" onclick="window.location.href='/bakiye'" title="Bakiye Sayfasına Git">
+                    <i class="fas fa-wallet bakiye-icon"></i>
+                    <span class="bakiye-miktar">₺0,00</span>
+                    <span class="bakiye-birim">TL</span>
+                </div>
+                
+                <!-- Notifications -->
+                <div class="dropdown">
+                    <button class="header-btn position-relative" id="notifications-dropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notification-count">0</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-modern dropdown-menu-end" style="min-width: 320px;">
+                        <div class="dropdown-header-modern">
+                            <h6>📢 Bildirimler</h6>
                         </div>
-                    <?php endif; ?>
-                </div>
-                <?php if (getSetting('section_skills', '1') === '1'): ?>
-                <div class="floating-card card-1">
-                    <i class="fab fa-php"></i>
-                    <span>PHP</span>
-                </div>
-                <div class="floating-card card-2">
-                    <i class="fab fa-js"></i>
-                    <span>JavaScript</span>
-                </div>
-                <div class="floating-card card-3">
-                    <i class="fab fa-react"></i>
-                    <span>React</span>
-                </div>
-                <?php endif; ?>
-            </div>
-        </div>
-        
-        <div class="scroll-indicator">
-            <span>Aşağı Kaydır</span>
-            <div class="mouse">
-                <div class="wheel"></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- About Preview Section -->
-<section class="about-preview section" id="about">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-tag">Hakkımda</span>
-            <h2 class="section-title">Kim Olduğumu Keşfedin</h2>
-        </div>
-        
-        <div class="about-content">
-            <div class="about-text">
-                <p class="lead">
-                    <?php echo SITE_DESCRIPTION; ?>
-                </p>
-                <p>
-                    <?php echo ABOUT_TEXT; ?>
-                </p>
-                <div class="about-stats">
-                    <?php if (getSetting('section_projects', '1') === '1'): ?>
-                    <div class="stat-item">
-                        <span class="stat-number" data-count="<?php echo STAT_PROJECTS; ?>">0</span>
-                        <span class="stat-label">Tamamlanan Proje</span>
+                        <div class="dropdown-scrollable custom-scrollbar" id="notification-content">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-bell-slash"></i>
+                                </div>
+                                <p>Henüz bildirim yok</p>
+                            </div>
+                        </div>
                     </div>
-                    <?php endif; ?>
-                    
-                    <div class="stat-item">
-                        <span class="stat-number" data-count="<?php echo STAT_CLIENTS; ?>">0</span>
-                        <span class="stat-label">Mutlu Müşteri</span>
-                    </div>
-                    
-                    <?php if (getSetting('section_experiences', '1') === '1'): ?>
-                    <div class="stat-item">
-                        <span class="stat-number" data-count="<?php echo STAT_EXPERIENCE; ?>">0</span>
-                        <span class="stat-label">Yıl Deneyim</span>
-                    </div>
-                    <?php endif; ?>
                 </div>
-                <a href="about.php" class="btn btn-primary">
-                    <span>Daha Fazla Bilgi</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<?php if (getSetting('section_skills', '1') === '1'): ?>
-<!-- Skills Section -->
-<section class="skills section" id="skills">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-tag">Yetenekler</span>
-            <h2 class="section-title">Uzmanlık Alanlarım</h2>
-        </div>
-        
-        <div class="skills-grid">
-            <?php foreach ($skills as $skill): ?>
-            <div class="skill-card">
-                <div class="skill-icon">
-                    <i class="<?php echo $skill['icon']; ?>"></i>
-                </div>
-                <div class="skill-info">
-                    <h3 class="skill-name"><?php echo $skill['name']; ?></h3>
-                    <div class="skill-bar">
-                        <div class="skill-progress" data-progress="<?php echo $skill['level']; ?>"></div>
+                
+                <!-- Messages -->
+                <div class="dropdown">
+                    <button class="header-btn position-relative" id="messages-dropdown" data-bs-toggle="dropdown">
+                        <i class="fas fa-envelope"></i>
+                        <span class="notification-badge" id="message-count">0</span>
+                    </button>
+                    <div class="dropdown-menu dropdown-modern dropdown-menu-end" style="min-width: 320px;">
+                        <div class="dropdown-header-modern">
+                            <h6>💬 Mesajlar</h6>
+                        </div>
+                        <div class="dropdown-scrollable custom-scrollbar" id="message-content">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">
+                                    <i class="fas fa-inbox"></i>
+                                </div>
+                                <p>Henüz mesajınız yok</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-footer">
+                            <a href="/mesajlar.php" class="btn btn-primary btn-sm w-100">Tüm Mesajları Gör</a>
+                        </div>
                     </div>
-                    <span class="skill-percent"><?php echo $skill['level']; ?>%</span>
                 </div>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
-
-<?php if (getSetting('section_projects', '1') === '1'): ?>
-<!-- Portfolio Preview Section -->
-<section class="portfolio-preview section" id="portfolio">
-    <div class="container">
-        <div class="section-header">
-            <span class="section-tag">Projeler</span>
-            <h2 class="section-title">Son Çalışmalarım</h2>
-        </div>
-        
-        <div class="projects-grid">
-            <?php foreach ($projects as $index => $project): ?>
-            <article class="project-card" data-aos="fade-up" data-aos-delay="<?php echo $index * 100; ?>">
-                <div class="project-image">
-                    <div class="project-placeholder">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <div class="project-overlay">
-                        <a href="<?php echo $project['link']; ?>" class="project-link">
-                            <i class="fas fa-external-link-alt"></i>
+                
+                <!-- User Profile -->
+                <div class="dropdown">
+                    <button class="header-btn d-flex align-items-center gap-2" id="user-dropdown" data-bs-toggle="dropdown">
+                        <img src="/assets/images/default-avatar.jpg"
+                             alt="ahmet12hsas"
+                             class="profile-avatar"
+                             onerror="this.src='/assets/images/default-avatar.jpg'">
+                        <span class="d-none d-md-inline">ahmet12hsas</span>
+                        <i class="fas fa-chevron-down small"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-modern dropdown-menu-end">
+                        <div class="dropdown-header-modern">
+                            <div class="d-flex align-items-center gap-2">
+                                <img src="/assets/images/default-avatar.jpg"
+                                     alt="ahmet12hsas"
+                                     class="profile-avatar"
+                                     onerror="this.src='/assets/images/default-avatar.jpg'">
+                                <div>
+                                    <h6 class="mb-0">ahmet12hsas</h6>
+                                    <small class="text-white-50">🟢 Online</small>
+                                </div>
+                            </div>
+                        </div>
+                        <a class="dropdown-item-modern" href="/profile.php">
+                            <i class="fas fa-user"></i>
+                            Profilim
+                        </a>
+                        <a class="dropdown-item-modern" href="/profile.php?edit=1">
+                            <i class="fas fa-cog"></i>
+                            Ayarlar
+                        </a>
+                        <a class="dropdown-item-modern" href="/premiumal.php">
+                            <i class="fas fa-crown text-warning"></i>
+                            Premium Satın Al
+                        </a>
+                        <div style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);"></div>
+                        <a class="dropdown-item-modern text-danger" href="/logout.php">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Çıkış Yap
                         </a>
                     </div>
                 </div>
-                <div class="project-content">
-                    <h3 class="project-title"><?php echo $project['title']; ?></h3>
-                    <p class="project-description"><?php echo $project['description']; ?></p>
-                    <div class="project-tags">
-                        <?php foreach ($project['tags'] as $tag): ?>
-                        <span class="tag"><?php echo $tag; ?></span>
-                        <?php endforeach; ?>
+        </div>
+    </div>
+</header>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+<script>
+
+// 🆕 LOGO TIKLAMA - SIDEBAR TOGGLE
+document.addEventListener('DOMContentLoaded', () => {
+    const navbarLogo = document.getElementById('navbar-logo');
+    
+    if (navbarLogo) {
+        navbarLogo.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleSidebar();
+        });
+    }
+});
+
+// MOBILE MENU TOGGLE - ESKİ KODDAKI MANTIK
+function toggleSidebar() {
+    const body = document.body;
+    const sidebar = document.querySelector('.vertical-menu');
+    
+    if (body && sidebar) {
+        body.classList.toggle('sidebar-open');
+        
+        // Mobile için slide animation
+        if (window.innerWidth < 992) {
+            if (body.classList.contains('sidebar-open')) {
+                sidebar.style.transform = 'translateX(0)';
+                sidebar.style.display = 'block';
+            } else {
+                sidebar.style.transform = 'translateX(-100%)';
+                setTimeout(() => { sidebar.style.display = 'none'; }, 300);
+            }
+        } else {
+            // Desktop için width değişimi
+            if (body.classList.contains('sidebar-open')) {
+                sidebar.style.width = '260px';
+            } else {
+                sidebar.style.width = '70px';
+            }
+        }
+    }
+}
+
+// Mobile menu button event listener
+document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleSidebar();
+        });
+    }
+    
+    // Sidebar outside click to close
+    document.addEventListener('click', (e) => {
+        const sidebar = document.querySelector('.vertical-menu');
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const navbarLogo = document.getElementById('navbar-logo');
+        
+        if (sidebar && mobileBtn && navbarLogo &&
+            !sidebar.contains(e.target) && 
+            !mobileBtn.contains(e.target) &&
+            !navbarLogo.contains(e.target) &&
+            window.innerWidth < 992) {
+            
+            if (document.body.classList.contains('sidebar-open')) {
+                toggleSidebar();
+            }
+        }
+    });
+});
+
+// URL İçinde Link Ayrıştırma Fonksiyonu
+function parseLinks(text) {
+    if (!text) return text;
+    
+    let urlRegex = /(https?:\/\/[^\s<>"\)]+)/gi;
+    let result = text.replace(urlRegex, function(url) {
+        if (text.indexOf('<a href=' + url) > -1) {
+            return url;
+        }
+        return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" style="color: var(--primary-color); text-decoration: underline;">' + url + '</a>';
+    });
+    
+    return result;
+}
+
+// HTML'den güvenli bir şekilde metin çıkart
+function escapeHtml(text) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, m => map[m]);
+}
+
+// Tarih Formatı
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    if (diffMins < 1) return 'Az önce';
+    if (diffMins < 60) return `${diffMins} dk önce`;
+    if (diffHours < 24) return `${diffHours} sa önce`;
+    if (diffDays === 1) return 'Dün';
+    if (diffDays < 7) return `${diffDays} gün önce`;
+    
+    return date.toLocaleDateString('tr-TR', { year: 'numeric', month: 'short', day: 'numeric' });
+}
+// Bildirim ve Mesajları Yükle
+async function loadNotificationsAndMessages() {
+    try {
+        const response = await fetch('/api_combined.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                action: 'load_data',
+                username: 'ahmet12hsas',
+                csrf_token: 'c0f5163fb3752658119bec64161d8f87c03b9f9374d75d3f752b53869d6d92b0'
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Bildirim Sayısı
+            const notifCount = parseInt(data.notification_count || 0);
+            document.getElementById('notification-count').textContent = notifCount > 0 ? notifCount : '0';
+            
+            // Mesaj Sayısı
+            const msgCount = parseInt(data.unread_count || 0);
+            document.getElementById('message-count').textContent = msgCount > 0 ? msgCount : '0';
+            
+            // Bildirimleri Render Et
+            const notifContainer = document.getElementById('notification-content');
+            if (data.notifications && Array.isArray(data.notifications) && data.notifications.length > 0) {
+                notifContainer.innerHTML = data.notifications.map((notif, index) => {
+                    const title = escapeHtml(notif.baslik || notif.title || 'Başlık Yok');
+                    const content = escapeHtml(notif.aciklama || notif.content || notif.description || '');
+                    const parsedContent = parseLinks(content);
+                    const time = formatDate(notif.created_at || notif.olusturulma_tarihi || new Date());
+                    
+                    return `
+                        <div class="notification-item-modern ${notif.is_read === 0 ? 'unread' : ''}">
+                            <div class="notification-title">${title}</div>
+                            <div class="notification-content">${parsedContent}</div>
+                            <div class="notification-time">🕐 ${time}</div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                notifContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-bell-slash"></i>
+                        </div>
+                        <p>Henüz bildirim yok</p>
+                    </div>
+                `;
+            }
+            
+            // Mesajları Render Et
+            const msgContainer = document.getElementById('message-content');
+            if (data.messages && Array.isArray(data.messages) && data.messages.length > 0) {
+                msgContainer.innerHTML = data.messages.map((msg, index) => {
+                    const sender = escapeHtml(msg.from_username || msg.gonderen || 'Bilinmiyor');
+                    const msgText = escapeHtml(msg.message || msg.mesaj || '');
+                    const parsedMsg = parseLinks(msgText);
+                    const time = formatDate(msg.created_at || msg.olusturulma_tarihi || new Date());
+                    const isUnread = msg.is_read === 0 || msg.okundu === 0;
+                    const avatar = msg.avatar_url || msg.gonderen_resim || '/assets/images/default-avatar.jpg';
+                    
+                    return `
+                        <div class="notification-item-modern ${isUnread ? 'unread' : ''}" style="cursor: pointer;" onclick="window.location.href='/mesajlar.php'">
+                            <div class="d-flex align-items-start gap-2">
+                                <div class="flex-shrink-0">
+                                    <img src="${avatar}" 
+                                         class="notification-avatar"
+                                         onerror="this.src='/assets/images/default-avatar.jpg'"
+                                         alt="${sender}">
+                                </div>
+                                <div class="flex-grow-1" style="min-width: 0;">
+                                    <div class="notification-title">${sender}</div>
+                                    <div class="notification-content" style="max-height: 2.2em; overflow: hidden; font-size: 0.85rem;">${parsedMsg}</div>
+                                    <div class="notification-time">🕐 ${time}</div>
+                                </div>
+                                ${isUnread ? '<span style="background: linear-gradient(135deg, var(--primary-color), #1d4ed8); color: white; padding: 0.25rem 0.4rem; border-radius: 4px; font-size: 0.65rem; font-weight: 600; white-space: nowrap; margin-left: 0.5rem;">YENİ</span>' : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                msgContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <p>Henüz mesajınız yok</p>
+                    </div>
+                `;
+            }
+        }
+    } catch (error) {
+        console.error('Veri yükleme hatası:', error);
+    }
+}
+
+// İlk yüklemede ve her 20 saniyede bir yenile
+document.addEventListener('DOMContentLoaded', () => {
+    loadNotificationsAndMessages();
+    setInterval(loadNotificationsAndMessages, 20000);
+});
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Ellie - Kullanici Paneli">
+    <title>Anasayfa - Ellie</title>
+    <link href="assets/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/libs/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
+    <style>
+    :root{--primary-color:#3b82f6;--secondary-color:#6366f1;--success-color:#10b981;--warning-color:#f59e0b;--danger-color:#ef4444;--dark-bg:#0f172a;--card-bg:#1e293b;--card-border:rgba(59,130,246,0.2);--text-primary:#f1f5f9;--text-secondary:#cbd5e1;}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:#0f172a;color:var(--text-primary);font-family:'Inter',sans-serif;line-height:1.6;min-height:100vh;-webkit-font-smoothing:antialiased;}
+    .container-fluid{padding:0 20px;max-width:1400px;}
+    .card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;box-shadow:0 4px 20px rgba(0,0,0,0.15);transition:transform 0.3s ease,box-shadow 0.3s ease;margin-bottom:1.5rem;}
+    .card:hover{transform:translateY(-4px);box-shadow:0 8px 25px rgba(0,0,0,0.25);}
+    .card-header{border-bottom:1px solid rgba(255,255,255,0.1);padding:1rem 1.5rem;background:rgba(0,0,0,0.15);}
+    .card-title{font-weight:600;color:var(--text-primary);margin:0;}
+    .card-body{padding:1.5rem;}
+    .page-title-box h4{font-weight:700;background:linear-gradient(135deg,#3b82f6,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+    .profile-section{display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+    .profile-img{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #6b7280;box-shadow:0 4px 15px rgba(0,0,0,0.2);cursor:pointer;transition:transform 0.3s ease;}
+    .profile-img:hover{transform:scale(1.08);}
+    .profile-info{flex:1;min-width:220px;}
+    .welcome-text{font-size:1.6rem;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+    .username{color:var(--text-primary);transition:color 0.3s ease;cursor:pointer;}
+    .username:hover{color:var(--primary-color);}
+    .welcome-message{color:var(--text-secondary);font-size:0.95rem;font-style:italic;}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-top:20px;}
+    .stat-card{background:rgba(0,0,0,0.25);border-radius:10px;padding:20px;position:relative;transition:transform 0.3s ease;}
+    .stat-card:hover{transform:translateY(-3px);}
+    .stat-icon{position:absolute;top:15px;right:15px;font-size:28px;opacity:0.25;}
+    .stat-title{font-size:0.9rem;color:var(--text-secondary);margin-bottom:6px;font-weight:500;}
+    .stat-value{font-size:1.6rem;font-weight:700;margin:0;}
+    .stat-card.query .stat-value{color:var(--primary-color);}
+    .stat-card.days .stat-value{color:var(--success-color);}
+    .stat-card.membership .stat-value{color:var(--warning-color);}
+    .stat-card.premium .stat-value{color:var(--warning-color);}
+    .system-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;margin-top:25px;}
+    .system-stat-card{background:rgba(0,0,0,0.25);border-radius:10px;padding:20px;text-align:center;transition:transform 0.3s ease;}
+    .system-stat-card:hover{transform:translateY(-3px);}
+    .system-stat-title{font-size:0.95rem;color:var(--text-secondary);margin-bottom:6px;}
+    .system-stat-value{font-size:1.9rem;font-weight:700;margin-bottom:6px;opacity:0;animation:fadeInNumber 0.5s ease forwards;}
+    .role-badge{padding:6px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:white;}
+    .role-free{background:linear-gradient(135deg,#6b7280,#4b5563);}
+    .role-premium{background:linear-gradient(135deg,#f59e0b,#f97316);box-shadow:0 0 10px rgba(245,158,11,0.5);}
+    .role-bayi{background:linear-gradient(135deg,#3b82f6,#6366f1);box-shadow:0 0 10px rgba(59,130,246,0.5);}
+    .role-kurucu{background:linear-gradient(135deg,#ef4444,#dc2626);animation:pulse 2s infinite;}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,0.5);}70%{box-shadow:0 0 0 12px rgba(239,68,68,0);}100%{box-shadow:0 0 0 0 rgba(239,68,68,0);}}
+    @keyframes fadeInNumber{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+    .log-list{list-style:none;padding:0;margin:0;}
+    .log-item{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
+    .log-item:last-child{border-bottom:none;}
+    .log-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-right:12px;flex-shrink:0;}
+    .log-title{font-weight:600;font-size:0.95rem;margin-bottom:2px;}
+    .log-time{font-size:0.85rem;color:var(--text-secondary);}
+    .message-notification{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);z-index:1000;background:var(--primary-color);color:white;padding:12px 20px;border-radius:12px;box-shadow:0 4px 15px rgba(0,0,0,0.25);display:flex;align-items:center;animation:bounce 2s infinite;cursor:pointer;text-decoration:none;}
+    .message-notification:hover{background:var(--secondary-color);color:white;}
+    .cart-notification{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1000;background:linear-gradient(135deg,#f59e0b,#f97316);color:white;padding:20px;border-radius:12px;box-shadow:0 8px 25px rgba(0,0,0,0.3);max-width:90%;width:450px;animation:popIn 0.5s ease;border:2px solid rgba(255,255,255,0.2);}
+    .cart-notification-content{display:flex;flex-direction:column;gap:15px;text-align:center;}
+    .cart-notification-close{position:absolute;top:10px;right:10px;cursor:pointer;font-size:1.5rem;color:white;}
+    .cart-notification-button{background:var(--success-color);color:white;padding:10px 20px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block;}
+    .cart-notification-dont-show{font-size:0.85rem;cursor:pointer;text-decoration:underline;}
+    @keyframes popIn{0%{transform:translate(-50%,-50%) scale(0.8);opacity:0;}100%{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+    @keyframes bounce{0%,100%{transform:translateY(0) translateX(-50%);}50%{transform:translateY(-10px) translateX(-50%);}}
+    #details-content{transition:opacity 0.3s ease;}
+    #details-content.hidden{opacity:0;display:none;}
+    .toggle-switch{position:relative;display:inline-block;width:60px;height:34px;margin-left:10px;cursor:pointer;}
+    .toggle-switch input{opacity:0;width:0;height:0;}
+    .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#6b7280;transition:0.4s;border-radius:34px;}
+    .slider:before{position:absolute;content:"";height:26px;width:26px;left:4px;bottom:4px;background-color:white;transition:0.4s;border-radius:50%;}
+    input:checked+.slider{background-color:var(--primary-color);}
+    input:checked+.slider:before{transform:translateX(26px);}
+    .twofa-btn{padding:6px 12px;border-radius:6px;font-size:0.8rem;font-weight:600;border:none;cursor:pointer;transition:all 0.3s ease;}
+    .twofa-btn.active{background:var(--success-color);color:white;}
+    .twofa-btn.inactive{background:var(--danger-color);color:white;}
+    .skeleton-loading{background:linear-gradient(90deg,rgba(255,255,255,0.1),rgba(255,255,255,0.2),rgba(255,255,255,0.1));background-size:200% 100%;animation:loading 1.5s infinite;}
+    @keyframes loading{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+    /* ===== DOCTOR SYSTEMS SMS ONAY REKLAM KARTI ===== */
+    .sms-ad-card{position:relative;background:linear-gradient(135deg,#0d1b2a 0%,#1a2744 45%,#0e1f35 100%);border:1px solid rgba(56,189,248,0.3);border-radius:16px;padding:26px 30px;display:flex;align-items:center;gap:28px;overflow:hidden;box-shadow:0 0 45px rgba(56,189,248,0.07),0 8px 30px rgba(0,0,0,0.35);margin-bottom:1.5rem;transition:box-shadow 0.3s ease;}
+    .sms-ad-card:hover{box-shadow:0 0 60px rgba(56,189,248,0.13),0 10px 35px rgba(0,0,0,0.4);}
+    .sms-ad-card::before{content:'';position:absolute;top:-90px;right:-90px;width:300px;height:300px;background:radial-gradient(circle,rgba(56,189,248,0.09),transparent 70%);pointer-events:none;}
+    .sms-ad-card::after{content:'';position:absolute;bottom:-70px;left:25%;width:220px;height:220px;background:radial-gradient(circle,rgba(99,102,241,0.07),transparent 70%);pointer-events:none;}
+    .sms-ad-close{position:absolute;top:11px;right:13px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#64748b;font-size:1.1rem;width:26px;height:26px;border-radius:6px;cursor:pointer;transition:all 0.2s ease;display:flex;align-items:center;justify-content:center;z-index:2;line-height:1;}
+    .sms-ad-close:hover{background:rgba(239,68,68,0.18);border-color:rgba(239,68,68,0.3);color:#f87171;}
+    .sms-ad-left{flex:1;min-width:0;z-index:1;position:relative;}
+    .sms-ad-badge{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(90deg,rgba(56,189,248,0.2),rgba(99,102,241,0.2));border:1px solid rgba(56,189,248,0.3);color:#7dd3fc;font-size:0.68rem;font-weight:700;letter-spacing:1.2px;padding:3px 10px;border-radius:20px;margin-bottom:10px;text-transform:uppercase;}
+    .sms-ad-title{font-size:1.35rem;font-weight:800;color:#f1f5f9;line-height:1.3;margin-bottom:10px;}
+    .sms-ad-brand{background:linear-gradient(90deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .sms-ad-desc{color:#94a3b8;font-size:0.87rem;line-height:1.6;margin-bottom:14px;}
+    .sms-ad-desc strong{color:#cbd5e1;}
+    .sms-ad-features{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+    .sms-ad-features span{background:rgba(56,189,248,0.07);border:1px solid rgba(56,189,248,0.18);color:#7dd3fc;font-size:0.74rem;font-weight:600;padding:3px 9px;border-radius:20px;}
+    .sms-ad-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(90deg,#0ea5e9,#6366f1);color:#fff !important;font-weight:700;font-size:0.88rem;padding:10px 20px;border-radius:10px;text-decoration:none !important;transition:all 0.3s ease;box-shadow:0 4px 18px rgba(14,165,233,0.25);}
+    .sms-ad-btn i{font-size:1.1rem;}
+    .sms-ad-btn:hover{transform:translateY(-2px);box-shadow:0 7px 24px rgba(14,165,233,0.38);}
+    .sms-ad-divider{width:1px;background:linear-gradient(to bottom,transparent,rgba(56,189,248,0.2),transparent);align-self:stretch;flex-shrink:0;}
+    .sms-ad-right{flex-shrink:0;width:200px;z-index:1;position:relative;}
+    .sms-ad-steps-title{font-size:0.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#475569;margin-bottom:12px;}
+    .sms-ad-steps{display:flex;flex-direction:column;gap:10px;}
+    .sms-ad-step{display:flex;align-items:center;gap:9px;color:#94a3b8;font-size:0.82rem;line-height:1.3;}
+    .step-num{background:linear-gradient(135deg,#0ea5e9,#6366f1);color:white;font-weight:700;font-size:0.7rem;min-width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+    @media(max-width:768px){
+        .sms-ad-card{flex-direction:column;padding:18px 16px;gap:16px;}
+        .sms-ad-divider{display:none;}
+        .sms-ad-right{width:100%;}
+        .sms-ad-steps{flex-direction:row;flex-wrap:wrap;gap:8px;}
+        .sms-ad-step{width:calc(50% - 4px);}
+        .profile-section{flex-direction:column;text-align:center;}
+        .stats-grid,.system-stats{grid-template-columns:1fr;}
+    }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+
+                <!-- SEPET BILDIRIMI -->
+                
+                <!-- BASLIK -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+                            <div class="d-flex align-items-center">
+                                <h4>Anasayfa</h4>
+                                <label class="toggle-switch" title="Detaylari Goster/Gizle">
+                                    <input type="checkbox" id="toggle-details" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </article>
-            <?php endforeach; ?>
-        </div>
-        
-        <div class="section-cta">
-            <a href="portfolio.php" class="btn btn-outline">
-                <span>Tüm Projeleri Gör</span>
-                <i class="fas fa-arrow-right"></i>
-            </a>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
 
-<!-- CTA Section -->
-<section class="cta section">
-    <div class="container">
-        <div class="cta-card">
-            <div class="cta-content">
-                <h2 class="cta-title">Bir Proje mi Düşünüyorsunuz?</h2>
-                <p class="cta-text">
-                    Fikirlerinizi hayata geçirmek için birlikte çalışalım. 
-                    Sizinle tanışmak için sabırsızlanıyorum!
-                </p>
-            </div>
-            <a href="contact.php" class="btn btn-primary btn-lg">
-                <span>Hemen İletişime Geç</span>
-                <i class="fas fa-paper-plane"></i>
-            </a>
-        </div>
-    </div>
-</section>
+                <!-- DOCTOR SYSTEMS SMS ONAY REKLAMI -->
+                <div class="row" id="sms-ad-row">
+                    <div class="col-12">
+                        <div class="sms-ad-card">
+                            <button class="sms-ad-close" id="sms-ad-close" title="Kapat">&times;</button>
 
-<?php include 'includes/footer.php'; ?>
+                            <div class="sms-ad-left">
+                                <div class="sms-ad-badge">&#127381; Yeni Hizmet Acildi</div>
+                                <h3 class="sms-ad-title">
+                                    <span class="sms-ad-brand">DOCTOR SYSTEMS</span><br>
+                                    SMS Onay Servisi Yayinda!
+                                </h3>
+                                <p class="sms-ad-desc">
+                                    Kendi numaranizi kullanmadan <strong>Telegram, WhatsApp</strong> ve
+                                    <strong>900+ platforma</strong> anonim kayit olun.
+                                    TRX kripto ile bakiye yukle &mdash; 7/24 hizli, guvenli &amp; tam gizli SMS onay al.
+                                </p>
+                                <div class="sms-ad-features">
+                                    <span>&#9889; Anlik Kod</span>
+                                    <span>&#128272; Tam Gizlilik</span>
+                                    <span>&#127757; 900+ Uygulama</span>
+                                    <span>&#128142; TRX ile Odeme</span>
+                                    <span>&#129302; 7/24 Aktif</span>
+                                </div>
+                                <a href="https://t.me/DoctorSmsOnayBot" target="_blank" rel="noopener" class="sms-ad-btn">
+                                    <i class='bx bxl-telegram'></i>
+                                    @DoctorSmsOnayBot &mdash; Hemen Basla
+                                </a>
+                            </div>
+
+                            <div class="sms-ad-divider"></div>
+
+                            <div class="sms-ad-right">
+                                <p class="sms-ad-steps-title">Nasil Calisir?</p>
+                                <div class="sms-ad-steps">
+                                    <div class="sms-ad-step"><span class="step-num">1</span><span>/start komutunu gonder</span></div>
+                                    <div class="sms-ad-step"><span class="step-num">2</span><span>Uygulama &amp; ulke sec</span></div>
+                                    <div class="sms-ad-step"><span class="step-num">3</span><span>Gecici numara al</span></div>
+                                    <div class="sms-ad-step"><span class="step-num">4</span><span>Kodu bot'tan al, giris yap &#10003;</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DETAY ICERIGI -->
+                <div id="details-content" class="">
+
+                    <!-- KULLANICI PROFILI -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="profile-section">
+                                        <div>
+                                            <img src="assets/images/default-profile.png" alt="Profil" class="profile-img" loading="lazy">
+                                        </div>
+                                        <div class="profile-info">
+                                            <h2 class="welcome-text">
+                                                Hos geldin, <span class="username">ahmet12hsas</span>
+                                                <span class="role-badge role-free">Free</span>
+                                                                                            </h2>
+                                            <p class="welcome-message" id="welcome-msg"></p>
+                                        </div>
+                                    </div>
+                                    <div class="stats-grid">
+                                        <div class="stat-card query">
+                                            <i class='bx bx-search-alt-2 stat-icon'></i>
+                                            <p class="stat-title">Toplam Sorgu</p>
+                                            <h3 class="stat-value">0</h3>
+                                        </div>
+                                        <div class="stat-card days">
+                                            <i class='bx bx-calendar stat-icon'></i>
+                                            <p class="stat-title">Hesap Kalan Sure</p>
+                                            <h3 class="stat-value">1387 Gun</h3>
+                                        </div>
+                                        <div class="stat-card premium">
+                                            <i class='bx bx-diamond stat-icon'></i>
+                                            <p class="stat-title">Premium Bitis</p>
+                                            <h3 class="stat-value">Yok</h3>
+                                        </div>
+                                        <div class="stat-card membership">
+                                            <i class='bx bx-star stat-icon'></i>
+                                            <p class="stat-title">Uyelik Tipi</p>
+                                            <h3 class="stat-value">Freemium</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SISTEM ISTATISTIKLERI -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header"><h5 class="card-title">Sistem Istatistikleri</h5></div>
+                                <div class="card-body">
+                                    <div class="system-stats" id="system-stats-container">
+                                        <div class="system-stat-card skeleton-loading" style="height:150px;"></div>
+                                        <div class="system-stat-card skeleton-loading" style="height:150px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SON ISLEMLER -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header"><h5 class="card-title">Son Islemleriniz</h5></div>
+                                <div class="card-body">
+                                    <ul class="log-list" id="logs-container">
+                                        <li class="log-item skeleton-loading" style="height:50px;"></li>
+                                        <li class="log-item skeleton-loading" style="height:50px;"></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- #details-content -->
+            </div><!-- .container-fluid -->
+        </div><!-- .page-content -->
+    </div><!-- .main-content -->
+
+    <!-- MESAJ BILDIRIMI -->
+            <a href="mesaj.php" class="message-notification">
+            <i class='bx bx-message-rounded me-2'></i>
+            <span>+1 okunmamis mesaj</span>
+        </a>
+    
+    <script src="assets/libs/jquery/jquery.min.js"></script>
+    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/libs/toastr/build/toastr.min.js"></script>
+    <script>
+    const welcomeMessages = [
+        "Tekrar hos geldin, harika seyler yapalim!",
+        "Merhaba, sistemlerimiz senin icin hazir!",
+        "Bugun ne sorgulayalim, hazir misin?",
+        "Seni gormek guzel, haydi baslapalim!",
+        "Sistemde her sey yolunda!",
+        "Premium avantajlariyla daha fazla sorgu yap!",
+        "Ellie ile her zaman bir adim ondesin!"
+    ];
+
+    $(document).ready(function() {
+        toastr.options = { positionClass: "toast-top-right", progressBar: true, timeOut: 5000 };
+
+        $('#welcome-msg').text(welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]);
+
+        $('.profile-img, .username').on('click', function() { window.location.href = 'profile.php'; });
+
+        $('#toggle-details').on('change', function() {
+            $.post(window.location.href, { action: 'toggle_details' }, function(response) {
+                if (response.success) { $('#details-content').toggleClass('hidden', !response.show_details); }
+            }, 'json');
+        });
+
+        $('#toggle-2fa-btn').on('click', function() {
+            $.post(window.location.href, { action: 'toggle_2fa' }, function(response) {
+                if (response.success) {
+                    var btn = $('#toggle-2fa-btn');
+                    if (response.twofa_enabled) { btn.removeClass('inactive').addClass('active').text('2FA Aktif'); toastr.success('2FA aktiflestirildi'); }
+                    else { btn.removeClass('active').addClass('inactive').text('2FA Devre Disi'); toastr.warning('2FA devre disi'); }
+                } else { toastr.error('2FA degistirilemedi'); }
+            }, 'json');
+        });
+
+        $('#cart-notification-close, #cart-notification-dont-show').on('click', function(e) {
+            e.preventDefault();
+            if ($(this).is('#cart-notification-dont-show')) {
+                $.post(window.location.href, { action: 'hide_cart_notification' }, function() { $('#cart-notification').fadeOut(300); }, 'json');
+            } else { $('#cart-notification').fadeOut(300); }
+        });
+
+        // SMS reklam kapatma (sadece o oturum icin)
+        $('#sms-ad-close').on('click', function() {
+            $('#sms-ad-row').slideUp(350);
+        });
+
+        loadSystemStats();
+        loadUserLogs();
+        setInterval(loadUserLogs, 30000);
+        setInterval(loadSystemStats, 60000);
+    });
+
+    function loadSystemStats() {
+        $.post(window.location.href, { action: 'get_system_stats' }, function(data) {
+            if (!Array.isArray(data)) return;
+            var html = '';
+            data.forEach(function(stat) {
+                html += '<div class="system-stat-card"><i class="' + stat.icon + '" style="color:' + stat.color + ';font-size:2.2rem;margin-bottom:12px;display:block;"></i><p class="system-stat-title">' + stat.title + '</p><h3 class="system-stat-value">' + stat.value + '</h3></div>';
+            });
+            $('#system-stats-container').html(html);
+        }, 'json');
+    }
+
+    function loadUserLogs() {
+        $.post(window.location.href, { action: 'get_user_logs' }, function(data) {
+            var html = '';
+            if (Array.isArray(data) && data.length > 0) {
+                data.forEach(function(log) {
+                    html += '<li class="log-item"><div class="log-icon bg-' + log.icon_class + '"><i class="' + log.icon + '"></i></div><div class="log-content"><div class="log-title">' + log.title + '</div><div class="log-time">' + log.time + '</div></div></li>';
+                });
+            } else {
+                html = '<li class="log-item"><div class="log-content">Henuz islem kaydiniz yok.</div></li>';
+            }
+            $('#logs-container').html(html);
+        }, 'json');
+    }
+    </script>
+</body>
+</html>
